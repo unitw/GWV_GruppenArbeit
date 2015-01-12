@@ -25,17 +25,18 @@ public class DummySpielbrett extends Observable implements Spielbrett {
     public static final int FIGUREN_PRO_SPIELER = 2;
     public static final int SPIELFELDGROESSE = 20;
 
+    private List<Spieler> _spieler;
     private Map<Spieler, Integer> _homeBases;
     private Spieler[] _spielfeld = new Spieler[SPIELFELDGROESSE];
 
-    private Spieler anDerReihe;
+    private Spieler _anDerReihe;
 
     /**
      * Erstellt ein DummySpielbrett mit einer Spieleranzahl von
      * DEFAULT_ANZAHL_SPIELER. Diese sind alle KIs.
      */
     public DummySpielbrett() {
-        //TODO anDerReihe initialisieren
+        //TODO _anDerReihe initialisieren
 
         for (int i = 1; i < DEFAULT_ANZAHL_SPIELER; ++i) {
             // TODO Spieler initialisieren und Figuren hinzufügen
@@ -58,7 +59,8 @@ public class DummySpielbrett extends Observable implements Spielbrett {
             _homeBases.put(s, FIGUREN_PRO_SPIELER);
         }
 
-        anDerReihe = spieler.get(0);
+        _anDerReihe = spieler.get(0);
+        _spieler = spieler;
     }
 
     /**
@@ -101,8 +103,8 @@ public class DummySpielbrett extends Observable implements Spielbrett {
      */
     private void setze(Zug zug) {
         if (zug.getAusgangsPos() == -1) {
-            int newHomeBase = _homeBases.get(anDerReihe) - 1;
-            _homeBases.put(anDerReihe, newHomeBase);
+            int newHomeBase = _homeBases.get(_anDerReihe) - 1;
+            _homeBases.put(_anDerReihe, newHomeBase);
         } else {
             _spielfeld[zug.getAusgangsPos()] = null;
         }
@@ -112,7 +114,8 @@ public class DummySpielbrett extends Observable implements Spielbrett {
             _homeBases.put(gegner, newGegnerHomeBase);
         }
 
-        _spielfeld[zug.getZielPos()] = anDerReihe;
+        _spielfeld[zug.getZielPos()] = _anDerReihe;
+        naechsterSpieler();
     }
 
     //setze 
@@ -122,5 +125,9 @@ public class DummySpielbrett extends Observable implements Spielbrett {
         return _spielfeld[feldIndex].equals(s);
     }
     
-    
+    private void naechsterSpieler()
+    {
+       int anDerReiheIndex = (_spieler.lastIndexOf(_anDerReihe) + 1) % _spieler.size();
+       _anDerReihe = _spieler.get(anDerReiheIndex);
+    }
 }

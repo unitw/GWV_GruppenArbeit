@@ -11,4 +11,10 @@ package Spiellogik;
  */
 public class Spiel {
     
+    private Spielbrett _spielbrett;
+    
+    public Spiel()
+    {
+        
+    }
 }
