@@ -5,12 +5,10 @@
  */
 package Spiellogik;
 
-
-
 /**
  *
  * @author Chris
  */
-public interface Spielbrett {
+interface Spieler {
     
 }

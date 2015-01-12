@@ -7,8 +7,8 @@ package Spiellogik;
 
 /**
  *
- * @author rw
+ * @author Chris
  */
-public class Figur {
+public class Mensch implements Spieler {
     
 }
