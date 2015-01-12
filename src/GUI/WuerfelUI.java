@@ -5,10 +5,14 @@
  */
 package GUI;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author rw
  */
-public class WuerfelUI {
+public class WuerfelUI extends JLabel {
+ 
+    
     
 }

@@ -9,13 +9,12 @@ package Spiellogik;
  *
  * @author rw
  */
-public class GWV_Gruppenarbeit {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+public class Start {
     
+    
+    public static void main(String[] args){
+       // SpielbrettUI ui= new SpielbrettUI();
+        
+        
+    }
 }

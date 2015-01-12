@@ -5,10 +5,21 @@
  */
 package GUI;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  *
  * @author rw
  */
-public class SpielbrettUI {
+public class SpielbrettUI implements Observer{
+
+   
     
+    
+    
+    @Override
+    public void update(Observable o, Object arg) {
+      
+    }
 }

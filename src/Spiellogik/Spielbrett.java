@@ -5,10 +5,20 @@
  */
 package Spiellogik;
 
+import java.util.Observable;
+
 /**
  *
  * @author rw
  */
-public class Spielbrett {
+public class Spielbrett extends Observable {
+  
+    
+    
+    //setze 
+    //prüfe
+    //getSpielstand
+    
+  
     
 }

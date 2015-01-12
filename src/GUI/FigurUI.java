@@ -5,10 +5,12 @@
  */
 package GUI;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author rw
  */
-public class FigurUI {
+public class FigurUI  extends JLabel{
     
 }
