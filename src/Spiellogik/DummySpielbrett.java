@@ -19,29 +19,13 @@ import java.util.Set;
  *
  * @author rw
  */
-public class DummySpielbrett extends Observable implements Spielbrett {
-
-    public static final int DEFAULT_ANZAHL_SPIELER = 2;
-    public static final int FIGUREN_PRO_SPIELER = 2;
+public class DummySpielbrett implements Spielbrett {
+    
+    public static int FIGUREN_PRO_SPIELER = 2;
     public static final int SPIELFELDGROESSE = 20;
 
-    private List<Spieler> _spieler;
-    private Map<Spieler, Integer> _homeBases;
-    private Spieler[] _spielfeld = new Spieler[SPIELFELDGROESSE];
-
-    private Spieler _anDerReihe;
-
-    /**
-     * Erstellt ein DummySpielbrett mit einer Spieleranzahl von
-     * DEFAULT_ANZAHL_SPIELER. Diese sind alle KIs.
-     */
-    public DummySpielbrett() {
-        //TODO _anDerReihe initialisieren
-
-        for (int i = 1; i < DEFAULT_ANZAHL_SPIELER; ++i) {
-            // TODO Spieler initialisieren und Figuren hinzufügen
-        }
-    }
+    private HeimBasen _basen;
+    private int[] _spielfeld = new int[SPIELFELDGROESSE];
 
     /**
      *
@@ -50,17 +34,11 @@ public class DummySpielbrett extends Observable implements Spielbrett {
      * @throws IllegalArgumentException Wird geworfen falls die Anzahl der
      * Figuren die SPIELFELDGROESSE ueberschreitet.
      */
-    public DummySpielbrett(List<Spieler> spieler) throws IllegalArgumentException {
-        if (spieler.size() * FIGUREN_PRO_SPIELER > SPIELFELDGROESSE + 1) {
+    public DummySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
+        if (anzahlSpieler * FIGUREN_PRO_SPIELER > SPIELFELDGROESSE + 1) {
             throw new IllegalArgumentException("Spielbrett kann nicht erstellt werden, zu viele Spieler");
         }
-        int aktuellePos = 0;
-        for (Spieler s : spieler) {
-            _homeBases.put(s, FIGUREN_PRO_SPIELER);
-        }
-
-        _anDerReihe = spieler.get(0);
-        _spieler = spieler;
+        _basen = new HeimBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
     }
 
     /**
@@ -72,11 +50,11 @@ public class DummySpielbrett extends Observable implements Spielbrett {
      * @return Ein Set aller moeglichen Zuege. Ist das Set leer, sind keine
      * Zuege moeglich.
      */
-    public Set<Zug> pruefe(Spieler s, int augenzahl) {
+    public Set<Zug> pruefe(int spieler, int augenzahl) {
         Set<Zug> zuege = new HashSet<>();
-        int homebase = _homeBases.get(s);
+        int spielerBasis = _basen.basisBesetzung(spieler);
         if (augenzahl == 6) {
-            if (homebase != 0) {
+            if (spielerBasis != 0) {
                 zuege.add(new Zug(-1, 0));
                 return zuege;
             }
@@ -84,9 +62,9 @@ public class DummySpielbrett extends Observable implements Spielbrett {
 
         // Prueft fuer jede Figur des Spielers auf dem Brett (nicht in der Homebase), ob sie ziehen kann
         for (int probierteFiguren = 0, aktuellerIndex = 0;
-                probierteFiguren < (FIGUREN_PRO_SPIELER - homebase) && aktuellerIndex < SPIELFELDGROESSE;
+                probierteFiguren < (FIGUREN_PRO_SPIELER - spielerBasis) && aktuellerIndex < SPIELFELDGROESSE;
                 ++aktuellerIndex) {
-            if (istSpielerFeld(s, aktuellerIndex) && aktuellerIndex < _spielfeld.length) {
+            if (istSpielerFeld(spieler, aktuellerIndex) && aktuellerIndex < _spielfeld.length) {
                 int zielIndex = aktuellerIndex + augenzahl;
                 Zug zug = new Zug(aktuellerIndex, zielIndex);
                 zuege.add(zug);
@@ -101,33 +79,29 @@ public class DummySpielbrett extends Observable implements Spielbrett {
      *
      * @param zug Der durchzufuehrende Zug
      */
-    private void setze(Zug zug) {
+    public void setze(int spieler, Zug zug) {
         if (zug.getAusgangsPos() == -1) {
-            int newHomeBase = _homeBases.get(_anDerReihe) - 1;
-            _homeBases.put(_anDerReihe, newHomeBase);
+            _basen.zieheAusBasis(spieler);
         } else {
-            _spielfeld[zug.getAusgangsPos()] = null;
+            _spielfeld[zug.getAusgangsPos()] = -1;
         }
-        if (_spielfeld[zug.getZielPos()] != null) {
-            Spieler gegner = _spielfeld[zug.getZielPos()];
-            int newGegnerHomeBase = _homeBases.get(gegner) - 1;
-            _homeBases.put(gegner, newGegnerHomeBase);
+        if (_spielfeld[zug.getZielPos()] != -1) {
+            int geschlagen = _spielfeld[zug.getZielPos()];
+            _basen.zieheInBasis(geschlagen);
         }
-
-        _spielfeld[zug.getZielPos()] = _anDerReihe;
-        naechsterSpieler();
+        
+        _spielfeld[zug.getZielPos()] = spieler;
     }
 
     //setze 
     //prüfe
     //getSpielstand
-    private boolean istSpielerFeld(Spieler s, int feldIndex) {
-        return _spielfeld[feldIndex].equals(s);
+    public boolean istSpielerFeld(int spieler, int feldIndex) {
+        return _spielfeld[feldIndex] == spieler;
     }
     
-    private void naechsterSpieler()
+    public int spielfeldGroesse()
     {
-       int anDerReiheIndex = (_spieler.lastIndexOf(_anDerReihe) + 1) % _spieler.size();
-       _anDerReihe = _spieler.get(anDerReiheIndex);
+        return _spielfeld.length;
     }
 }

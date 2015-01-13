@@ -9,6 +9,10 @@ package Spiellogik;
  *
  * @author Chris
  */
-public class Mensch implements Spieler {
+public class Mensch extends Spieler {
+
+    public Mensch(Spielbrett brett, int index) {
+        super(brett, index);
+    }
     
 }

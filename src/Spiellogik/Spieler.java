@@ -5,10 +5,25 @@
  */
 package Spiellogik;
 
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  *
  * @author Chris
  */
-interface Spieler {
+abstract class Spieler {
     
+    private Spielbrett _brett;
+    private int _index;
+    
+    Spieler(Spielbrett brett, int index) {
+        _brett = brett;
+        _index = index;
+    }
+    
+    public Set<Zug> pruefe(int augenzahl) {
+       return _brett.pruefe(_index, augenzahl);
+    }
 }
