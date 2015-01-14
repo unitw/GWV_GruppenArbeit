@@ -7,8 +7,12 @@ package Spiellogik;
 
 /**
  *
- * @author rw
+ * @author Chris
  */
-public class Figur {
+public class Mensch extends Spieler {
+
+    public Mensch(Spielbrett brett, int index) {
+        super(brett, index);
+    }
     
 }

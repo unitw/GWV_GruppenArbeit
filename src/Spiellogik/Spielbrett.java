@@ -5,20 +5,26 @@
  */
 package Spiellogik;
 
-import java.util.Observable;
+import java.util.Set;
+
+
 
 /**
  *
- * @author rw
+ * @author Chris
  */
-public class Spielbrett extends Observable {
-  
+public interface Spielbrett {
     
+    /**
+     * Zieht den angegebenen Zug mit dem Spieler der aktuell an der Reihe ist.
+     *
+     * @param zug Der durchzufuehrende Zug
+     */
+    public void setze(int spieler, Zug zug);
     
-    //setze 
-    //prüfe
-    //getSpielstand
+    public boolean istSpielerFeld(int spieler, int feldIndex);
     
-  
+    public int spielfeldGroesse();
     
+    public Set<Zug> pruefe(int spieler, int augenzahl);
 }
