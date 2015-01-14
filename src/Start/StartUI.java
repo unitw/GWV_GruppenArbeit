@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Spiellogik;
+package Start;
 
-/**
- *
- * @author rw
- */
-public class Start {
+import static Start.Start.gui;
+
+
+public class StartUI {
+
     
-    
-    public static void main(String[] args){
-       // SpielbrettUI ui= new SpielbrettUI();
+    public static void main(String[] args) {
         
+        gui.createSpielfeld(5);
         
     }
+    
 }
