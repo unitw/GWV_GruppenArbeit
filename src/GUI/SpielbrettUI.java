@@ -26,7 +26,7 @@ public class SpielbrettUI extends JPanel implements Observer {
         for (int i = 0; i < anzfelder; i++) {
             FeldUI feldarray[] = new FeldUI[anzfelder];
             feldarray[i] = new FeldUI();
-            feldarray[i].set
+            
 
         }
     }

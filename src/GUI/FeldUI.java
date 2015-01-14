@@ -17,9 +17,6 @@ public class FeldUI extends JLabel {
     
     ImageIcon icon = new ImageIcon("");
    public FeldUI(){
-       
-       
-       
        this.setIcon(icon);
    }
     
