@@ -25,12 +25,12 @@ public class DummySpielbrett implements Spielbrett {
     public static final int SPIELFELDGROESSE = 20;
 
     private HeimBasen _basen;
-    private int[] _spielfeld = new int[SPIELFELDGROESSE];
+    private int[] _spielfeld;
 
     /**
      *
      * @param spieler Eine Liste mit Spielern, die am Spiel teilnehmen. Die
-     * Reihenfolge in der Liste bestimmt die Zugreihenfolge.
+     * Reihenfolge in der Liste bestimmt die Zugreihenfolge. 
      * @throws IllegalArgumentException Wird geworfen falls die Anzahl der
      * Figuren die SPIELFELDGROESSE ueberschreitet.
      */
@@ -39,6 +39,10 @@ public class DummySpielbrett implements Spielbrett {
             throw new IllegalArgumentException("Spielbrett kann nicht erstellt werden, zu viele Spieler");
         }
         _basen = new HeimBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
+        _spielfeld = new int[SPIELFELDGROESSE];
+        // Alle Felder werden mit -1 belegt, da -1 ein leeres Feld signalisiert
+        // 0 ist die Kodierung des 1. Spielers.
+        java.util.Arrays.fill(_spielfeld, -1);
     }
 
     /**
@@ -85,6 +89,7 @@ public class DummySpielbrett implements Spielbrett {
         } else {
             _spielfeld[zug.getAusgangsPos()] = -1;
         }
+        // TODO Fehler mit 0 und -1 (Spieler 1 (Index 0) steht am Anfang überall
         if (_spielfeld[zug.getZielPos()] != -1) {
             int geschlagen = _spielfeld[zug.getZielPos()];
             _basen.zieheInBasis(geschlagen);
@@ -103,5 +108,15 @@ public class DummySpielbrett implements Spielbrett {
     public int spielfeldGroesse()
     {
         return _spielfeld.length;
+    }
+    
+    public int[] getSpielfeld()
+    {
+        return _spielfeld.clone();
+    }
+    
+    public HeimBasen getHeimBasen()
+    {
+        return _basen.clone();
     }
 }

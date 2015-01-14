@@ -14,7 +14,8 @@ package Spiellogik;
  */
 public class HeimBasen {
 
-    private final int[] _homeBases;
+    private int[] _homeBases;
+    private int _basisGroesse;
 
     /**
      * Erstellt neue Heimbasen für alle Spieler in der Liste. Jeder Spieler
@@ -30,6 +31,7 @@ public class HeimBasen {
         for (int i = 0; i < anzahlSpieler; ++i) {
             _homeBases[i] = basisGroesse;
         }
+        _basisGroesse = basisGroesse;
     }
 
     /**
@@ -58,5 +60,12 @@ public class HeimBasen {
      */
     public int basisBesetzung(int spieler) {
         return _homeBases[spieler];
+    }
+    
+    public HeimBasen clone()
+    {
+        HeimBasen clone = new HeimBasen(_homeBases.length, _basisGroesse);
+        clone._homeBases = this._homeBases;
+        return clone;
     }
 }
