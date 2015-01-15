@@ -18,7 +18,7 @@ public class DecisionNetworkKI extends KI {
     }
 
     @Override
-    protected Zug entscheide(Set<Zug> zuege) {
+    public Zug entscheide(Set<Zug> zuege) {
         // TODO implementieren
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

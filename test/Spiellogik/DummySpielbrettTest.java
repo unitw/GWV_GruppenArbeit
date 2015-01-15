@@ -18,25 +18,25 @@ import static org.junit.Assert.*;
  * @author Chris
  */
 public class DummySpielbrettTest {
-    
+
     private DummySpielbrett _2SpielerBrett;
-    
+
     public DummySpielbrettTest() {
         _2SpielerBrett = new DummySpielbrett(2);
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -52,6 +52,16 @@ public class DummySpielbrettTest {
         }
         // Darf aus der Homebase ziehen
         assertFalse(_2SpielerBrett.pruefe(0, 6).isEmpty());
+
+        _2SpielerBrett.setze(0, new Zug(-1, 3));
+        _2SpielerBrett.setze(0, new Zug(-1, 2));
+        assertEquals("Es muessten hier 2 Zuege moeglich sein", 2, 
+                _2SpielerBrett.pruefe(0, 2).size());
+        // Man kann sich nicht selbst schlagen
+        // Figur 1 auf Index 2, Figur 2 auf Index 3. Nur Figur 2 soll bewegt werden, 
+        // da F1 sonst F2 schlagen wuerde
+        assertEquals("Man darf sich nicht selbst schlagen", 1,
+                _2SpielerBrett.pruefe(0, 1).size());
     }
 
     /**
@@ -62,11 +72,11 @@ public class DummySpielbrettTest {
         // TODO review the generated test code and remove the default call to fail.
         _2SpielerBrett.setze(0, new Zug(-1, 3));
         assertTrue("Spieler wurde nicht korrekt gesetzt", _2SpielerBrett.istSpielerFeld(0, 3));
-        assertEquals("Die Basis wurde nicht angepasst", (DummySpielbrett.FIGUREN_PRO_SPIELER - 1), 
+        assertEquals("Die Basis wurde nicht angepasst", (DummySpielbrett.FIGUREN_PRO_SPIELER - 1),
                 _2SpielerBrett.getHeimBasen().basisBesetzung(0));
         _2SpielerBrett.setze(1, new Zug(-1, 3));
         assertTrue("Spieler wurde nicht korrekt geschlagen", _2SpielerBrett.istSpielerFeld(1, 3));
-        assertEquals("Geschlagener Spieler nicht in Homebase", (DummySpielbrett.FIGUREN_PRO_SPIELER), 
+        assertEquals("Geschlagener Spieler nicht in Homebase", (DummySpielbrett.FIGUREN_PRO_SPIELER),
                 _2SpielerBrett.getHeimBasen().basisBesetzung(0));
     }
 
@@ -77,5 +87,5 @@ public class DummySpielbrettTest {
     public void testSpielfeldGroesse() {
         // TODO review the generated test code and remove the default call to fail.
     }
-    
+
 }

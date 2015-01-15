@@ -20,7 +20,7 @@ import java.util.Set;
  * @author rw
  */
 public class DummySpielbrett implements Spielbrett {
-    
+
     public static int FIGUREN_PRO_SPIELER = 2;
     public static final int SPIELFELDGROESSE = 20;
 
@@ -30,7 +30,7 @@ public class DummySpielbrett implements Spielbrett {
     /**
      *
      * @param spieler Eine Liste mit Spielern, die am Spiel teilnehmen. Die
-     * Reihenfolge in der Liste bestimmt die Zugreihenfolge. 
+     * Reihenfolge in der Liste bestimmt die Zugreihenfolge.
      * @throws IllegalArgumentException Wird geworfen falls die Anzahl der
      * Figuren die SPIELFELDGROESSE ueberschreitet.
      */
@@ -57,18 +57,17 @@ public class DummySpielbrett implements Spielbrett {
     public Set<Zug> pruefe(int spieler, int augenzahl) {
         Set<Zug> zuege = new HashSet<>();
         int spielerBasis = _basen.basisBesetzung(spieler);
-        if (augenzahl == 6) {
-            if (spielerBasis != 0) {
-                zuege.add(new Zug(-1, 0));
-                return zuege;
-            }
+        if (augenzahl == Spiel.WUERFELGROESSE && spielerBasis != 0) {
+            zuege.add(new Zug(-1, 0));
+            return zuege;
         }
 
         // Prueft fuer jede Figur des Spielers auf dem Brett (nicht in der Homebase), ob sie ziehen kann
         for (int probierteFiguren = 0, aktuellerIndex = 0;
                 probierteFiguren < (FIGUREN_PRO_SPIELER - spielerBasis) && aktuellerIndex < SPIELFELDGROESSE;
                 ++aktuellerIndex) {
-            if (istSpielerFeld(spieler, aktuellerIndex) && aktuellerIndex < _spielfeld.length) {
+            if (istSpielerFeld(spieler, aktuellerIndex) && aktuellerIndex < _spielfeld.length
+                    && !istSpielerFeld(spieler, aktuellerIndex + augenzahl)) {
                 int zielIndex = aktuellerIndex + augenzahl;
                 Zug zug = new Zug(aktuellerIndex, zielIndex);
                 zuege.add(zug);
@@ -94,7 +93,7 @@ public class DummySpielbrett implements Spielbrett {
             int geschlagen = _spielfeld[zug.getZielPos()];
             _basen.zieheInBasis(geschlagen);
         }
-        
+
         _spielfeld[zug.getZielPos()] = spieler;
     }
 
@@ -104,19 +103,16 @@ public class DummySpielbrett implements Spielbrett {
     public boolean istSpielerFeld(int spieler, int feldIndex) {
         return _spielfeld[feldIndex] == spieler;
     }
-    
-    public int spielfeldGroesse()
-    {
+
+    public int spielfeldGroesse() {
         return _spielfeld.length;
     }
-    
-    public int[] getSpielfeld()
-    {
+
+    public int[] getSpielfeld() {
         return _spielfeld.clone();
     }
-    
-    public HeimBasen getHeimBasen()
-    {
+
+    public HeimBasen getHeimBasen() {
         return _basen.clone();
     }
 }

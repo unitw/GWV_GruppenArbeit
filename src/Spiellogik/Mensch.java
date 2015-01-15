@@ -5,14 +5,15 @@
  */
 package Spiellogik;
 
+import java.util.Set;
+
 /**
  *
  * @author Chris
  */
-public class Mensch extends Spieler {
+public class Mensch implements Spieler {
 
-    public Mensch(Spielbrett brett, int index) {
-        super(brett, index);
+    public Mensch() {
     }
     
 }
