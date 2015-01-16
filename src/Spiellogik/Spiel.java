@@ -35,28 +35,29 @@ public class Spiel extends Observable {
     private final Spieler[] _spieler;
     private int _anDerReihe;
     private int _aktuelleAugenzahl;
+    private int _wurfOptionen;
     private Set<Zug> _moeglicheZuegeMensch;
 
     public Spiel(Spieler[] spieler, Spielbrett spielbrett) {
         _spieler = spieler;
         _spielbrett = spielbrett;
         _moeglicheZuegeMensch = null;
+        _wurfOptionen = MAXIMALE_WUERFE_PRO_ZUG;
     }
 
-    public void naechsterZug() {
-        naechsterSpieler();
-        naechsterZug(1);
+    public void spielFortfahren() {
+        naechsterZug(_wurfOptionen);
     }
 
-    private void naechsterZug(int wurf) {
-        if (wurf <= MAXIMALE_WUERFE_PRO_ZUG) {
+    private void naechsterZug(int wurfOptionen) {
+        if (wurfOptionen > 0) {
 
             Spieler aktuellerSpieler = _spieler[_anDerReihe];
             wuerfeln();
             Set<Zug> zuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
             //TODO Spieler muss ziehen
             if (zuege.isEmpty()) {
-                naechsterZug(++wurf);
+                naechsterZug(--wurfOptionen);
             } else if (zuege.size() == 1) {
                 for (Zug zug : zuege) {
                     ziehe(zug);
@@ -67,9 +68,11 @@ public class Spiel extends Observable {
                 ziehe(zug);
             } else if (aktuellerSpieler instanceof Mensch) {
                 _moeglicheZuegeMensch = zuege;
-                
+
                 menschAmZug();
             }
+        } else {
+
         }
     }
 
@@ -81,13 +84,12 @@ public class Spiel extends Observable {
      * dann auf jeden Fall vom Typ Mensch, da das Spiel dafür sorgt, dass die
      * KI-Spieler ziehen.
      *
-     * @param zug
+     * @param zug Ein gültiger Zug für den aktuellen Spieler (Dies wird nicht
+     * überprüft)
      */
     public void ziehe(Zug zug) {
-        if (zugMoeglich(zug)) {
-            _spielbrett.setze(_anDerReihe, zug);
-            updateUI();
-        }
+        _spielbrett.setze(_anDerReihe, zug);
+        naechsterSpieler();
     }
 
     /**
@@ -103,28 +105,43 @@ public class Spiel extends Observable {
     }
 
     /**
-     * Spieler der aktuell an der Reihe ist
+     * Spieler der aktuell an der Reihe ist. Ein Spieler ist immer so lange an
+     * der Reihe bis er gezogen hat, danach ist der nächste Spieler an der
+     * Reihe.
      *
-     * @return
+     * @return der aktuelle Spieler
      */
     public Spieler getAktuellerSpieler() {
         return _spieler[_anDerReihe];
     }
 
     /**
-     * Index des aktuellen Spielers
+     * Index des aktuellen Spielers. Ein Spieler ist immer so lange an der Reihe
+     * bis er gezogen hat, danach ist der nächste Spieler an der Reihe.
      *
-     * @return
+     * @return der Index des aktuellen Spieler
      */
     public int getAktuellerSpielerIndex() {
         return _anDerReihe;
     }
-    
+
+    /**
+     * Der Spieler der als nächstes an der Reihe ist. Dies ist der Fall sobald
+     * der aktuelle Spieler gezogen hat.
+     *
+     * @return naechster Spieler
+     */
     public Spieler getNaechsterSpieler() {
         int naechsterIndex = getNaechsterSpielerIndex();
         return _spieler[naechsterIndex];
     }
-    
+
+    /**
+     * Der Index des Spielers der als nächstes an der Reihe ist. Dies ist der
+     * Fall sobald der aktuelle Spieler gezogen hat.
+     *
+     * @return Index des naechsten Spielers
+     */
     public int getNaechsterSpielerIndex() {
         return (_anDerReihe + 1) % _spieler.length;
     }
@@ -140,6 +157,7 @@ public class Spiel extends Observable {
 
     private void naechsterSpieler() {
         _anDerReihe = getNaechsterSpielerIndex();
+        updateUI();
     }
 
     private boolean zugMoeglich(Zug zug) {
@@ -157,7 +175,7 @@ public class Spiel extends Observable {
         setChanged();
         notifyObservers(getAktuellerSpieler());
     }
-    
+
     private void updateUI() {
         setChanged();
         notifyObservers();
