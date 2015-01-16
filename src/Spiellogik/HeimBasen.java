@@ -62,10 +62,22 @@ public class HeimBasen {
         return _homeBases[spieler];
     }
     
+    public int getAnzahlSpieler() {
+        return _homeBases.length;
+    }
+    
     public HeimBasen clone()
     {
         HeimBasen clone = new HeimBasen(_homeBases.length, _basisGroesse);
         clone._homeBases = this._homeBases;
         return clone;
+    }
+    
+    public String getFormattiertenString() {
+        String ausgabe = "Home Bases: \n";
+        for (int spielerIndex = 0; spielerIndex < _homeBases.length; ++spielerIndex) {
+            ausgabe += "Spieler " + spielerIndex + ": " + _homeBases[spielerIndex];
+        }
+        return ausgabe;
     }
 }

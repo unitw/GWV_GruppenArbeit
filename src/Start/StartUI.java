@@ -14,6 +14,7 @@ public class StartUI {
     public static void main(String[] args) {
         
         //gui.createSpielfeld(5);
+        new ConsoleUI.ConsoleUI();
         
     }
     

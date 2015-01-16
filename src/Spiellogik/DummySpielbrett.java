@@ -6,11 +6,7 @@
 package Spiellogik;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Set;
 
 /**
  * Ein Spielbrett Objekt repraesentiert ein Spielbrett, das aus den Home Bases
@@ -54,8 +50,9 @@ public class DummySpielbrett implements Spielbrett {
      * @return Ein Set aller moeglichen Zuege. Ist das Set leer, sind keine
      * Zuege moeglich.
      */
-    public Set<Zug> pruefe(int spieler, int augenzahl) {
-        Set<Zug> zuege = new HashSet<>();
+    @Override
+    public List<Zug> pruefe(int spieler, int augenzahl) {
+        List<Zug> zuege = new ArrayList<>();
         int spielerBasis = _basen.basisBesetzung(spieler);
         if (augenzahl == Spiel.WUERFELGROESSE && spielerBasis != 0) {
             zuege.add(new Zug(-1, 0));
@@ -114,5 +111,35 @@ public class DummySpielbrett implements Spielbrett {
 
     public HeimBasen getHeimBasen() {
         return _basen.clone();
+    }
+    
+    public DummySpielbrett clone() {
+        DummySpielbrett clone = new DummySpielbrett(_basen.getAnzahlSpieler());
+        clone._basen = getHeimBasen();
+        clone._spielfeld = getSpielfeld();
+        return clone;
+    }
+    
+    public String toString() {
+        return _basen.getFormattiertenString() + "\n" + spielfeldToString();
+    }
+    
+    private String spielfeldToString() {
+        String ausgabe = "";
+        for (int i = 0; i < _spielfeld.length; ++i)
+        {
+            ausgabe += "| ";
+        }
+        ausgabe += "|\n";
+        for (int spieler: _spielfeld) {
+            if (spieler == -1) {
+                ausgabe += "|_";
+            }
+            else {
+                ausgabe += "|" + spieler;
+            }
+        }
+        ausgabe += "|";
+        return ausgabe;
     }
 }

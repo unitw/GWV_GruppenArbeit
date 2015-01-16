@@ -5,7 +5,7 @@
  */
 package Spiellogik;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  *
@@ -61,5 +61,5 @@ public abstract class KI implements Spieler {
      * @param zuege die zur Auswahl stehenden Zuege
      * @return der Zug, der gezogen werden soll
      */
-    abstract public Zug entscheide(Set<Zug> zuege);
+    abstract public Zug entscheide(List<Zug> zuege);
 }

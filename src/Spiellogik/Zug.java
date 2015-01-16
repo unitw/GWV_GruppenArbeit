@@ -29,4 +29,16 @@ public class Zug {
     public int getZielPos() {
         return _zielPos;
     }
+    
+    public String toString() {
+        String ausgabe = "Von ";
+        if (getAusgangsPos() == -1) {
+            ausgabe += "Home-Base ";
+        }
+        else {
+            ausgabe += "Feld " + getAusgangsPos() + " ";
+        }
+        ausgabe += "nach Feld " + getZielPos();
+        return ausgabe;
+    }
 }

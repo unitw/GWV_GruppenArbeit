@@ -13,7 +13,7 @@ import java.util.Set;
  *
  * @author Chris
  */
-interface Spieler {
+public interface Spieler {
     
     
     

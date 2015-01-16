@@ -5,9 +5,10 @@
  */
 package Spiellogik;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Random;
-import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Diese Klasse implementiert das Spiel Mensch Aergere Dich Nicht. Das Spiel
@@ -36,7 +37,7 @@ public class Spiel extends Observable {
     private int _anDerReihe;
     private int _aktuelleAugenzahl;
     private int _wurfOptionen;
-    private Set<Zug> _moeglicheZuegeMensch;
+    private List<Zug> _moeglicheZuegeMensch;
 
     public Spiel(Spieler[] spieler, Spielbrett spielbrett) {
         _spieler = spieler;
@@ -59,10 +60,11 @@ public class Spiel extends Observable {
 
             Spieler aktuellerSpieler = _spieler[_anDerReihe];
             wuerfeln();
-            Set<Zug> zuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
+            List<Zug> zuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
             //TODO Spieler muss ziehen
             if (zuege.isEmpty()) {
                 --_wurfOptionen;
+                updateUI();
             } else if (zuege.size() == 1) {
                 for (Zug zug : zuege) {
                     ziehe(zug);
@@ -105,7 +107,7 @@ public class Spiel extends Observable {
      * @return moegliche Zuege fuer aktuellen Mensch, sind alle Spieler KI,
      * null.
      */
-    public Set<Zug> getMoeglicheZuege() {
+    public List<Zug> getMoeglicheZuege() {
         return _moeglicheZuegeMensch;
     }
 
@@ -162,6 +164,7 @@ public class Spiel extends Observable {
 
     private void naechsterSpieler() {
         _anDerReihe = getNaechsterSpielerIndex();
+        _wurfOptionen = MAXIMALE_WUERFE_PRO_ZUG;
         updateUI();
     }
 
@@ -186,4 +189,10 @@ public class Spiel extends Observable {
         notifyObservers();
     }
 
+    @Override
+    public String toString() {
+        String ausgabe = "\n" + _spielbrett.toString();
+        ausgabe += "\nAn der Reihe: " + getAktuellerSpielerIndex() + "Augenzahl " +  getAktuelleAugenzahl();
+        return ausgabe;
+    }
 }

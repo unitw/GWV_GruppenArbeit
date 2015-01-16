@@ -5,7 +5,7 @@
  */
 package Spiellogik;
 
-import java.util.Set;
+import java.util.List;
 
 
 
@@ -26,5 +26,9 @@ public interface Spielbrett {
     
     public int spielfeldGroesse();
     
-    public Set<Zug> pruefe(int spieler, int augenzahl);
+    public List<Zug> pruefe(int spieler, int augenzahl);
+    
+    public int[] getSpielfeld();
+
+    public HeimBasen getHeimBasen();
 }

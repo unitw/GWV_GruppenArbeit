@@ -5,7 +5,7 @@
  */
 package Spiellogik;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  *
@@ -22,7 +22,7 @@ public class DecisionNetworkKI extends KI {
     }
 
     @Override
-    public Zug entscheide(Set<Zug> zuege) {
+    public Zug entscheide(List<Zug> zuege) {
         // TODO implementieren, momentan Dummy
         for (Zug zug : zuege) {
             return zug;
