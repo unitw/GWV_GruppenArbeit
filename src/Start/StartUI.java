@@ -5,7 +5,7 @@
  */
 package Start;
 
-import static Start.Start.gui;
+//import static Start.Start.gui;
 
 
 public class StartUI {
@@ -13,7 +13,7 @@ public class StartUI {
     
     public static void main(String[] args) {
         
-        gui.createSpielfeld(5);
+        //gui.createSpielfeld(5);
         
     }
     

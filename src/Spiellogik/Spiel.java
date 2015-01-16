@@ -19,7 +19,7 @@ import java.util.Set;
  * der ziehen soll als Argument. Um zu ziehe soll dann
  * <code>getMoeglicheZuege()</code> aufgerufen werden um die moeglichen Zuege
  * fuer den aktuellen Spieler zu erfahren. Nun muss einer ausgewaehlt werden und
- * mit einem Aufruf von <code>ziehe()</code> gezogen werden. 
+ * mit einem Aufruf von <code>ziehe()</code> gezogen werden.
  *
  * @author rw
  */
@@ -34,6 +34,7 @@ public class Spiel extends Observable {
     private final Spielbrett _spielbrett;
     private final Spieler[] _spieler;
     private int _anDerReihe;
+    private int _aktuelleAugenzahl;
     private Set<Zug> _moeglicheZuegeMensch;
 
     public Spiel(Spieler[] spieler, Spielbrett spielbrett) {
@@ -51,14 +52,14 @@ public class Spiel extends Observable {
         if (wurf <= MAXIMALE_WUERFE_PRO_ZUG) {
 
             Spieler aktuellerSpieler = _spieler[_anDerReihe];
-            int augenzahl = wuerfeln();
-            Set<Zug> zuege = _spielbrett.pruefe(_anDerReihe, augenzahl);
+            wuerfeln();
+            Set<Zug> zuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
             //TODO Spieler muss ziehen
             if (zuege.isEmpty()) {
                 naechsterZug(++wurf);
             } else if (zuege.size() == 1) {
                 for (Zug zug : zuege) {
-                    _spielbrett.setze(_anDerReihe, zug);
+                    ziehe(zug);
                 }
             } else if (aktuellerSpieler instanceof KI) {
                 KI ki = (KI) aktuellerSpieler;
@@ -66,12 +67,22 @@ public class Spiel extends Observable {
                 ziehe(zug);
             } else if (aktuellerSpieler instanceof Mensch) {
                 _moeglicheZuegeMensch = zuege;
-                setChanged();
-                notifyObservers(aktuellerSpieler);
+                
+                menschAmZug();
             }
         }
     }
 
+    /**
+     * Zieht mit dem aktuellen Spieler den angegebenen Zug. Diese Methode sollte
+     * nur augeführt werden, wenn ein Mensch an der Reihe ist. Dies wird dadurch
+     * signalisiert, dass die Beobachter dieses Spiels benachrichtigt werden und
+     * als Argument der aktuelle Spieler uebergeben wird. Das Spieler-Objekt ist
+     * dann auf jeden Fall vom Typ Mensch, da das Spiel dafür sorgt, dass die
+     * KI-Spieler ziehen.
+     *
+     * @param zug
+     */
     public void ziehe(Zug zug) {
         if (zugMoeglich(zug)) {
             _spielbrett.setze(_anDerReihe, zug);
@@ -108,9 +119,27 @@ public class Spiel extends Observable {
     public int getAktuellerSpielerIndex() {
         return _anDerReihe;
     }
+    
+    public Spieler getNaechsterSpieler() {
+        int naechsterIndex = getNaechsterSpielerIndex();
+        return _spieler[naechsterIndex];
+    }
+    
+    public int getNaechsterSpielerIndex() {
+        return (_anDerReihe + 1) % _spieler.length;
+    }
+
+    /**
+     * Gibt die aktuelle Augenzahl des Spielwuerfels zurueck.
+     *
+     * @return
+     */
+    public int getAktuelleAugenzahl() {
+        return _aktuelleAugenzahl;
+    }
 
     private void naechsterSpieler() {
-        _anDerReihe = (_anDerReihe + 1) % _spieler.length;
+        _anDerReihe = getNaechsterSpielerIndex();
     }
 
     private boolean zugMoeglich(Zug zug) {
@@ -118,15 +147,20 @@ public class Spiel extends Observable {
                 && !_spielbrett.istSpielerFeld(_anDerReihe, zug.getZielPos());
     }
 
-    private int wuerfeln() {
-        // TODO Dummy
+    private void wuerfeln() {
         Random wuerfel = new Random();
         int augenzahl = wuerfel.nextInt(WUERFELGROESSE) + 1;
-        return augenzahl;
+        _aktuelleAugenzahl = augenzahl;
     }
 
+    private void menschAmZug() {
+        setChanged();
+        notifyObservers(getAktuellerSpieler());
+    }
+    
     private void updateUI() {
-        notifyObservers(this);
+        setChanged();
+        notifyObservers();
     }
 
 }

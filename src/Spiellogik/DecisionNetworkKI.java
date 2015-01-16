@@ -17,10 +17,17 @@ public class DecisionNetworkKI extends KI {
         super(brett, index);
     }
 
+    public DecisionNetworkKI() {
+        super();
+    }
+
     @Override
     public Zug entscheide(Set<Zug> zuege) {
-        // TODO implementieren
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // TODO implementieren, momentan Dummy
+        for (Zug zug : zuege) {
+            return zug;
+        }
+        return null;
     }
-    
+
 }
