@@ -45,6 +45,11 @@ public class Spiel extends Observable {
         _wurfOptionen = MAXIMALE_WUERFE_PRO_ZUG;
     }
 
+    /**
+     * Diese Methode sorgt dafür, dass das Spiel fortgesetzt wird und soll daher
+     * immer aufgerufen werden nachdem ein menschlicher Spieler gezogen hat
+     * (falls dies möglich ist) oder die UI aktualisiert wurde.
+     */
     public void spielFortfahren() {
         naechsterZug(_wurfOptionen);
     }
@@ -57,7 +62,7 @@ public class Spiel extends Observable {
             Set<Zug> zuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
             //TODO Spieler muss ziehen
             if (zuege.isEmpty()) {
-                naechsterZug(--wurfOptionen);
+                --_wurfOptionen;
             } else if (zuege.size() == 1) {
                 for (Zug zug : zuege) {
                     ziehe(zug);
@@ -72,7 +77,7 @@ public class Spiel extends Observable {
                 menschAmZug();
             }
         } else {
-
+            naechsterSpieler();
         }
     }
 
