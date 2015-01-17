@@ -86,7 +86,7 @@ public class ConsoleUI implements Observer {
     }
     
     private void warte() {
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
+//        Scanner scanner = new Scanner(System.in);
+//        scanner.nextLine();
     }
 }

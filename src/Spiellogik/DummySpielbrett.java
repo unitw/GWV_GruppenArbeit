@@ -58,16 +58,22 @@ public class DummySpielbrett implements Spielbrett {
             zuege.add(new Zug(-1, 0));
             return zuege;
         }
+        
 
         // Prueft fuer jede Figur des Spielers auf dem Brett (nicht in der Homebase), ob sie ziehen kann
         for (int probierteFiguren = 0, aktuellerIndex = 0;
                 probierteFiguren < (FIGUREN_PRO_SPIELER - spielerBasis) && aktuellerIndex < SPIELFELDGROESSE;
                 ++aktuellerIndex) {
-            if (istSpielerFeld(spieler, aktuellerIndex) && aktuellerIndex < _spielfeld.length
+            int zielIndex = aktuellerIndex + augenzahl;
+            //TODO Temporärer Fix um nicht aus Array rauszulaufen
+            if (zielIndex > _spielfeld.length) {
+                ++probierteFiguren;
+            }
+            if (istSpielerFeld(spieler, aktuellerIndex) && zielIndex < _spielfeld.length
                     && !istSpielerFeld(spieler, aktuellerIndex + augenzahl)) {
-                int zielIndex = aktuellerIndex + augenzahl;
                 Zug zug = new Zug(aktuellerIndex, zielIndex);
                 zuege.add(zug);
+                ++probierteFiguren;
             }
         }
 
