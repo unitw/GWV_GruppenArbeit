@@ -59,6 +59,15 @@ public class Spiel extends Observable {
         if (wurfOptionen > 0) {
             wuerfeln();
             _moeglicheZuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
+            
+            if (_spielbrett.istSpielerFeld(_anDerReihe, 0) && _moeglicheZuege.size() > 1) {
+                for (int i = 0; i < _moeglicheZuege.size(); ++i) {
+                    if (_moeglicheZuege.get(i).getAusgangsPos() != 0) {
+                        _moeglicheZuege.remove(i);
+                        --i;
+                    }
+                }
+            }
 
             //TODO Spieler muss ziehen
             if (_moeglicheZuege.isEmpty()) {
@@ -193,6 +202,8 @@ public class Spiel extends Observable {
                 && !_spielbrett.istSpielerFeld(_anDerReihe, zug.getZielPos());
     }
 
+    
+    
     private void wuerfeln() {
         Random wuerfel = new Random();
         int augenzahl = wuerfel.nextInt(WUERFELGROESSE) + 1;

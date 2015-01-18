@@ -48,11 +48,10 @@ public class ConsoleUI implements Observer {
                 zieheMitMensch();
             } else if (arg instanceof KI) {
                 zieheMitKI();
+            } else {
+                zeigeZwischenstand();
+                warteAufBestaetigung();
             }
-            else {
-                zeigeZwischenstand();                
-            }
-            warteAufBestaetigung();
             spielFortsetzen();
         }
     }
@@ -72,19 +71,23 @@ public class ConsoleUI implements Observer {
         List<Zug> zuege = _spiel.getMoeglicheZuege();
 
         if (!zuege.isEmpty()) {
-            int i = 0;
-            for (Zug zug : zuege) {
-                System.out.println("Zug " + i + zug.toString());
-                ++i;
-            }
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Zum ziehen Zug-Index angeben: ");
-            String zugIndexString = scanner.nextLine();
-            int zugIndex = Integer.valueOf(zugIndexString);
+            if (zuege.size() == 1) {
+                System.out.println("Nur ein Zug moeglich. Es wird automatisch gezogen.");
+                _spiel.ziehe(zuege.get(0));
+            } else {
+                int i = 0;
+                for (Zug zug : zuege) {
+                    System.out.println("Zug " + i + zug.toString());
+                    ++i;
+                }
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Zum ziehen Zug-Index angeben: ");
+                String zugIndexString = scanner.nextLine();
+                int zugIndex = Integer.valueOf(zugIndexString);
 
-            _spiel.ziehe(zuege.get(zugIndex));
-        }
-        else {
+                _spiel.ziehe(zuege.get(zugIndex));
+            }
+        } else {
             System.out.println("Kein Zug moeglich.");
         }
     }
