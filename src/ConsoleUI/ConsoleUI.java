@@ -38,11 +38,6 @@ public class ConsoleUI implements Observer {
             ausgabe += index + " (" + _spieler[index].getClass().toString() + ")";
         }
         System.out.println(ausgabe);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException exc) {
-
-        }
         spielFortsetzen();
     }
 
@@ -50,11 +45,14 @@ public class ConsoleUI implements Observer {
     public void update(Observable o, Object arg) {
         if (o == _spiel) {
             if (arg instanceof Mensch) {
-                spielen();
-            } else {
-                spielstandAnzeigen();
-                warte();
+                zieheMitMensch();
+            } else if (arg instanceof KI) {
+                zieheMitKI();
             }
+            else {
+                zeigeZwischenstand();                
+            }
+            warteAufBestaetigung();
             spielFortsetzen();
         }
     }
@@ -62,6 +60,33 @@ public class ConsoleUI implements Observer {
     private void spielFortsetzen() {
 
         _spiel.spielFortfahren();
+    }
+
+    private void zieheMitKI() {
+        spielstandAnzeigen();
+        zieheMitKI();
+    }
+
+    private void zieheMitMensch() {
+        spielstandAnzeigen();
+        List<Zug> zuege = _spiel.getMoeglicheZuege();
+
+        if (!zuege.isEmpty()) {
+            int i = 0;
+            for (Zug zug : zuege) {
+                System.out.println("Zug " + i + zug.toString());
+                ++i;
+            }
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Zum ziehen Zug-Index angeben: ");
+            String zugIndexString = scanner.nextLine();
+            int zugIndex = Integer.valueOf(zugIndexString);
+
+            _spiel.ziehe(zuege.get(zugIndex));
+        }
+        else {
+            System.out.println("Kein Zug moeglich.");
+        }
     }
 
     private void spielen() {
@@ -84,9 +109,22 @@ public class ConsoleUI implements Observer {
     private void spielstandAnzeigen() {
         System.out.println(_spiel.toString());
     }
-    
+
     private void warte() {
-//        Scanner scanner = new Scanner(System.in);
-//        scanner.nextLine();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException exc) {
+
+        }
+//        warteAufBestaetigung();
+    }
+
+    private void warteAufBestaetigung() {
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+    }
+
+    private void zeigeZwischenstand() {
+        System.out.println("\n\n" + _spiel.toStringReinesBrett() + "\n");
     }
 }

@@ -5,10 +5,10 @@
  */
 package Spiellogik;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
-import java.util.SortedSet;
 
 /**
  * Diese Klasse implementiert das Spiel Mensch Aergere Dich Nicht. Das Spiel
@@ -37,12 +37,12 @@ public class Spiel extends Observable {
     private int _anDerReihe;
     private int _aktuelleAugenzahl;
     private int _wurfOptionen;
-    private List<Zug> _moeglicheZuegeMensch;
+    private List<Zug> _moeglicheZuege;
 
     public Spiel(Spieler[] spieler, Spielbrett spielbrett) {
         _spieler = spieler;
         _spielbrett = spielbrett;
-        _moeglicheZuegeMensch = null;
+        _moeglicheZuege = new LinkedList<Zug>();
         _wurfOptionen = MAXIMALE_WUERFE_PRO_ZUG;
     }
 
@@ -57,27 +57,19 @@ public class Spiel extends Observable {
 
     private void naechsterZug(int wurfOptionen) {
         if (wurfOptionen > 0) {
-
-            Spieler aktuellerSpieler = _spieler[_anDerReihe];
             wuerfeln();
-            List<Zug> zuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
-            //TODO Spieler muss ziehen
-            if (zuege.isEmpty()) {
-                --_wurfOptionen;
-                updateUI();
-            } else if (zuege.size() == 1) {
-                for (Zug zug : zuege) {
-                    ziehe(zug);
-                }
-            } else if (aktuellerSpieler instanceof KI) {
-                KI ki = (KI) aktuellerSpieler;
-                Zug zug = ki.entscheide(zuege);
-                ziehe(zug);
-            } else if (aktuellerSpieler instanceof Mensch) {
-                _moeglicheZuegeMensch = zuege;
+            _moeglicheZuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
 
-                menschAmZug();
+            //TODO Spieler muss ziehen
+            if (_moeglicheZuege.isEmpty()) {
+                --_wurfOptionen;
+            } else if (_aktuelleAugenzahl == WUERFELGROESSE) {
+                _wurfOptionen = 1;
+            } else {
+                _wurfOptionen = 0;
             }
+            updateUIMitSpieler();
+
         } else {
             naechsterSpieler();
         }
@@ -94,9 +86,36 @@ public class Spiel extends Observable {
      * @param zug Ein gültiger Zug für den aktuellen Spieler (Dies wird nicht
      * überprüft)
      */
-    public void ziehe(Zug zug) {
-        _spielbrett.setze(_anDerReihe, zug);
-        naechsterSpieler();
+    public void ziehe(Zug zug) throws IllegalStateException {
+        if (getAktuellerSpieler() instanceof Mensch) {
+            _spielbrett.setze(_anDerReihe, zug);
+            
+            if (_aktuelleAugenzahl != WUERFELGROESSE) {
+                naechsterSpieler();
+            } else {
+                updateUI();
+            }
+        } else {
+            throw new IllegalStateException("Momentan ist eine KI an der Reihe, zieheKI() muss aufgerufen werden");
+        }
+    }
+
+    public void zieheKI() throws IllegalStateException {
+        if (getAktuellerSpieler() instanceof KI) {
+            KI ki = (KI) getAktuellerSpieler();
+            if (!_moeglicheZuege.isEmpty()) {
+                Zug zug = ki.entscheide(_moeglicheZuege);
+                _spielbrett.setze(_anDerReihe, zug);
+                
+                if (_aktuelleAugenzahl != WUERFELGROESSE) {
+                    naechsterSpieler();
+                } else {
+                    updateUI();
+                }
+            }
+        } else {
+            throw new IllegalStateException("Momentan ist ein Mensch an der Reihe, ziehe(Zug) muss aufgerufen werden");
+        }
     }
 
     /**
@@ -108,7 +127,7 @@ public class Spiel extends Observable {
      * null.
      */
     public List<Zug> getMoeglicheZuege() {
-        return _moeglicheZuegeMensch;
+        return _moeglicheZuege;
     }
 
     /**
@@ -163,6 +182,7 @@ public class Spiel extends Observable {
     }
 
     private void naechsterSpieler() {
+        // TODO Diese Kodierung klar machen. Zwischenschritt, keiner ist dran.
         _anDerReihe = getNaechsterSpielerIndex();
         _wurfOptionen = MAXIMALE_WUERFE_PRO_ZUG;
         updateUI();
@@ -179,7 +199,7 @@ public class Spiel extends Observable {
         _aktuelleAugenzahl = augenzahl;
     }
 
-    private void menschAmZug() {
+    private void updateUIMitSpieler() {
         setChanged();
         notifyObservers(getAktuellerSpieler());
     }
@@ -192,7 +212,11 @@ public class Spiel extends Observable {
     @Override
     public String toString() {
         String ausgabe = "\n" + _spielbrett.toString();
-        ausgabe += "\nAn der Reihe: " + getAktuellerSpielerIndex() + "Augenzahl " +  getAktuelleAugenzahl();
+        ausgabe += "\nAn der Reihe: " + getAktuellerSpielerIndex() + "Augenzahl " + getAktuelleAugenzahl();
         return ausgabe;
+    }
+
+    public String toStringReinesBrett() {
+        return _spielbrett.toString();
     }
 }

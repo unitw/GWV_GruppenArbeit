@@ -54,7 +54,7 @@ public class DummySpielbrett implements Spielbrett {
     public List<Zug> pruefe(int spieler, int augenzahl) {
         List<Zug> zuege = new ArrayList<>();
         int spielerBasis = _basen.basisBesetzung(spieler);
-        if (augenzahl == Spiel.WUERFELGROESSE && spielerBasis != 0) {
+        if (augenzahl == Spiel.WUERFELGROESSE && spielerBasis != 0 && !istSpielerFeld(spieler, 0)) {
             zuege.add(new Zug(-1, 0));
             return zuege;
         }
