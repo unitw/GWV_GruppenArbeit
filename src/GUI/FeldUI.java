@@ -5,28 +5,77 @@
  */
 package GUI;
 
-import java.net.URL;
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
  * @author rw
  */
 public class FeldUI extends JLabel {
-    ImageIcon feldpic = new ImageIcon("resources/Bilder/feldbr.png");
-   
+
+    ImageIcon feldpic = new ImageIcon(getClass().getResource("/resources/Bilder/feldbr.png"));
+
     int xpos;
     int ypos;
-    int breite=70;
-    int hoehe=70;
-    
-    public FeldUI(int x,int y){
-      this.xpos=x;
-      this.ypos=y;
-        
-      this.setBounds(x, y, breite, hoehe);
-       this.setIcon(feldpic);
-   }
+    int breite = 60;
+    int hoehe = 60;
+    int idx;
 
+    public FeldUI(int x, int y, int index) {
+        this.setLayout(null);
+        // this.add(new JLabel(feldpic));
+        this.xpos = x;
+        this.ypos = y;
+        this.idx = index;
+        this.setIcon(feldpic);
+        this.setBounds(x, y, breite, hoehe);
+       
+
+        this.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+//                Toolkit toolkit = Toolkit.getDefaultToolkit();
+//                Image image = toolkit.getImage(getClass().getResource("/resources/Bilder/blaueshütchen.png"));
+//                Cursor c = toolkit.createCustomCursor(image, new Point(getParent().getX(),
+//                        getParent().getY()), "img");
+//                setCursor(c);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
+        this.repaint();
+    }
+
+    public void setidx(int i) {
+        this.idx = i;
+    }
+
+    public int getidx() {
+        return idx;
+    }
 }

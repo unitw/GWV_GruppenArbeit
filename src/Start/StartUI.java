@@ -6,16 +6,19 @@
 package Start;
 
 //import static Start.Start.gui;
-
+import GUI.SpielbrettUI;
 
 public class StartUI {
 
-    
     public static void main(String[] args) {
+
+        GUI gui = new GUI();
+        gui.createGUI(20);
+       
         
-        //gui.createSpielfeld(5);
+        
         new ConsoleUI.ConsoleUI();
-        
+
     }
-    
+
 }
