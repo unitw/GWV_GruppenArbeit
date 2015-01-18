@@ -59,7 +59,8 @@ public class Spiel extends Observable {
         if (wurfOptionen > 0) {
             wuerfeln();
             _moeglicheZuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
-            
+            // TODO In Spielbrett auslagern
+            // TODO Aus 0 dynamische Startposition machen
             if (_spielbrett.istSpielerFeld(_anDerReihe, 0) && _moeglicheZuege.size() > 1) {
                 for (int i = 0; i < _moeglicheZuege.size(); ++i) {
                     if (_moeglicheZuege.get(i).getAusgangsPos() != 0) {
@@ -190,6 +191,19 @@ public class Spiel extends Observable {
         return _aktuelleAugenzahl;
     }
 
+    /**
+     * Gibt an, ob das Feld ein Zielfeld fuer den aktuellen Spieler ist.
+     * @param feldIndex Index eines Feldes im Spiel
+     * @return true, wenn es sich um ein Zielfeld fuer den aktuellen Spieler handelt.
+     */
+    private boolean istZielFeld(int feldIndex) {
+        return istZielFeld(_anDerReihe, feldIndex);
+    }
+    
+    private boolean istZielFeld(int spielerIndex, int feldIndex) {
+        return feldIndex == _spielbrett.spielfeldGroesse() - 1;
+    }
+    
     private void naechsterSpieler() {
         // TODO Diese Kodierung klar machen. Zwischenschritt, keiner ist dran.
         _anDerReihe = getNaechsterSpielerIndex();
@@ -201,8 +215,6 @@ public class Spiel extends Observable {
         return _spielbrett.istSpielerFeld(_anDerReihe, zug.getAusgangsPos())
                 && !_spielbrett.istSpielerFeld(_anDerReihe, zug.getZielPos());
     }
-
-    
     
     private void wuerfeln() {
         Random wuerfel = new Random();

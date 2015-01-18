@@ -73,10 +73,11 @@ public class HeimBasen {
         return clone;
     }
     
-    public String getFormattiertenString() {
+    @Override
+    public String toString() {
         String ausgabe = "Home Bases: \n";
         for (int spielerIndex = 0; spielerIndex < _homeBases.length; ++spielerIndex) {
-            ausgabe += "Spieler " + spielerIndex + ": " + _homeBases[spielerIndex];
+            ausgabe += "Spieler " + spielerIndex + ": " + _homeBases[spielerIndex] + " ";
         }
         return ausgabe;
     }

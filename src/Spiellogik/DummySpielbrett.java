@@ -21,6 +21,7 @@ public class DummySpielbrett implements Spielbrett {
     public static final int SPIELFELDGROESSE = 20;
 
     private HeimBasen _basen;
+    private ZielBasen _ziele;
     private int[] _spielfeld;
 
     /**
@@ -35,6 +36,7 @@ public class DummySpielbrett implements Spielbrett {
             throw new IllegalArgumentException("Spielbrett kann nicht erstellt werden, zu viele Spieler");
         }
         _basen = new HeimBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
+        _ziele = new ZielBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
         _spielfeld = new int[SPIELFELDGROESSE];
         // Alle Felder werden mit -1 belegt, da -1 ein leeres Feld signalisiert
         // 0 ist die Kodierung des 1. Spielers.
@@ -58,7 +60,6 @@ public class DummySpielbrett implements Spielbrett {
             zuege.add(new Zug(-1, 0));
             return zuege;
         }
-        
 
         // Prueft fuer jede Figur des Spielers auf dem Brett (nicht in der Homebase), ob sie ziehen kann
         for (int probierteFiguren = 0, aktuellerIndex = 0;
@@ -68,6 +69,10 @@ public class DummySpielbrett implements Spielbrett {
             //TODO Temporärer Fix um nicht aus Array rauszulaufen
             if (zielIndex > _spielfeld.length) {
                 ++probierteFiguren;
+//                if (zielIndex == _spielfeld.length) {
+                    Zug zug = new Zug(aktuellerIndex, zielIndex);
+                    zuege.add(zug);
+//                }
             }
             if (istSpielerFeld(spieler, aktuellerIndex) && zielIndex < _spielfeld.length
                     && !istSpielerFeld(spieler, aktuellerIndex + augenzahl)) {
@@ -91,13 +96,16 @@ public class DummySpielbrett implements Spielbrett {
         } else {
             _spielfeld[zug.getAusgangsPos()] = -1;
         }
-        // TODO Fehler mit 0 und -1 (Spieler 1 (Index 0) steht am Anfang überall
-        if (_spielfeld[zug.getZielPos()] != -1) {
+        if (zug.getZielPos() >= SPIELFELDGROESSE) { // Nicht aufs Array zugreifen, falls ins Ziel ziehen
+            _ziele.zieheInsZiel(spieler);
+        } // TODO Fehler mit 0 und -1 (Spieler 1 (Index 0) steht am Anfang überall
+        else if (_spielfeld[zug.getZielPos()] != -1) {
             int geschlagen = _spielfeld[zug.getZielPos()];
             _basen.zieheInBasis(geschlagen);
+            _spielfeld[zug.getZielPos()] = spieler;
+        } else {
+            _spielfeld[zug.getZielPos()] = spieler;
         }
-
-        _spielfeld[zug.getZielPos()] = spieler;
     }
 
     //setze 
@@ -118,30 +126,28 @@ public class DummySpielbrett implements Spielbrett {
     public HeimBasen getHeimBasen() {
         return _basen.clone();
     }
-    
+
     public DummySpielbrett clone() {
         DummySpielbrett clone = new DummySpielbrett(_basen.getAnzahlSpieler());
         clone._basen = getHeimBasen();
         clone._spielfeld = getSpielfeld();
         return clone;
     }
-    
+
     public String toString() {
-        return _basen.getFormattiertenString() + "\n" + spielfeldToString();
+        return _basen.toString() + "\n" + spielfeldToString();
     }
-    
+
     private String spielfeldToString() {
         String ausgabe = "";
-        for (int i = 0; i < _spielfeld.length; ++i)
-        {
+        for (int i = 0; i < _spielfeld.length; ++i) {
             ausgabe += "| ";
         }
         ausgabe += "|\n";
-        for (int spieler: _spielfeld) {
+        for (int spieler : _spielfeld) {
             if (spieler == -1) {
                 ausgabe += "|_";
-            }
-            else {
+            } else {
                 ausgabe += "|" + spieler;
             }
         }
