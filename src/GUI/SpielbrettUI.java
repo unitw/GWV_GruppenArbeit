@@ -63,7 +63,7 @@ public class SpielbrettUI extends JPanel implements Observer {
         double RadiusY = 10 * anzfelder + 61;
         double StartX = 450;
         double StartY = 270;
-        int a = 0;
+        int a = 3;
         for (int i = 0; i < anzfelder; i++) {
 
             double MidPosX = (Math.cos(Winkel * i) * RadiusX) + StartX;
@@ -74,15 +74,15 @@ public class SpielbrettUI extends JPanel implements Observer {
             if (feldarray[i].getidx() % startfelder == 0) {
 
                 Color[] rgb1 = new Color[4];
-                rgb1[0] = new Color(0x1289f8);
-                rgb1[1] = new Color(0xff0000);
+                rgb1[1] = new Color(0x1289f8);
+                rgb1[0] = new Color(0xff0000);
                 rgb1[2] = new Color(0xfcff00);
                 rgb1[3] = new Color(0x12ff00);
                 Color col = rgb1[a];
                 feldarray[i].setBackground(col);
                 feldarray[i].setOpaque(true);
                 feldarray[i].setBorder(BorderFactory.createLineBorder(Color.black, 1));
-                a = a + 1;
+                a = a - 1;
 
             }
 
@@ -145,7 +145,7 @@ public class SpielbrettUI extends JPanel implements Observer {
                 int y = fui.getY();
                 String farbe = base[i].getFarbe();
                 figuren[i] = new FigurUI(farbe, x + 5, y + 5);
-                //     figuren[i].setVisible(true);
+                 figuren[i].setVisible(true);
                 this.add(figuren[i]);
 
             }

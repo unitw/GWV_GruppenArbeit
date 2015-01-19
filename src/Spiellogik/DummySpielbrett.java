@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class DummySpielbrett implements Spielbrett {
 
-    public static int FIGUREN_PRO_SPIELER = 2;
-    public static final int SPIELFELDGROESSE = 20;
+    public static int FIGUREN_PRO_SPIELER = 4;
+    public int spielfeldgroesse = 20;
 
     private HeimBasen _basen;
     private ZielBasen _ziele;
@@ -29,15 +29,15 @@ public class DummySpielbrett implements Spielbrett {
      * @param spieler Eine Liste mit Spielern, die am Spiel teilnehmen. Die
      * Reihenfolge in der Liste bestimmt die Zugreihenfolge.
      * @throws IllegalArgumentException Wird geworfen falls die Anzahl der
-     * Figuren die SPIELFELDGROESSE ueberschreitet.
+ Figuren die spielfeldgroesse ueberschreitet.
      */
     public DummySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
-        if (anzahlSpieler * FIGUREN_PRO_SPIELER > SPIELFELDGROESSE + 1) {
+        if (anzahlSpieler * FIGUREN_PRO_SPIELER > spielfeldgroesse + 1) {
             throw new IllegalArgumentException("Spielbrett kann nicht erstellt werden, zu viele Spieler");
         }
         _basen = new HeimBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
         _ziele = new ZielBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
-        _spielfeld = new int[SPIELFELDGROESSE];
+        _spielfeld = new int[spielfeldgroesse];
         // Alle Felder werden mit -1 belegt, da -1 ein leeres Feld signalisiert
         // 0 ist die Kodierung des 1. Spielers.
         java.util.Arrays.fill(_spielfeld, -1);
@@ -63,7 +63,7 @@ public class DummySpielbrett implements Spielbrett {
 
         // Prueft fuer jede Figur des Spielers auf dem Brett (nicht in der Homebase), ob sie ziehen kann
         for (int probierteFiguren = 0, aktuellerIndex = 0;
-                probierteFiguren < (FIGUREN_PRO_SPIELER - spielerBasis) && aktuellerIndex < SPIELFELDGROESSE;
+                probierteFiguren < (FIGUREN_PRO_SPIELER - spielerBasis) && aktuellerIndex < spielfeldgroesse;
                 ++aktuellerIndex) {
             int zielIndex = aktuellerIndex + augenzahl;
             //TODO Temporärer Fix um nicht aus Array rauszulaufen
@@ -96,7 +96,7 @@ public class DummySpielbrett implements Spielbrett {
         } else {
             _spielfeld[zug.getAusgangsPos()] = -1;
         }
-        if (zug.getZielPos() >= SPIELFELDGROESSE) { // Nicht aufs Array zugreifen, falls ins Ziel ziehen
+        if (zug.getZielPos() >= spielfeldgroesse) { // Nicht aufs Array zugreifen, falls ins Ziel ziehen
             _ziele.zieheInsZiel(spieler);
         } // TODO Fehler mit 0 und -1 (Spieler 1 (Index 0) steht am Anfang überall
         else if (_spielfeld[zug.getZielPos()] != -1) {

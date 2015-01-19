@@ -53,7 +53,7 @@ public class GUI extends JFrame {
 
     public void createGUI(int anz) {
 
-        sbrett = new SpielbrettUI(anz, 2);
+        sbrett = new SpielbrettUI(anz, 4);
         sbrett.setVisible(true);
         //  sbrett.createSpielfeld(anz, 2);
         spiel.add(sbrett);
