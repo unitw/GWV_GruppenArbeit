@@ -56,7 +56,7 @@ public class SpielbrettUI extends JPanel implements Observer {
     public void createSpielfeld(int anzfelder, int spieler) {
         FeldUI feldarray[] = new FeldUI[anzfelder];
 
-        int startfelder = anzfelder / spieler;
+        int nichtstartfelder = anzfelder / spieler;
 
         double Winkel = (Math.PI * 2.0) / anzfelder;
         double RadiusX = 10 * anzfelder + 61;
@@ -71,7 +71,7 @@ public class SpielbrettUI extends JPanel implements Observer {
 
             feldarray[i] = new FeldUI((int) MidPosX, (int) MidPosY, i + 1);
 
-            if (feldarray[i].getidx() % startfelder == 0) {
+            if (feldarray[i].getidx() % nichtstartfelder == 0) {
 
                 Color[] rgb1 = new Color[4];
                 rgb1[1] = new Color(0x1289f8);

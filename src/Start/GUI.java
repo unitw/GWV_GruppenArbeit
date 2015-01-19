@@ -35,8 +35,11 @@ public class GUI extends JFrame {
     ArraySpielbrett spielbrett;//nachher durch einen JDialog initialisiert
 
     public GUI() {
-     //   setanz();
-        spielbrett = new ArraySpielbrett(Spieleranz);
+       //setanz();
+        initGUI();
+    }
+public void initGUI(){
+    spielbrett = new ArraySpielbrett(Spieleranz);
         this.setLayout(new BorderLayout());
 
         spiel.setPreferredSize(new Dimension(1000, 600));
@@ -57,8 +60,7 @@ public class GUI extends JFrame {
         setLocationRelativeTo(null);
 
         createGUI(spielbrett.spielfeldgroesse,Spieleranz);
-    }
-
+}
     public void createGUI(int anz,int spieler) {
 
         sbrett = new SpielbrettUI(anz, spieler);
@@ -87,6 +89,8 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Spieleranz = Integer.parseInt(tx.getText());
                 dia.dispose();
+                initGUI();
+                repaint();
             }
         });
         bu.setBounds(0, 30, 50, 25);

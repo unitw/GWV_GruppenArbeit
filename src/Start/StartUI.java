@@ -13,16 +13,11 @@ public class StartUI {
     
     
     
-   //wird nachher in einem JDialog 
-    
+   
     public static void main(String[] args) {
 
         GUI gui = new GUI();
-        //gui.createGUI(20);
-       
         
-        
-        //new ConsoleUI.ConsoleUI();
 
     }
 
