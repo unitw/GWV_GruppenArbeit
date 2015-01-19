@@ -18,7 +18,7 @@ public class StartUI {
     public static void main(String[] args) {
 
         GUI gui = new GUI();
-        gui.createGUI(20);
+        //gui.createGUI(20);
        
         
         

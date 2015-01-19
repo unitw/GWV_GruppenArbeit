@@ -31,16 +31,16 @@ public class GUI extends JFrame {
     JPanel spiel = new JPanel();
     JPanel setting = new JPanel();
     WuerfelUI wui;
-    int feldanz;
+    int Spieleranz=2;
     ArraySpielbrett spielbrett;//nachher durch einen JDialog initialisiert
 
     public GUI() {
-        setanz();
-        spielbrett = new ArraySpielbrett(feldanz);
+     //   setanz();
+        spielbrett = new ArraySpielbrett(Spieleranz);
         this.setLayout(new BorderLayout());
 
         spiel.setPreferredSize(new Dimension(1000, 600));
-        spiel.setMinimumSize(new Dimension(1000, 600));
+      //  spiel.setMinimumSize(new Dimension(1000, 600));
         setting.setPreferredSize(new Dimension(200, 200));
         // spiel.setBackground(Color.red);
         this.add(spiel, BorderLayout.PAGE_START);
@@ -56,12 +56,12 @@ public class GUI extends JFrame {
         this.setVisible(true);
         setLocationRelativeTo(null);
 
-        createGUI(spielbrett.spielfeldgroesse);
+        createGUI(spielbrett.spielfeldgroesse,Spieleranz);
     }
 
-    public void createGUI(int anz) {
+    public void createGUI(int anz,int spieler) {
 
-        sbrett = new SpielbrettUI(anz, 4);
+        sbrett = new SpielbrettUI(anz, spieler);
         sbrett.setVisible(true);
         //  sbrett.createSpielfeld(anz, 2);
         spiel.add(sbrett);
@@ -74,6 +74,7 @@ public class GUI extends JFrame {
     public void setanz() {
 
         JDialog dia = new JDialog();
+        dia.setTitle("SpielerAnzahl");
         JTextField tx = new JTextField("");
         tx.setEditable(true);
         tx.setBounds(0, 0,100,25);
@@ -84,13 +85,13 @@ public class GUI extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                feldanz = Integer.parseInt(tx.getText());
+                Spieleranz = Integer.parseInt(tx.getText());
                 dia.dispose();
             }
         });
         bu.setBounds(0, 30, 50, 25);
        dia.add(bu);
-       dia.setSize(100, 1000);
+       dia.setSize(100, 100);
        
         dia.setVisible(true);
     }
