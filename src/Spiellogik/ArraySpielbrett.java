@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author rw
  */
-public class DummySpielbrett implements Spielbrett {
+public class ArraySpielbrett implements Spielbrett {
 
     public static int FIGUREN_PRO_SPIELER = 4;
     public int spielfeldgroesse = 20;
@@ -31,7 +31,7 @@ public class DummySpielbrett implements Spielbrett {
      * @throws IllegalArgumentException Wird geworfen falls die Anzahl der
  Figuren die spielfeldgroesse ueberschreitet.
      */
-    public DummySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
+    public ArraySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
         if (anzahlSpieler * FIGUREN_PRO_SPIELER > spielfeldgroesse + 1) {
             throw new IllegalArgumentException("Spielbrett kann nicht erstellt werden, zu viele Spieler");
         }
@@ -127,8 +127,8 @@ public class DummySpielbrett implements Spielbrett {
         return _basen.clone();
     }
 
-    public DummySpielbrett clone() {
-        DummySpielbrett clone = new DummySpielbrett(_basen.getAnzahlSpieler());
+    public ArraySpielbrett clone() {
+        ArraySpielbrett clone = new ArraySpielbrett(_basen.getAnzahlSpieler());
         clone._basen = getHeimBasen();
         clone._spielfeld = getSpielfeld();
         return clone;

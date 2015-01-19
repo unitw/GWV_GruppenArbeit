@@ -19,10 +19,10 @@ import static org.junit.Assert.*;
  */
 public class DummySpielbrettTest {
 
-    private DummySpielbrett _2SpielerBrett;
+    private ArraySpielbrett _2SpielerBrett;
 
     public DummySpielbrettTest() {
-        _2SpielerBrett = new DummySpielbrett(2);
+        _2SpielerBrett = new ArraySpielbrett(2);
     }
 
     @BeforeClass
@@ -42,7 +42,7 @@ public class DummySpielbrettTest {
     }
 
     /**
-     * Test of pruefe method, of class DummySpielbrett.
+     * Test of pruefe method, of class ArraySpielbrett.
      */
     @Test
     public void testPruefe() {
@@ -65,23 +65,23 @@ public class DummySpielbrettTest {
     }
 
     /**
-     * Test of setze method, of class DummySpielbrett.
+     * Test of setze method, of class ArraySpielbrett.
      */
     @Test
     public void testSetze() {
         // TODO review the generated test code and remove the default call to fail.
         _2SpielerBrett.setze(0, new Zug(-1, 3));
         assertTrue("Spieler wurde nicht korrekt gesetzt", _2SpielerBrett.istSpielerFeld(0, 3));
-        assertEquals("Die Basis wurde nicht angepasst", (DummySpielbrett.FIGUREN_PRO_SPIELER - 1),
+        assertEquals("Die Basis wurde nicht angepasst", (ArraySpielbrett.FIGUREN_PRO_SPIELER - 1),
                 _2SpielerBrett.getHeimBasen().basisBesetzung(0));
         _2SpielerBrett.setze(1, new Zug(-1, 3));
         assertTrue("Spieler wurde nicht korrekt geschlagen", _2SpielerBrett.istSpielerFeld(1, 3));
-        assertEquals("Geschlagener Spieler nicht in Homebase", (DummySpielbrett.FIGUREN_PRO_SPIELER),
+        assertEquals("Geschlagener Spieler nicht in Homebase", (ArraySpielbrett.FIGUREN_PRO_SPIELER),
                 _2SpielerBrett.getHeimBasen().basisBesetzung(0));
     }
 
     /**
-     * Test of spielfeldGroesse method, of class DummySpielbrett.
+     * Test of spielfeldGroesse method, of class ArraySpielbrett.
      */
     @Test
     public void testSpielfeldGroesse() {

@@ -6,11 +6,14 @@
 package Start;
 
 //import static Start.Start.gui;
-import GUI.SpielbrettUI;
+import Spiellogik.ArraySpielbrett;
 
 public class StartUI {
 
     
+    
+    
+   //wird nachher in einem JDialog 
     
     public static void main(String[] args) {
 
@@ -19,7 +22,7 @@ public class StartUI {
        
         
         
-        new ConsoleUI.ConsoleUI();
+        //new ConsoleUI.ConsoleUI();
 
     }
 

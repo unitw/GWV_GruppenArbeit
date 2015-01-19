@@ -25,7 +25,7 @@ public class ConsoleUI implements Observer {
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
         _spieler[1] = new Mensch();
-        _brett = new DummySpielbrett(_spieler.length);
+        _brett = new ArraySpielbrett(_spieler.length);
         _spiel = new Spiel(_spieler, _brett);
         _spiel.addObserver(this);
         spielStarten();
