@@ -37,7 +37,6 @@ public class FeldUI extends JLabel {
         this.idx = index;
         this.setIcon(feldpic);
         this.setBounds(x, y, breite, hoehe);
-       
 
         this.addMouseListener(new MouseListener() {
 
@@ -69,6 +68,22 @@ public class FeldUI extends JLabel {
             }
         });
         this.repaint();
+    }
+
+    public int getx() {
+        return xpos;
+    }
+
+    public void setx(int x) {
+        this.xpos = x;
+    }
+
+    public int gety() {
+        return ypos;
+    }
+
+    public void sety(int y) {
+        this.ypos = y;
     }
 
     public void setidx(int i) {

@@ -14,17 +14,19 @@ import javax.swing.JLabel;
  */
 public class FigurUI extends JLabel {
 
-   ImageIcon figurpicrot = new ImageIcon("resources/Bilder/blaueshütchen.png");
- ImageIcon figurpicblau = new ImageIcon("resources/Bilder/roteshütchen.png");
- 
-    public FigurUI(String s) {
-        if (s.equals("ROT")) {
+    ImageIcon figurpicrot = new ImageIcon("resources/Bilder/blaueshütchen.png");
+    ImageIcon figurpicblau = new ImageIcon("resources/Bilder/roteshütchen.png");
+    int höhe = 24;
+    int breite = 50;
+
+    public FigurUI(String s, int x, int y) {
+        if (s.equals("rot")) {
             this.setIcon(figurpicrot);
+        } else {
+            this.setIcon(figurpicblau);
+
         }
-        else{
-           this.setIcon(figurpicblau);
-         
-        }
+        this.setBounds(x, y, this.getWidth(), y);
     }
 
 }

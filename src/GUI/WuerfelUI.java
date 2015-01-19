@@ -5,6 +5,8 @@
  */
 package GUI;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -16,11 +18,10 @@ public class WuerfelUI extends JLabel {
 
     int xpos;
     int ypos;
-    int breite = 46;
-    int hoehe = 46;
+    int breite = 147;
+    int hoehe = 147;
     int idx;
 
-    
     ImageIcon wuerfel1 = new ImageIcon(getClass().getResource("/resources/Bilder/wuerfel1.png"));
     ImageIcon wuerfel2 = new ImageIcon(getClass().getResource("/resources/Bilder/wuerfel2.png"));
     ImageIcon wuerfel3 = new ImageIcon(getClass().getResource("/resources/Bilder/wuerfel3.png"));
@@ -28,13 +29,19 @@ public class WuerfelUI extends JLabel {
     ImageIcon wuerfel5 = new ImageIcon(getClass().getResource("/resources/Bilder/wuerfel5.png"));
     ImageIcon wuerfel6 = new ImageIcon(getClass().getResource("/resources/Bilder/wuerfel6.png"));
 
-    public WuerfelUI(int x, int y, int index){
-        this.xpos=x;
-        this.ypos=y;
-        
+    public WuerfelUI(int x, int y, int index) {
+        this.xpos = x;
+        this.ypos = y;
+this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
         this.setIcon(wuerfel1);
-         this.setBounds(xpos, ypos, breite, hoehe);
-                
+        this.setBounds(xpos, ypos, breite, hoehe);
+
+    }
+
+    public WuerfelUI(int index) {
+
+        this.setIcon(wuerfel1);
+       
     }
 
     public void setWuerfel(int i) {
