@@ -17,11 +17,11 @@ import static org.junit.Assert.*;
  *
  * @author Chris
  */
-public class DummySpielbrettTest {
+public class ArraySpielbrettTest {
 
     private ArraySpielbrett _2SpielerBrett;
 
-    public DummySpielbrettTest() {
+    public ArraySpielbrettTest() {
         _2SpielerBrett = new ArraySpielbrett(2);
     }
 
