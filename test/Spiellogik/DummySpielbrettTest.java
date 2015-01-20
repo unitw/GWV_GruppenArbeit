@@ -80,6 +80,12 @@ public class DummySpielbrettTest {
                 _2SpielerBrett.getHeimBasen().basisBesetzung(0));
     }
 
+    @Test
+    public void testGetEntfernungZuZiel() {
+        // TODO Implementieren
+        DummySpielbrett brett = new DummySpielbrett(2, 10);
+    }
+    
     /**
      * Test of spielfeldGroesse method, of class DummySpielbrett.
      */
