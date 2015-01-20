@@ -14,19 +14,55 @@ import javax.swing.JLabel;
  */
 public class FigurUI extends JLabel {
 
-    ImageIcon figurpicrot = new ImageIcon("resources/Bilder/blaueshütchen.png");
-    ImageIcon figurpicblau = new ImageIcon("resources/Bilder/roteshütchen.png");
-    int höhe = 24;
+    ImageIcon figurpicblau = new ImageIcon(getClass().getResource("/resources/Bilder/blaueshuetchen.png"));
+    ImageIcon figurpicrot = new ImageIcon(getClass().getResource("/resources/Bilder/roteshuetchen.png"));
+    int hoehe = 24;
     int breite = 50;
+    int xpos;
+    int ypos;
+    int idx;
 
     public FigurUI(String s, int x, int y) {
-        if (s.equals("rot")) {
+       this.setLayout(null);
+        switch(s){
+       case"rot":
             this.setIcon(figurpicrot);
-        } else {
+       break;
+       case "blau":
             this.setIcon(figurpicblau);
-
-        }
-        this.setBounds(x, y, this.getWidth(), y);
+           break;
+       default:
+          System.err.println("Keine figur der Farbe enthalten");
+       }
+       
+       
+        this.xpos=x;
+        this.ypos=y;
+        
+        this.setBounds(x, y, hoehe, breite);
     }
 
+    public int getx() {
+        return xpos;
+    }
+
+    public void setx(int x) {
+        this.xpos = x;
+    }
+
+    public int gety() {
+        return ypos;
+    }
+
+    public void sety(int y) {
+        this.ypos = y;
+    }
+
+    public void setidx(int i) {
+        this.idx = i;
+    }
+
+    public int getidx() {
+        return idx;
+    }
 }

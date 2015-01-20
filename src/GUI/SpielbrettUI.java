@@ -10,17 +10,19 @@ import Spiellogik.Mensch;
 import Spiellogik.Spiel;
 import Spiellogik.Spielbrett;
 import Spiellogik.Spieler;
+import Spiellogik.Zug;
 import java.awt.Color;
-import java.util.Observable;
-import java.util.Observer;
+import java.awt.Panel;
+import java.util.List;
+import java.util.Scanner;
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author rw
  */
-public class SpielbrettUI extends JPanel implements Observer {
+public class SpielbrettUI extends Panel {
 
     int _anzahlfelder;
     int xbrett = 220;
@@ -32,29 +34,31 @@ public class SpielbrettUI extends JPanel implements Observer {
     Spielbrett _brett;
     Spieler[] _spieler;
     Homebase[] base;
+    ArraySpielbrett spielfeld;
+    FeldUI[] feldarray;
+   public  WuerfelUI wuerf;
 
-    public SpielbrettUI(int anz, int sp) {
+    public SpielbrettUI(int anz, int sp, ArraySpielbrett sf, WuerfelUI wuerfel) {
         this.setSize(1000, 600);
         this.setLayout(null);
         setBackground(bg);
-        setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        //setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         rgb[0] = new Color(0x1289f8);
         rgb[1] = new Color(0xff0000);
         rgb[2] = new Color(0xfcff00);
         rgb[3] = new Color(0x12ff00);
-
+        this.spielfeld = sf;
+        createSpielfeld(anz, sp);
+        this.wuerf = wuerfel;
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
         _spieler[1] = new Mensch();
-        _brett = new ArraySpielbrett(_spieler.length);
-        _spiel = new Spiel(_spieler, _brett);
-        _spiel.addObserver(this);
-        createSpielfeld(anz, sp);
+        _spiel = new Spiel(_spieler, _brett, this);
 
     }
 
     public void createSpielfeld(int anzfelder, int spieler) {
-        FeldUI feldarray[] = new FeldUI[anzfelder];
+        feldarray = new FeldUI[anzfelder];
 
         int nichtstartfelder = anzfelder / spieler;
 
@@ -63,13 +67,13 @@ public class SpielbrettUI extends JPanel implements Observer {
         double RadiusY = 10 * anzfelder + 61;
         double StartX = 450;
         double StartY = 270;
-        int a = 3;
+        int a = 0;
         for (int i = 0; i < anzfelder; i++) {
 
             double MidPosX = (Math.cos(Winkel * i) * RadiusX) + StartX;
             double MidPosY = (Math.sin(Winkel * i) * RadiusY) + StartY;
 
-            feldarray[i] = new FeldUI((int) MidPosX, (int) MidPosY, i + 1);
+            feldarray[i] = new FeldUI((int) MidPosX, (int) MidPosY, i);
 
             if (feldarray[i].getidx() % nichtstartfelder == 0) {
 
@@ -82,7 +86,7 @@ public class SpielbrettUI extends JPanel implements Observer {
                 feldarray[i].setBackground(col);
                 feldarray[i].setOpaque(true);
                 feldarray[i].setBorder(BorderFactory.createLineBorder(Color.black, 1));
-                a = a - 1;
+                a = a + 1;
 
             }
 
@@ -100,9 +104,9 @@ public class SpielbrettUI extends JPanel implements Observer {
         farbennamen[1] = "rot";
         farbennamen[2] = "grün";
         farbennamen[3] = "gelb";
-
+        base = new Homebase[Anzahlbasen];
         for (int i = 0; i < Anzahlbasen; i++) {
-            base = new Homebase[Anzahlbasen];
+
             base[i] = new Homebase(farbennamen[i]);
             base[i].setIndex(i);
 
@@ -140,22 +144,65 @@ public class SpielbrettUI extends JPanel implements Observer {
         for (int i = 0; i < base.length; i++) {
             Homebase hb = base[i];
             for (int k = 0; k < base[i].getComponentCount(); k++) {
-                FeldUI fui = (FeldUI) base[i].getComponent(k);
-                int x = fui.getX();
-                int y = fui.getY();
-                String farbe = base[i].getFarbe();
-                figuren[i] = new FigurUI(farbe, x + 5, y + 5);
-                 figuren[i].setVisible(true);
-                this.add(figuren[i]);
+                if (base[i].getComponent(k) instanceof FeldUI) {
+                    FeldUI fui = (FeldUI) base[i].getComponent(k);
+                    String farbe = base[i].getFarbe();
+                    fui.setStartFigur(true, farbe);
+
+                }
 
             }
 
         }
-
+        spielFortsetzen();
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        this.repaint();
+    private void spielFortsetzen() {
+
+        _spiel.spielFortfahren();
     }
+
+    private void zieheMitMensch() {
+
+        List<Zug> zuege = _spiel.getMoeglicheZuege();
+
+        if (!zuege.isEmpty()) {
+            if (zuege.size() == 1) {
+                System.out.println("Nur ein Zug moeglich. Es wird automatisch gezogen.");
+                _spiel.ziehe(zuege.get(0));
+            } else {
+                int i = 0;
+                for (Zug zug : zuege) {
+                    System.out.println("Zug " + i + zug.toString());
+                    ++i;
+                }
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Zum ziehen Zug-Index angeben: ");
+                String zugIndexString = scanner.nextLine();
+                int zugIndex = Integer.valueOf(zugIndexString);
+
+                _spiel.ziehe(zuege.get(zugIndex));
+            }
+        } else {
+            System.out.println("Kein Zug moeglich.");
+        }
+    }
+
+    private void spielen() {
+
+        List<Zug> zuege = _spiel.getMoeglicheZuege();
+
+        int i = 0;
+        for (Zug zug : zuege) {
+            System.out.println("Zug " + i + zug.toString());
+            ++i;
+        }
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Zum ziehen Zug-Index angeben: ");
+        String zugIndexString = scanner.nextLine();
+        int zugIndex = Integer.valueOf(zugIndexString);
+
+        _spiel.ziehe(zuege.get(zugIndex));
+    }
+
 }

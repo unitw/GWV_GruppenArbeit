@@ -18,8 +18,8 @@ public class WuerfelUI extends JLabel {
 
     int xpos;
     int ypos;
-    int breite = 147;
-    int hoehe = 147;
+    int breite = 47;
+    int hoehe = 47;
     int idx;
 
     ImageIcon wuerfel1 = new ImageIcon(getClass().getResource("/resources/Bilder/wuerfel1.png"));
