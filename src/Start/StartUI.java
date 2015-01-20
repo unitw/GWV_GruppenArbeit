@@ -6,20 +6,26 @@
 package Start;
 
 //import static Start.Start.gui;
-import GUI.SpielbrettUI;
+import Spiellogik.ArraySpielbrett;
+import javax.swing.SwingUtilities;
 
 public class StartUI {
 
-    
-    
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+
 
 //        GUI gui = new GUI();
 //        gui.createGUI(20);
        
         
         
-        new ConsoleUI.ConsoleUI();
+
+            @Override
+            public void run() {
+                GUI gui = new GUI();
+            }
+        });
 
     }
 

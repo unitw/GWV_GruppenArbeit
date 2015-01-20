@@ -19,15 +19,20 @@ import javax.swing.JPanel;
  *
  * @author rw
  */
-public class FeldUI extends JLabel {
+public class FeldUI extends JLabel implements Setzen {
 
     ImageIcon feldpic = new ImageIcon(getClass().getResource("/resources/Bilder/feldbr.png"));
+    ImageIcon figurpicblausetstart = new ImageIcon(getClass().getResource("/resources/Bilder/blaueshuetchenset.png"));
+    ImageIcon figurpicrotsetstart = new ImageIcon(getClass().getResource("/resources/Bilder/roteshuetchenset.png"));
+    ImageIcon figurpicblauset = new ImageIcon(getClass().getResource("/resources/Bilder/blaueshuetchenfeld.png"));
+    ImageIcon figurpicrotset = new ImageIcon(getClass().getResource("/resources/Bilder/roteshuetchenfeld.png"));
 
     int xpos;
     int ypos;
     int breite = 60;
     int hoehe = 60;
     int idx;
+    int gesetzt;
 
     public FeldUI(int x, int y, int index) {
         this.setLayout(null);
@@ -38,36 +43,71 @@ public class FeldUI extends JLabel {
         this.setIcon(feldpic);
         this.setBounds(x, y, breite, hoehe);
 
-        this.addMouseListener(new MouseListener() {
+//        this.addMouseListener(new MouseListener() {
+//
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//
+//            }
+//
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//            }
+//
+//            @Override
+//            public void mouseReleased(MouseEvent e) {
+//            }
+//
+//            @Override
+//            public void mouseEntered(MouseEvent e) {
+////                Toolkit toolkit = Toolkit.getDefaultToolkit();
+////                Image image = toolkit.getImage(getClass().getResource("/resources/Bilder/blaueshütchen.png"));
+////                Cursor c = toolkit.createCustomCursor(image, new Point(getParent().getX(),
+////                        getParent().getY()), "img");
+////                setCursor(c);
+//            }
+//
+//            @Override
+//            public void mouseExited(MouseEvent e) {
+//                setCursor(Cursor.getDefaultCursor());
+//            }
+//        });
+//       
+    }
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
+    @Override
+    public void setStartFigur(Boolean b, String farbe) {
 
+        if (b) {
+            switch (farbe) {
+                case "blau":
+                    this.setIcon(figurpicblausetstart);
+                    gesetzt = 1;
+                    break;
+                case "rot":
+                    this.setIcon(figurpicrotsetstart);
+                    gesetzt = 1;
+                    break;
             }
 
-            @Override
-            public void mousePressed(MouseEvent e) {
+        }
+    }
+
+    @Override
+    public void setFigur(Boolean b, String farbe) {
+        if (b) {
+            switch (farbe) {
+                case "blau":
+                    this.setIcon(figurpicblauset);
+                    gesetzt=1;
+                    break;
+                case "rot":
+                    this.setIcon(figurpicrotset);
+                    gesetzt=1;
+                    break;
             }
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-//                Toolkit toolkit = Toolkit.getDefaultToolkit();
-//                Image image = toolkit.getImage(getClass().getResource("/resources/Bilder/blaueshütchen.png"));
-//                Cursor c = toolkit.createCustomCursor(image, new Point(getParent().getX(),
-//                        getParent().getY()), "img");
-//                setCursor(c);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                setCursor(Cursor.getDefaultCursor());
-            }
-        });
-        this.repaint();
+        }
     }
 
     public int getx() {
@@ -93,4 +133,5 @@ public class FeldUI extends JLabel {
     public int getidx() {
         return idx;
     }
+
 }

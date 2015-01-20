@@ -45,9 +45,9 @@ public class SpielTest {
         Spieler[] spielerSpiel2 = {_mensch1, _mensch2, _mensch3};
         Spieler[] spielerSpiel3 = {_mensch1, _mensch2};
 
-        _spiel1 = new Spiel(spielerSpiel1, new DummySpielbrett(spielerSpiel1.length));
-        _spiel2 = new Spiel(spielerSpiel2, new DummySpielbrett(spielerSpiel2.length));
-        _spiel3 = new Spiel(spielerSpiel3, new DummySpielbrett(spielerSpiel3.length));
+        _spiel1 = new Spiel(spielerSpiel1, new ArraySpielbrett(spielerSpiel1.length));
+        _spiel2 = new Spiel(spielerSpiel2, new ArraySpielbrett(spielerSpiel2.length));
+        _spiel3 = new Spiel(spielerSpiel3, new ArraySpielbrett(spielerSpiel3.length));
     }
 
     @BeforeClass

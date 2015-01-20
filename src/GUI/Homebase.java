@@ -17,13 +17,14 @@ public class Homebase extends JPanel {
 
     int index;
 
-    private FeldUI feld1;
-    private FeldUI feld2;
-    private FeldUI feld3;
-    private FeldUI feld4;
-    private String farbe;
+    public FeldUI feld1;
+    public FeldUI feld2;
+    public FeldUI feld3;
+    public FeldUI feld4;
+    public String farbe;
 
     public Homebase(String farbe) {
+        this.setLayout(null);
         feld1 = new FeldUI(0, 0, 1);
         feld2 = new FeldUI(61, 0, 2);
         feld3 = new FeldUI(0, 61, 3);
@@ -37,12 +38,34 @@ public class Homebase extends JPanel {
 
         this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
     }
-public String getFarbe(){
-    return this.farbe;
-}
-public void setFarbe(String f){
-    this.farbe=f;
-}
+
+    public String getFarbe() {
+        return this.farbe;
+    }
+
+    public FeldUI getFields(int i) {
+        FeldUI retfield = null;
+        switch (i) {
+            case 0:
+                retfield = feld1;
+
+            case 1:
+                retfield = feld2;
+
+            case 2:
+                retfield = feld3;
+
+            case 3:
+                retfield = feld4;
+
+        }
+        return retfield;
+    }
+
+    public void setFarbe(String f) {
+        this.farbe = f;
+    }
+
     public void setIndex(int i) {
         this.index = i;
     }
@@ -52,4 +75,8 @@ public void setFarbe(String f){
         return index;
     }
 
+    public void clearplace(){
+        
+    }
+    
 }

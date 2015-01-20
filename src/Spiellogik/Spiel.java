@@ -5,6 +5,7 @@
  */
 package Spiellogik;
 
+import GUI.SpielbrettUI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -38,12 +39,15 @@ public class Spiel extends Observable {
     private int _aktuelleAugenzahl;
     private int _wurfOptionen;
     private List<Zug> _moeglicheZuege;
+    SpielbrettUI spielUI;
 
-    public Spiel(Spieler[] spieler, Spielbrett spielbrett) {
+    public Spiel(Spieler[] spieler, Spielbrett spielbrett,SpielbrettUI spui) {
         _spieler = spieler;
         _spielbrett = spielbrett;
         _moeglicheZuege = new LinkedList<Zug>();
         _wurfOptionen = MAXIMALE_WUERFE_PRO_ZUG;
+        
+        this.spielUI=spui;
     }
 
     /**
@@ -219,6 +223,8 @@ public class Spiel extends Observable {
     private void wuerfeln() {
         Random wuerfel = new Random();
         int augenzahl = wuerfel.nextInt(WUERFELGROESSE) + 1;
+        spielUI.wuerf.setWuerfel(augenzahl);
+        
         _aktuelleAugenzahl = augenzahl;
     }
 
