@@ -48,7 +48,7 @@ public class SpielbrettUI extends Panel {
         rgb[1] = new Color(0xff0000);
         rgb[2] = new Color(0xfcff00);
         rgb[3] = new Color(0x12ff00);
-        spielfeld = new ArraySpielbrett(sp, this);
+        spielfeld = new ArraySpielbrett(sp);
         createSpielfeld(anz, sp);
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();

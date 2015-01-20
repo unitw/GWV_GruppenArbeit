@@ -35,12 +35,6 @@ public class ArraySpielbrett implements Spielbrett {
      * @param spieler Eine Liste mit Spielern, die am Spiel teilnehmen. Die
      * Reihenfolge in der Liste bestimmt die Zugreihenfolge.
      * @throws IllegalArgumentException Wird geworfen falls die Anzahl der
-<<<<<<< HEAD
-     * Figuren die spielfeldgroesse ueberschreitet.
-     */
-    public ArraySpielbrett(int anzahlSpieler, SpielbrettUI spbrett) throws IllegalArgumentException {
-        if (anzahlSpieler * FIGUREN_PRO_SPIELER > spielfeldgroesse + 1) {
-=======
  Figuren die _spielfeldGroesse ueberschreitet.
      */
     public ArraySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
@@ -50,20 +44,12 @@ public class ArraySpielbrett implements Spielbrett {
     public ArraySpielbrett(int anzahlSpieler, int spielfeldGroesse) throws IllegalArgumentException {
         _spielfeldGroesse = spielfeldGroesse;
         if (anzahlSpieler * FIGUREN_PRO_SPIELER > _spielfeldGroesse + 1) {
->>>>>>> FETCH_HEAD
             throw new IllegalArgumentException("Spielbrett kann nicht erstellt werden, zu viele Spieler");
         }
         _basen = new HeimBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
         _ziele = new ZielBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
-<<<<<<< HEAD
-        _spielfeld = new int[spielfeldgroesse];
-        this.spbrett = spbrett;
-
-// Alle Felder werden mit -1 belegt, da -1 ein leeres Feld signalisiert
-=======
         _spielfeld = new int[_spielfeldGroesse];
         // Alle Felder werden mit -1 belegt, da -1 ein leeres Feld signalisiert
->>>>>>> FETCH_HEAD
         // 0 ist die Kodierung des 1. Spielers.
         java.util.Arrays.fill(_spielfeld, -1);
     }
@@ -205,7 +191,7 @@ public class ArraySpielbrett implements Spielbrett {
     
 
     public ArraySpielbrett clone() {
-        ArraySpielbrett clone = new ArraySpielbrett(_basen.getAnzahlSpieler(), this.spbrett);
+        ArraySpielbrett clone = new ArraySpielbrett(_basen.getAnzahlSpieler());
         clone._basen = getHeimBasen();
         clone._spielfeld = getSpielfeld();
         return clone;
