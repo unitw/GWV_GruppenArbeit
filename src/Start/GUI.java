@@ -58,7 +58,7 @@ public class GUI extends JFrame {
         this.setVisible(true);
         setLocationRelativeTo(null);
 
-        initSpiel(spielbrett.spielfeldgroesse, Spieleranz, spielbrett);
+        initSpiel(spielbrett._spielfeldGroesse, Spieleranz, spielbrett);
         initSettings();
         this.add(pane);
     }

@@ -83,7 +83,7 @@ public class DummySpielbrettTest {
     @Test
     public void testGetEntfernungZuZiel() {
         // TODO Implementieren
-        DummySpielbrett brett = new DummySpielbrett(2, 10);
+        ArraySpielbrett brett = new ArraySpielbrett(2, 10);
     }
     
     /**

@@ -31,18 +31,13 @@ public class ArraySpielbrett implements Spielbrett {
      * @throws IllegalArgumentException Wird geworfen falls die Anzahl der
  Figuren die _spielfeldGroesse ueberschreitet.
      */
-<<<<<<< HEAD:src/Spiellogik/DummySpielbrett.java
-    public DummySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
+    public ArraySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
         this(anzahlSpieler, 20);
     }
     
-    public DummySpielbrett(int anzahlSpieler, int spielfeldGroesse) throws IllegalArgumentException {
+    public ArraySpielbrett(int anzahlSpieler, int spielfeldGroesse) throws IllegalArgumentException {
         _spielfeldGroesse = spielfeldGroesse;
         if (anzahlSpieler * FIGUREN_PRO_SPIELER > _spielfeldGroesse + 1) {
-=======
-    public ArraySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
-        if (anzahlSpieler * FIGUREN_PRO_SPIELER > spielfeldgroesse + 1) {
->>>>>>> FETCH_HEAD:src/Spiellogik/ArraySpielbrett.java
             throw new IllegalArgumentException("Spielbrett kann nicht erstellt werden, zu viele Spieler");
         }
         _basen = new HeimBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
@@ -143,7 +138,6 @@ public class ArraySpielbrett implements Spielbrett {
         return _basen.clone();
     }
 
-<<<<<<< HEAD:src/Spiellogik/DummySpielbrett.java
     // TODO Anpassen an variable Startpositionen
     public int getStartPos(int spieler) {
         
@@ -173,12 +167,9 @@ public class ArraySpielbrett implements Spielbrett {
         }
     }
     
-    public DummySpielbrett clone() {
-        DummySpielbrett clone = new DummySpielbrett(_basen.getAnzahlSpieler());
-=======
+
     public ArraySpielbrett clone() {
         ArraySpielbrett clone = new ArraySpielbrett(_basen.getAnzahlSpieler());
->>>>>>> FETCH_HEAD:src/Spiellogik/ArraySpielbrett.java
         clone._basen = getHeimBasen();
         clone._spielfeld = getSpielfeld();
         return clone;
