@@ -31,24 +31,25 @@ public class SpielbrettUI extends Panel {
     Color[] rgb = new Color[4];
 
     Spiel _spiel;
-    Spielbrett _brett;
+    ArraySpielbrett _brett;
     Spieler[] _spieler;
     public Homebase[] base;
-    ArraySpielbrett spielfeld;
+    FeldUI aktspieler;
     public FeldUI[] feldarray;
     public WuerfelUI wuerf;
     ArraySpielbrett spielbrett;
 
-    public SpielbrettUI(int anz, int sp, WuerfelUI wuerfel) {
+    public SpielbrettUI(int anz, int sp, WuerfelUI wuerfel, FeldUI aktuellspieler) {
         this.setSize(1000, 600);
         this.setLayout(null);
         setBackground(bg);
+        this.aktspieler = aktuellspieler;
         this.wuerf = wuerfel;
         rgb[0] = new Color(0x1289f8);
         rgb[1] = new Color(0xff0000);
         rgb[2] = new Color(0xfcff00);
         rgb[3] = new Color(0x12ff00);
-        spielfeld = new ArraySpielbrett(sp);
+        _brett = new ArraySpielbrett(sp);
         createSpielfeld(anz, sp);
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
@@ -144,36 +145,54 @@ public class SpielbrettUI extends Panel {
     }
 
     public void spielStarten() {
+
+        createSpielfeld(20, 2);
         FigurUI[] figuren = new FigurUI[99];
-        for (int i = 0; i < base.length; i++) {
-            Homebase hb = base[i];
-            for (int k = 0; k < base[i].getComponentCount(); k++) {
-                if (base[i].getComponent(k) instanceof FeldUI) {
-                    FeldUI fui = (FeldUI) base[i].getComponent(k);
-                    int spieler = base[i].getSpieler();
+
+        for (Homebase hb : base) {
+            for (int k = 0; k < hb.getComponentCount(); k++) {
+                if (hb.getComponent(k) instanceof FeldUI) {
+                    FeldUI fui = (FeldUI) hb.getComponent(k);
+                    int spieler = hb.getSpieler();
                     fui.setStartFigur(true, spieler);
-
                 }
-
             }
-
         }
-        spielFortsetzen();
+
     }
 
-    private void spielFortsetzen() {
-
+    public void spielFortsetzen() {
         _spiel.spielFortfahren();
+        zieheMitMensch();
+
+        int spielercnt = _spiel.getAktuellerSpielerIndex();
+        this.aktspieler.setFigur(true, spielercnt);
+
+        wuerf.setWuerfel(_spiel.getAktuelleAugenzahl());
+        int basecount = _brett._basen.basisBesetzung(_spiel.getAktuellerSpielerIndex());
+        for (Homebase base1 : base) {
+            base1.refreshbase(spielercnt, basecount);
+        }
+        for (int i = 0; i < _brett._spielfeld.length; i++) {
+            int feldbelegung = _brett._spielfeld[i];
+            feldarray[i].setFigur(true, feldbelegung);
+
+        }
     }
 
     private void zieheMitMensch() {
-
+        int spoffset = 0;
         List<Zug> zuege = _spiel.getMoeglicheZuege();
+        if (_spiel.getAktuellerSpielerIndex() == 0) {
+            spoffset = 0;
+        }
 
         if (!zuege.isEmpty()) {
             if (zuege.size() == 1) {
+
                 System.out.println("Nur ein Zug moeglich. Es wird automatisch gezogen.");
-                _spiel.ziehe(zuege.get(0));
+                _spiel.ziehe(zuege.get(0 + spoffset));
+
             } else {
                 int i = 0;
                 for (Zug zug : zuege) {
@@ -183,30 +202,14 @@ public class SpielbrettUI extends Panel {
                 Scanner scanner = new Scanner(System.in);
                 System.out.print("Zum ziehen Zug-Index angeben: ");
                 String zugIndexString = scanner.nextLine();
-                int zugIndex = Integer.valueOf(zugIndexString);
+
+                int zugIndex = Integer.valueOf(zugIndexString + spoffset);
 
                 _spiel.ziehe(zuege.get(zugIndex));
             }
         } else {
             System.out.println("Kein Zug moeglich.");
         }
-    }
-
-    private void spielen() {
-
-        List<Zug> zuege = _spiel.getMoeglicheZuege();
-
-        int i = 0;
-        for (Zug zug : zuege) {
-            System.out.println("Zug " + i + zug.toString());
-            ++i;
-        }
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Zum ziehen Zug-Index angeben: ");
-        String zugIndexString = scanner.nextLine();
-        int zugIndex = Integer.valueOf(zugIndexString);
-
-        _spiel.ziehe(zuege.get(zugIndex));
     }
 
 }

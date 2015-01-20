@@ -76,26 +76,18 @@ public class Homebase extends JPanel {
         return index;
     }
 
-    public void clearplace() {
-        for (int i = 0; i < this.getComponentCount(); i++) {
-            FeldUI f = (FeldUI) this.getComponent(i);
-            if (f.gesetzt == 1) {
-                f.clearFeld();
-                return;
+    public void refreshbase(int spieler, int basecount) {
+        if (Spieler == spieler) {
+            for (int i = 0; i < this.getComponentCount(); i++) {
+                FeldUI f = (FeldUI) this.getComponent(i);
+                f.setStartFigur(true, -1);
             }
-        }
 
-    }
-
-    public void eineFigurinbasis(int Spieler) {
-        for (int i = 0; i < this.getComponentCount(); i++) {
-            FeldUI f = (FeldUI) this.getComponent(i);
-            if (f.gesetzt == 0) {
-
+            for (int i = 0; i < basecount; i++) {
+                FeldUI f = (FeldUI) this.getComponent(i);
                 f.setStartFigur(true, Spieler);
-                return;
-
             }
         }
     }
+
 }

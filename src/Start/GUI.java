@@ -5,9 +5,9 @@
  */
 package Start;
 
+import GUI.FeldUI;
 import GUI.SpielbrettUI;
 import GUI.WuerfelUI;
-import Spiellogik.ArraySpielbrett;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,21 +29,31 @@ import javax.swing.JTextField;
 public class GUI extends JFrame {
 
     SpielbrettUI sbrett;
+
+    int xoffset = 300;
     JPanel spiel = new JPanel();
     JPanel setting = new JPanel();
-    WuerfelUI  wui = new WuerfelUI(7, 26, 1);
+    WuerfelUI wui = new WuerfelUI(150 + xoffset, 5, 1);
+    FeldUI aktuellerfigur = new FeldUI(390 + xoffset, 0, 1);
+
     int Spieleranz = 2;
-    JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, spiel, setting);
+
+    ScrollPane scroll = new ScrollPane();
+
+    JSplitPane pane;
+
 //ArraySpielbrett wert= new ArraySpielbrett();
     public GUI() {
-        // setanz();
+        scroll.add(spiel);
+        pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scroll, setting);
+        pane.setDividerLocation(600);
         initGUI();
     }
 
     public void initGUI() {
-         this.setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
 
-        spiel.setPreferredSize(new Dimension(1000, 600));
+        spiel.setPreferredSize(new Dimension(900, 600));
         //  spiel.setMinimumSize(new Dimension(1000, 600));
         setting.setPreferredSize(new Dimension(200, 200));
         // spiel.setBackground(Color.red);
@@ -64,11 +74,11 @@ public class GUI extends JFrame {
     public void initSpiel(int anz, int spieler) {
         Color bg = new Color(0xffff80);
 
-        sbrett = new SpielbrettUI(anz, spieler,wui);
+        sbrett = new SpielbrettUI(anz, spieler, wui, aktuellerfigur);
 
         spiel.add(sbrett);
         spiel.setBackground(bg);
-       // this.add(spiel, BorderLayout.NORTH);
+        // this.add(spiel, BorderLayout.NORTH);
 
     }
 
@@ -101,20 +111,24 @@ public class GUI extends JFrame {
 
     public void initSettings() {
 
-       
-
         setting.add(wui);
 
         JButton butstart = new JButton("Spiel starten");
-        butstart.setBounds(5, 0, 120, 25);
+        butstart.setBounds(5 + xoffset, 0, 120, 25);
         butstart.addActionListener((ActionEvent e) -> {
             sbrett.spielStarten();
 
         });
         setting.add(butstart);
 
-        JButton butwuerfel = new JButton("wuerfeln");
-        butwuerfel.setBounds(130, 0, 120, 25);
+        JButton butwuerfel = new JButton("Naechster Zug");
+        butwuerfel.setBounds(250 + xoffset, 0, 120, 25);
+        butwuerfel.addActionListener((ActionEvent e) -> {
+            sbrett.spielFortsetzen();
+
+        });
+        setting.add(aktuellerfigur);
+
         setting.add(butwuerfel);
         setting.setBackground(Color.white);
         setting.setLayout(new BorderLayout());

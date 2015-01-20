@@ -6,7 +6,7 @@
 package Start;
 
 //import static Start.Start.gui;
-import Spiellogik.ArraySpielbrett;
+import ConsoleUI.ConsoleUI;
 import javax.swing.SwingUtilities;
 
 public class StartUI {
@@ -24,6 +24,7 @@ public class StartUI {
             @Override
             public void run() {
                 GUI gui = new GUI();
+              //  ConsoleUI con= new ConsoleUI();
             }
         });
 

@@ -102,6 +102,7 @@ public class Spiel extends Observable {
         if (getAktuellerSpieler() instanceof Mensch) {
             _spielbrett.setze(_anDerReihe, zug);
             
+            
             if (_aktuelleAugenzahl != WUERFELGROESSE) {
                 naechsterSpieler();
             } else {

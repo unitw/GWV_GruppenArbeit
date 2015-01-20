@@ -32,7 +32,7 @@ public class FeldUI extends JLabel implements Setzen {
     int breite = 60;
     int hoehe = 60;
     int idx;
-    int gesetzt;
+    int gesetzt = -1;
 
     public FeldUI(int x, int y, int index) {
         this.setLayout(null);
@@ -76,13 +76,16 @@ public class FeldUI extends JLabel implements Setzen {
     }
 
     @Override
-    public void setStartFigur(Boolean b,int Spieler) {
+    public void setStartFigur(Boolean b, int Spieler) {
 
         if (b) {
             switch (Spieler) {
+                case -1:
+                    this.setIcon(feldpic);
+                    gesetzt = -1;
                 case 0:
                     this.setIcon(figurpicblausetstart);
-                    gesetzt = 1;
+                    gesetzt = 0;
                     break;
                 case 1:
                     this.setIcon(figurpicrotsetstart);
@@ -96,23 +99,28 @@ public class FeldUI extends JLabel implements Setzen {
     public void setFigur(Boolean b, int Spieler) {
         if (b) {
             switch (Spieler) {
+                case -1:
+                    this.setIcon(feldpic);
+                    gesetzt = -1;
+                    break;
                 case 0:
                     this.setIcon(figurpicblauset);
-                    gesetzt=1;
+                    gesetzt = 0;
                     break;
                 case 1:
                     this.setIcon(figurpicrotset);
-                    gesetzt=1;
+                    gesetzt = 1;
                     break;
             }
 
         }
     }
- public void clearFeld() {
-      
- this.setIcon(feldpic);
- }
- 
+
+    public void clearFeld() {
+
+        this.setIcon(feldpic);
+    }
+
     public int getx() {
         return xpos;
     }

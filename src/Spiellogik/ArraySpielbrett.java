@@ -23,10 +23,9 @@ public class ArraySpielbrett implements Spielbrett {
     public static int FIGUREN_PRO_SPIELER = 4;
     public int _spielfeldGroesse;
 
-    private HeimBasen _basen;
+    public HeimBasen _basen;
     private ZielBasen _ziele;
-    private int[] _spielfeld;
-    public SpielbrettUI spbrett;
+    public int[] _spielfeld;
 
     /**
      *
@@ -35,12 +34,12 @@ public class ArraySpielbrett implements Spielbrett {
      * @param spieler Eine Liste mit Spielern, die am Spiel teilnehmen. Die
      * Reihenfolge in der Liste bestimmt die Zugreihenfolge.
      * @throws IllegalArgumentException Wird geworfen falls die Anzahl der
- Figuren die _spielfeldGroesse ueberschreitet.
+     * Figuren die _spielfeldGroesse ueberschreitet.
      */
     public ArraySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
         this(anzahlSpieler, 20);
     }
-    
+
     public ArraySpielbrett(int anzahlSpieler, int spielfeldGroesse) throws IllegalArgumentException {
         _spielfeldGroesse = spielfeldGroesse;
         if (anzahlSpieler * FIGUREN_PRO_SPIELER > _spielfeldGroesse + 1) {
@@ -106,12 +105,6 @@ public class ArraySpielbrett implements Spielbrett {
         if (zug.getAusgangsPos() == -1) {
             _basen.zieheAusBasis(spieler);
 
-            for (Homebase base : spbrett.base) {
-                if (base.getSpieler() == spieler) {
-                    base.clearplace();
-                }
-            }
-
         } else {
             _spielfeld[zug.getAusgangsPos()] = -1;
         }
@@ -124,18 +117,8 @@ public class ArraySpielbrett implements Spielbrett {
             _basen.zieheInBasis(geschlagen);
             _spielfeld[zug.getZielPos()] = spieler;
 
-            for (Homebase base : spbrett.base) {
-
-                base.eineFigurinbasis(spieler);
-            }
         } else {
             _spielfeld[zug.getZielPos()] = spieler;
-            for (FeldUI feldarray : spbrett.feldarray) {
-                if (zug.getZielPos() == feldarray.getidx()) {
-
-                    feldarray.setFigur(true, spieler);
-                }
-            }
 
         }
 
@@ -162,14 +145,14 @@ public class ArraySpielbrett implements Spielbrett {
 
     // TODO Anpassen an variable Startpositionen
     public int getStartPos(int spieler) {
-        
+
         return 0;
     }
-    
+
     public int getZielPos(int spieler) {
         return 0;
     }
-    
+
     public int getZielEingang(int spieler) {
         int zielPos = getZielPos(spieler);
         if (zielPos - 1 >= 0) {
@@ -178,7 +161,7 @@ public class ArraySpielbrett implements Spielbrett {
             return _spielfeldGroesse;
         }
     }
-    
+
     public int getEntfernungZuZiel(int feld) {
         int spieler = _spielfeld[feld];
         int zielPos = getZielEingang(spieler);
@@ -188,7 +171,6 @@ public class ArraySpielbrett implements Spielbrett {
             return zielPos - feld;
         }
     }
-    
 
     public ArraySpielbrett clone() {
         ArraySpielbrett clone = new ArraySpielbrett(_basen.getAnzahlSpieler());
