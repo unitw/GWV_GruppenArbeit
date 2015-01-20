@@ -21,7 +21,7 @@ import java.util.List;
 public class ArraySpielbrett implements Spielbrett {
 
     public static int FIGUREN_PRO_SPIELER = 4;
-    public int spielfeldgroesse = 20;
+    public int _spielfeldGroesse;
 
     private HeimBasen _basen;
     private ZielBasen _ziele;
@@ -35,18 +35,35 @@ public class ArraySpielbrett implements Spielbrett {
      * @param spieler Eine Liste mit Spielern, die am Spiel teilnehmen. Die
      * Reihenfolge in der Liste bestimmt die Zugreihenfolge.
      * @throws IllegalArgumentException Wird geworfen falls die Anzahl der
+<<<<<<< HEAD
      * Figuren die spielfeldgroesse ueberschreitet.
      */
     public ArraySpielbrett(int anzahlSpieler, SpielbrettUI spbrett) throws IllegalArgumentException {
         if (anzahlSpieler * FIGUREN_PRO_SPIELER > spielfeldgroesse + 1) {
+=======
+ Figuren die _spielfeldGroesse ueberschreitet.
+     */
+    public ArraySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
+        this(anzahlSpieler, 20);
+    }
+    
+    public ArraySpielbrett(int anzahlSpieler, int spielfeldGroesse) throws IllegalArgumentException {
+        _spielfeldGroesse = spielfeldGroesse;
+        if (anzahlSpieler * FIGUREN_PRO_SPIELER > _spielfeldGroesse + 1) {
+>>>>>>> FETCH_HEAD
             throw new IllegalArgumentException("Spielbrett kann nicht erstellt werden, zu viele Spieler");
         }
         _basen = new HeimBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
         _ziele = new ZielBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
+<<<<<<< HEAD
         _spielfeld = new int[spielfeldgroesse];
         this.spbrett = spbrett;
 
 // Alle Felder werden mit -1 belegt, da -1 ein leeres Feld signalisiert
+=======
+        _spielfeld = new int[_spielfeldGroesse];
+        // Alle Felder werden mit -1 belegt, da -1 ein leeres Feld signalisiert
+>>>>>>> FETCH_HEAD
         // 0 ist die Kodierung des 1. Spielers.
         java.util.Arrays.fill(_spielfeld, -1);
     }
@@ -71,7 +88,7 @@ public class ArraySpielbrett implements Spielbrett {
 
         // Prueft fuer jede Figur des Spielers auf dem Brett (nicht in der Homebase), ob sie ziehen kann
         for (int probierteFiguren = 0, aktuellerIndex = 0;
-                probierteFiguren < (FIGUREN_PRO_SPIELER - spielerBasis) && aktuellerIndex < spielfeldgroesse;
+                probierteFiguren < (FIGUREN_PRO_SPIELER - spielerBasis) && aktuellerIndex < _spielfeldGroesse;
                 ++aktuellerIndex) {
             int zielIndex = aktuellerIndex + augenzahl;
             //TODO Temporärer Fix um nicht aus Array rauszulaufen
@@ -112,7 +129,7 @@ public class ArraySpielbrett implements Spielbrett {
         } else {
             _spielfeld[zug.getAusgangsPos()] = -1;
         }
-        if (zug.getZielPos() >= spielfeldgroesse) { // Nicht aufs Array zugreifen, falls ins Ziel ziehen
+        if (zug.getZielPos() >= _spielfeldGroesse) { // Nicht aufs Array zugreifen, falls ins Ziel ziehen
             _ziele.zieheInsZiel(spieler);
 
         } // TODO Fehler mit 0 und -1 (Spieler 1 (Index 0) steht am Anfang überall
@@ -156,6 +173,36 @@ public class ArraySpielbrett implements Spielbrett {
     public HeimBasen getHeimBasen() {
         return _basen.clone();
     }
+
+    // TODO Anpassen an variable Startpositionen
+    public int getStartPos(int spieler) {
+        
+        return 0;
+    }
+    
+    public int getZielPos(int spieler) {
+        return 0;
+    }
+    
+    public int getZielEingang(int spieler) {
+        int zielPos = getZielPos(spieler);
+        if (zielPos - 1 >= 0) {
+            return zielPos - 1;
+        } else {
+            return _spielfeldGroesse;
+        }
+    }
+    
+    public int getEntfernungZuZiel(int feld) {
+        int spieler = _spielfeld[feld];
+        int zielPos = getZielEingang(spieler);
+        if (zielPos < feld) {
+            return _spielfeldGroesse - feld + 1;
+        } else {
+            return zielPos - feld;
+        }
+    }
+    
 
     public ArraySpielbrett clone() {
         ArraySpielbrett clone = new ArraySpielbrett(_basen.getAnzahlSpieler(), this.spbrett);

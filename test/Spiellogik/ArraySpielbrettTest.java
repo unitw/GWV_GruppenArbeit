@@ -17,11 +17,11 @@ import static org.junit.Assert.*;
  *
  * @author Chris
  */
-public class DummySpielbrettTest {
+public class ArraySpielbrettTest {
 
     private ArraySpielbrett _2SpielerBrett;
 
-    public DummySpielbrettTest() {
+    public ArraySpielbrettTest() {
         _2SpielerBrett = new ArraySpielbrett(2);
     }
 
@@ -80,6 +80,12 @@ public class DummySpielbrettTest {
                 _2SpielerBrett.getHeimBasen().basisBesetzung(0));
     }
 
+    @Test
+    public void testGetEntfernungZuZiel() {
+        // TODO Implementieren
+        ArraySpielbrett brett = new ArraySpielbrett(2, 10);
+    }
+    
     /**
      * Test of spielfeldGroesse method, of class ArraySpielbrett.
      */

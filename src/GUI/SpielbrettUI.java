@@ -53,7 +53,11 @@ public class SpielbrettUI extends Panel {
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
         _spieler[1] = new Mensch();
-        _spiel = new Spiel(_spieler, _brett, this);
+        // !!!!!!------ WICHTIG -------!!!!!!!!
+        // Konstruktor Spiel(Spieler[], Spielbrett, SpielbrettUI) entfernt, 
+        // das Spielfeld braucht die UI nicht zu kennen. Falls das Probleme bereitet,
+        // bitte mir Bescheid sagen (Christian)
+        _spiel = new Spiel(_spieler, _brett);
 
     }
 

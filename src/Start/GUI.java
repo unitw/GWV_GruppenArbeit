@@ -56,7 +56,11 @@ public class GUI extends JFrame {
         this.setVisible(true);
         setLocationRelativeTo(null);
 
+<<<<<<< HEAD
         initSpiel(20, 2);
+=======
+        initSpiel(spielbrett._spielfeldGroesse, Spieleranz, spielbrett);
+>>>>>>> FETCH_HEAD
         initSettings();
         this.add(pane);
     }
