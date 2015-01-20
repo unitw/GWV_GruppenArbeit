@@ -75,4 +75,8 @@ public class Homebase extends JPanel {
         return index;
     }
 
+    public void clearplace(){
+        
+    }
+    
 }

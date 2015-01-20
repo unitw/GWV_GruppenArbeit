@@ -93,6 +93,11 @@ public class ArraySpielbrett implements Spielbrett {
     public void setze(int spieler, Zug zug) {
         if (zug.getAusgangsPos() == -1) {
             _basen.zieheAusBasis(spieler);
+            if(spieler == 0 ){
+                
+            }
+            
+            
         } else {
             _spielfeld[zug.getAusgangsPos()] = -1;
         }
@@ -106,6 +111,7 @@ public class ArraySpielbrett implements Spielbrett {
         } else {
             _spielfeld[zug.getZielPos()] = spieler;
         }
+        
     }
 
     //setze 
