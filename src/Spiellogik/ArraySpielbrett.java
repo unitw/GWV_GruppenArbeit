@@ -5,6 +5,9 @@
  */
 package Spiellogik;
 
+import GUI.FeldUI;
+import GUI.Homebase;
+import GUI.SpielbrettUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,22 +26,27 @@ public class ArraySpielbrett implements Spielbrett {
     private HeimBasen _basen;
     private ZielBasen _ziele;
     private int[] _spielfeld;
+    public SpielbrettUI spbrett;
 
     /**
      *
+     * @param anzahlSpieler
+     * @param spbrett
      * @param spieler Eine Liste mit Spielern, die am Spiel teilnehmen. Die
      * Reihenfolge in der Liste bestimmt die Zugreihenfolge.
      * @throws IllegalArgumentException Wird geworfen falls die Anzahl der
- Figuren die spielfeldgroesse ueberschreitet.
+     * Figuren die spielfeldgroesse ueberschreitet.
      */
-    public ArraySpielbrett(int anzahlSpieler) throws IllegalArgumentException {
+    public ArraySpielbrett(int anzahlSpieler, SpielbrettUI spbrett) throws IllegalArgumentException {
         if (anzahlSpieler * FIGUREN_PRO_SPIELER > spielfeldgroesse + 1) {
             throw new IllegalArgumentException("Spielbrett kann nicht erstellt werden, zu viele Spieler");
         }
         _basen = new HeimBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
         _ziele = new ZielBasen(anzahlSpieler, FIGUREN_PRO_SPIELER);
         _spielfeld = new int[spielfeldgroesse];
-        // Alle Felder werden mit -1 belegt, da -1 ein leeres Feld signalisiert
+        this.spbrett = spbrett;
+
+// Alle Felder werden mit -1 belegt, da -1 ein leeres Feld signalisiert
         // 0 ist die Kodierung des 1. Spielers.
         java.util.Arrays.fill(_spielfeld, -1);
     }
@@ -70,8 +78,8 @@ public class ArraySpielbrett implements Spielbrett {
             if (zielIndex > _spielfeld.length) {
                 ++probierteFiguren;
 //                if (zielIndex == _spielfeld.length) {
-                    Zug zug = new Zug(aktuellerIndex, zielIndex);
-                    zuege.add(zug);
+                Zug zug = new Zug(aktuellerIndex, zielIndex);
+                zuege.add(zug);
 //                }
             }
             if (istSpielerFeld(spieler, aktuellerIndex) && zielIndex < _spielfeld.length
@@ -90,33 +98,49 @@ public class ArraySpielbrett implements Spielbrett {
      *
      * @param zug Der durchzufuehrende Zug
      */
+    @Override
     public void setze(int spieler, Zug zug) {
         if (zug.getAusgangsPos() == -1) {
             _basen.zieheAusBasis(spieler);
-            if(spieler == 0 ){
-                
+
+            for (Homebase base : spbrett.base) {
+                if (base.getSpieler() == spieler) {
+                    base.clearplace();
+                }
             }
-            
-            
+
         } else {
             _spielfeld[zug.getAusgangsPos()] = -1;
         }
         if (zug.getZielPos() >= spielfeldgroesse) { // Nicht aufs Array zugreifen, falls ins Ziel ziehen
             _ziele.zieheInsZiel(spieler);
+
         } // TODO Fehler mit 0 und -1 (Spieler 1 (Index 0) steht am Anfang überall
         else if (_spielfeld[zug.getZielPos()] != -1) {
             int geschlagen = _spielfeld[zug.getZielPos()];
             _basen.zieheInBasis(geschlagen);
             _spielfeld[zug.getZielPos()] = spieler;
+
+            for (Homebase base : spbrett.base) {
+
+                base.eineFigurinbasis(spieler);
+            }
         } else {
             _spielfeld[zug.getZielPos()] = spieler;
-        }
-        
-    }
+            for (FeldUI feldarray : spbrett.feldarray) {
+                if (zug.getZielPos() == feldarray.getidx()) {
 
+                    feldarray.setFigur(true, spieler);
+                }
+            }
+
+        }
+
+    }
     //setze 
     //prüfe
     //getSpielstand
+
     public boolean istSpielerFeld(int spieler, int feldIndex) {
         return _spielfeld[feldIndex] == spieler;
     }
@@ -134,7 +158,7 @@ public class ArraySpielbrett implements Spielbrett {
     }
 
     public ArraySpielbrett clone() {
-        ArraySpielbrett clone = new ArraySpielbrett(_basen.getAnzahlSpieler());
+        ArraySpielbrett clone = new ArraySpielbrett(_basen.getAnzahlSpieler(), this.spbrett);
         clone._basen = getHeimBasen();
         clone._spielfeld = getSpielfeld();
         return clone;

@@ -10,6 +10,6 @@ package GUI;
  * @author rw
  */
 public interface Setzen {
-    public void setStartFigur(Boolean b,String farbe);
-     public void setFigur(Boolean b,String farbe);
+    public void setStartFigur(Boolean b,int Spieler );
+     public void setFigur(Boolean b,int Spieler);
 }

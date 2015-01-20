@@ -76,15 +76,15 @@ public class FeldUI extends JLabel implements Setzen {
     }
 
     @Override
-    public void setStartFigur(Boolean b, String farbe) {
+    public void setStartFigur(Boolean b,int Spieler) {
 
         if (b) {
-            switch (farbe) {
-                case "blau":
+            switch (Spieler) {
+                case 0:
                     this.setIcon(figurpicblausetstart);
                     gesetzt = 1;
                     break;
-                case "rot":
+                case 1:
                     this.setIcon(figurpicrotsetstart);
                     gesetzt = 1;
                     break;
@@ -93,15 +93,14 @@ public class FeldUI extends JLabel implements Setzen {
         }
     }
 
-    @Override
-    public void setFigur(Boolean b, String farbe) {
+    public void setFigur(Boolean b, int Spieler) {
         if (b) {
-            switch (farbe) {
-                case "blau":
+            switch (Spieler) {
+                case 0:
                     this.setIcon(figurpicblauset);
                     gesetzt=1;
                     break;
-                case "rot":
+                case 1:
                     this.setIcon(figurpicrotset);
                     gesetzt=1;
                     break;
@@ -109,7 +108,11 @@ public class FeldUI extends JLabel implements Setzen {
 
         }
     }
-
+ public void clearFeld() {
+      
+ this.setIcon(feldpic);
+ }
+ 
     public int getx() {
         return xpos;
     }

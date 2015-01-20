@@ -31,19 +31,17 @@ public class GUI extends JFrame {
     SpielbrettUI sbrett;
     JPanel spiel = new JPanel();
     JPanel setting = new JPanel();
-    WuerfelUI wui;
+    WuerfelUI  wui = new WuerfelUI(7, 26, 1);
     int Spieleranz = 2;
-    ArraySpielbrett spielbrett;//nachher durch einen JDialog initialisiert
     JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, spiel, setting);
-
+//ArraySpielbrett wert= new ArraySpielbrett();
     public GUI() {
         // setanz();
         initGUI();
     }
 
     public void initGUI() {
-        spielbrett = new ArraySpielbrett(Spieleranz);
-        this.setLayout(new BorderLayout());
+         this.setLayout(new BorderLayout());
 
         spiel.setPreferredSize(new Dimension(1000, 600));
         //  spiel.setMinimumSize(new Dimension(1000, 600));
@@ -58,15 +56,15 @@ public class GUI extends JFrame {
         this.setVisible(true);
         setLocationRelativeTo(null);
 
-        initSpiel(spielbrett.spielfeldgroesse, Spieleranz, spielbrett);
+        initSpiel(20, 2);
         initSettings();
         this.add(pane);
     }
 
-    public void initSpiel(int anz, int spieler, ArraySpielbrett spielfeld) {
+    public void initSpiel(int anz, int spieler) {
         Color bg = new Color(0xffff80);
 
-        sbrett = new SpielbrettUI(anz, spieler, spielfeld,wui);
+        sbrett = new SpielbrettUI(anz, spieler,wui);
 
         spiel.add(sbrett);
         spiel.setBackground(bg);
@@ -103,7 +101,7 @@ public class GUI extends JFrame {
 
     public void initSettings() {
 
-        wui = new WuerfelUI(7, 26, 1);
+       
 
         setting.add(wui);
 

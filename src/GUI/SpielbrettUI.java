@@ -33,23 +33,23 @@ public class SpielbrettUI extends Panel {
     Spiel _spiel;
     Spielbrett _brett;
     Spieler[] _spieler;
-    Homebase[] base;
+    public Homebase[] base;
     ArraySpielbrett spielfeld;
-    FeldUI[] feldarray;
-   public  WuerfelUI wuerf;
+    public FeldUI[] feldarray;
+    public WuerfelUI wuerf;
+    ArraySpielbrett spielbrett;
 
-    public SpielbrettUI(int anz, int sp, ArraySpielbrett sf, WuerfelUI wuerfel) {
+    public SpielbrettUI(int anz, int sp, WuerfelUI wuerfel) {
         this.setSize(1000, 600);
         this.setLayout(null);
         setBackground(bg);
-        //setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        this.wuerf = wuerfel;
         rgb[0] = new Color(0x1289f8);
         rgb[1] = new Color(0xff0000);
         rgb[2] = new Color(0xfcff00);
         rgb[3] = new Color(0x12ff00);
-        this.spielfeld = sf;
+        spielfeld = new ArraySpielbrett(sp, this);
         createSpielfeld(anz, sp);
-        this.wuerf = wuerfel;
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
         _spieler[1] = new Mensch();
@@ -99,18 +99,18 @@ public class SpielbrettUI extends Panel {
     }
 
     public void createHomerBase(int Anzahlbasen) {
-        String[] farbennamen = new String[4];
-        farbennamen[0] = "blau";
-        farbennamen[1] = "rot";
-        farbennamen[2] = "grün";
-        farbennamen[3] = "gelb";
+        int[] spieler = new int[4];
+        spieler[0] = 0;
+        spieler[1] = 1;
+        spieler[2] = 2;
+        spieler[3] = 3;
         base = new Homebase[Anzahlbasen];
         for (int i = 0; i < Anzahlbasen; i++) {
 
-            base[i] = new Homebase(farbennamen[i]);
+            base[i] = new Homebase(spieler[i]);
             base[i].setIndex(i);
 
-            switch (base[i].getIndex()) {
+            switch (base[i].getSpieler()) {
                 case 0:
                     base[i].setBounds(10, 5, base[i].getWidth(), base[i].getHeight());
                     base[i].setBackground(rgb[0]);
@@ -146,8 +146,8 @@ public class SpielbrettUI extends Panel {
             for (int k = 0; k < base[i].getComponentCount(); k++) {
                 if (base[i].getComponent(k) instanceof FeldUI) {
                     FeldUI fui = (FeldUI) base[i].getComponent(k);
-                    String farbe = base[i].getFarbe();
-                    fui.setStartFigur(true, farbe);
+                    int spieler = base[i].getSpieler();
+                    fui.setStartFigur(true, spieler);
 
                 }
 

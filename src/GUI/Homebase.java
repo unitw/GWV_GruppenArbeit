@@ -17,19 +17,20 @@ public class Homebase extends JPanel {
 
     int index;
 
+    public int Spieler;
     public FeldUI feld1;
     public FeldUI feld2;
     public FeldUI feld3;
     public FeldUI feld4;
     public String farbe;
 
-    public Homebase(String farbe) {
+    public Homebase(int spieler) {
         this.setLayout(null);
         feld1 = new FeldUI(0, 0, 1);
         feld2 = new FeldUI(61, 0, 2);
         feld3 = new FeldUI(0, 61, 3);
         feld4 = new FeldUI(61, 61, 4);
-        this.farbe = farbe;
+        this.Spieler = spieler;
         this.add(feld1);
         this.add(feld2);
         this.add(feld3);
@@ -39,8 +40,8 @@ public class Homebase extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
     }
 
-    public String getFarbe() {
-        return this.farbe;
+    public int getSpieler() {
+        return this.Spieler;
     }
 
     public FeldUI getFields(int i) {
@@ -62,8 +63,8 @@ public class Homebase extends JPanel {
         return retfield;
     }
 
-    public void setFarbe(String f) {
-        this.farbe = f;
+    public void setFarbe(int f) {
+        this.Spieler = f;
     }
 
     public void setIndex(int i) {
@@ -75,8 +76,26 @@ public class Homebase extends JPanel {
         return index;
     }
 
-    public void clearplace(){
-        
+    public void clearplace() {
+        for (int i = 0; i < this.getComponentCount(); i++) {
+            FeldUI f = (FeldUI) this.getComponent(i);
+            if (f.gesetzt == 1) {
+                f.clearFeld();
+                return;
+            }
+        }
+
     }
-    
+
+    public void eineFigurinbasis(int Spieler) {
+        for (int i = 0; i < this.getComponentCount(); i++) {
+            FeldUI f = (FeldUI) this.getComponent(i);
+            if (f.gesetzt == 0) {
+
+                f.setStartFigur(true, Spieler);
+                return;
+
+            }
+        }
+    }
 }
