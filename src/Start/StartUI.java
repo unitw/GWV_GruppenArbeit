@@ -7,28 +7,29 @@ package Start;
 
 //import static Start.Start.gui;
 import ConsoleUI.ConsoleUI;
+import java.util.Scanner;
 import javax.swing.SwingUtilities;
 
 public class StartUI {
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-
-//        GUI gui = new GUI();
-//        gui.createGUI(20);
-       
         
+        System.out.println("Zum starten mit GUI 'y' eingeben: ");
         
-
+        Scanner scanner =new Scanner(System.in);
+        String eingabe = scanner.nextLine();
+        
+        if (eingabe.equals("y")) {
+            SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 GUI gui = new GUI();
               //  ConsoleUI con= new ConsoleUI();
             }
         });
-
-//        ConsoleUI console = new ConsoleUI();
+        } else {
+            ConsoleUI console = new ConsoleUI();
+        }
         
     }
 
