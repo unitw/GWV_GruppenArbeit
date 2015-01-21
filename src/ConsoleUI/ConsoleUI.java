@@ -22,15 +22,47 @@ public class ConsoleUI implements Observer {
     Spieler[] _spieler;
 
     public ConsoleUI() {
+        setup2KI();
+        _spiel.addObserver(this);
+        spielStarten();
+    }
+
+    private void setup2Mensch() {
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
         _spieler[1] = new Mensch();
         _brett = new ArraySpielbrett(_spieler.length);
         _spiel = new Spiel(_spieler, _brett);
-         _spiel.addObserver(this);
-        spielStarten();
     }
-
+    
+    private void setup1Mensch1KI() {
+        _spieler = new Spieler[2];
+        _spieler[0] = new Mensch();
+        KI ki = new RandomKI();
+        _spieler[1] = ki;
+        ki.setzeSpielerIndex(1);
+        
+        _brett = new ArraySpielbrett(_spieler.length);
+        _spiel = new Spiel(_spieler, _brett);
+        ki.setzeSpielbrett(_brett);
+        
+    }
+    
+    private void setup2KI() {
+        _spieler = new Spieler[2];
+        KI ki0 = new RandomKI();
+        _spieler[0] = ki0;
+        ki0.setzeSpielerIndex(0);
+        KI ki1 = new RandomKI();
+        _spieler[1] = ki1;
+        ki1.setzeSpielerIndex(1);
+        
+        _brett = new ArraySpielbrett(_spieler.length);
+        _spiel = new Spiel(_spieler, _brett);
+        ki0.setzeSpielbrett(_brett);
+        ki1.setzeSpielbrett(_brett);
+    }
+    
     private void spielStarten() {
         System.out.println("Spiel wird gestartet... \n");
         String ausgabe = "Spieler: ";
