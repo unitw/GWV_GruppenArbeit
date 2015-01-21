@@ -28,6 +28,8 @@ public class StartUI {
             }
         });
 
+//        ConsoleUI console = new ConsoleUI();
+        
     }
 
 }
