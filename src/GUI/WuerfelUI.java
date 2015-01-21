@@ -68,7 +68,7 @@ this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
 
         }
 
-        this.repaint();
+        //this.repaint();
     }
 
 

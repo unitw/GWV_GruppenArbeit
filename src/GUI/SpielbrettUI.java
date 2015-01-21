@@ -170,8 +170,11 @@ public class SpielbrettUI extends Panel {
 
         wuerf.setWuerfel(_spiel.getAktuelleAugenzahl());
         int basecount = _brett._basen.basisBesetzung(_spiel.getAktuellerSpielerIndex());
-        for (Homebase base1 : base) {
-            base1.refreshbase(spielercnt, basecount);
+        if (basecount < 4) {
+            for (Homebase base1 : base) {
+                if(base1.getSpieler()==spielercnt)
+                base1.refreshbase(spielercnt, basecount);
+            }
         }
         for (int i = 0; i < _brett._spielfeld.length; i++) {
             int feldbelegung = _brett._spielfeld[i];

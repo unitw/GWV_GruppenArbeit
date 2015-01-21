@@ -77,7 +77,7 @@ public class Homebase extends JPanel {
     }
 
     public void refreshbase(int spieler, int basecount) {
-        if (Spieler == spieler) {
+      
             for (int i = 0; i < this.getComponentCount(); i++) {
                 FeldUI f = (FeldUI) this.getComponent(i);
                 f.setStartFigur(true, -1);
@@ -85,9 +85,9 @@ public class Homebase extends JPanel {
 
             for (int i = 0; i < basecount; i++) {
                 FeldUI f = (FeldUI) this.getComponent(i);
-                f.setStartFigur(true, Spieler);
+                f.setStartFigur(true, spieler);
             }
-        }
+        
     }
 
 }
