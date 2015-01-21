@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Point;
@@ -33,6 +34,7 @@ public class FeldUI extends JLabel implements Setzen {
     int hoehe = 60;
     int idx;
     int gesetzt = -1;
+    Color bg = new Color(0xffff80);
 
     public FeldUI(int x, int y, int index) {
         this.setLayout(null);
@@ -42,6 +44,7 @@ public class FeldUI extends JLabel implements Setzen {
         this.idx = index;
         this.setIcon(feldpic);
         this.setBounds(x, y, breite, hoehe);
+        this.setBackground(bg);
 
 //        this.addMouseListener(new MouseListener() {
 //
@@ -105,18 +108,28 @@ public class FeldUI extends JLabel implements Setzen {
             switch (Spieler) {
                 case -1:
                     this.setIcon(feldpic);
+                    this.setOpaque(true);
+                    //this.setBackground(bg);
                     gesetzt = -1;
                     break;
                 case 0:
                     this.setIcon(figurpicblauset);
                     gesetzt = 0;
+                   // this.setBackground(bg);
+
+                    this.setOpaque(true);
+
                     break;
                 case 1:
                     this.setIcon(figurpicrotset);
                     gesetzt = 1;
+                    //this.setBackground(bg);
+
+                    this.setOpaque(true);
+
                     break;
             }
-            
+
         }
     }
 

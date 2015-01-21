@@ -38,6 +38,11 @@ public class SpielbrettUI extends Panel {
     public FeldUI[] feldarray;
     public WuerfelUI wuerf;
     ArraySpielbrett spielbrett;
+    ImageIcon feldpic = new ImageIcon(getClass().getResource("/resources/Bilder/feldbr.png"));
+    ImageIcon figurpicblausetstart = new ImageIcon(getClass().getResource("/resources/Bilder/blaueshuetchenset.png"));
+    ImageIcon figurpicrotsetstart = new ImageIcon(getClass().getResource("/resources/Bilder/roteshuetchenset.png"));
+    ImageIcon figurpicblauset = new ImageIcon(getClass().getResource("/resources/Bilder/blaueshuetchenfeld.png"));
+    ImageIcon figurpicrotset = new ImageIcon(getClass().getResource("/resources/Bilder/roteshuetchenfeld.png"));
 
     public SpielbrettUI(int anz, int sp, WuerfelUI wuerfel, FeldUI aktuellspieler) {
         this.setSize(1000, 600);
@@ -172,14 +177,15 @@ public class SpielbrettUI extends Panel {
         int basecount = _brett._basen.basisBesetzung(_spiel.getAktuellerSpielerIndex());
         if (basecount < 4) {
             for (Homebase base1 : base) {
-                if(base1.getSpieler()==spielercnt)
-                base1.refreshbase(spielercnt, basecount);
+                if (base1.getSpieler() == spielercnt) {
+                    base1.refreshbase(spielercnt, basecount);
+                }
             }
         }
         for (int i = 0; i < _brett._spielfeld.length; i++) {
             int feldbelegung = _brett._spielfeld[i];
-            feldarray[i].setFigur(true, feldbelegung);
-
+                feldarray[i].setFigur(true, feldbelegung);
+                
         }
     }
 
