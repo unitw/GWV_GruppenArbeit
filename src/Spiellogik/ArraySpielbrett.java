@@ -182,7 +182,7 @@ public class ArraySpielbrett implements Spielbrett {
     }
 
     public String toString() {
-        return _basen.toString() + "\n" + spielfeldToString();
+        return _basen.toString() + "\n" + _ziele.toString() +"\n" + spielfeldToString();
     }
 
     private String spielfeldToString() {

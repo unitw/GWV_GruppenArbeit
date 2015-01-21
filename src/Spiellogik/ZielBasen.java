@@ -32,7 +32,7 @@ public class ZielBasen {
     
     @Override
     public String toString() {
-        String ausgabe = "Ziel Basen: \n";
+        String ausgabe = "Ziel Basen:  ";
         for (int spielerIndex = 0; spielerIndex < _zielBasen.length; ++spielerIndex) {
             ausgabe += "Spieler " + spielerIndex + ": " + _zielBasen[spielerIndex] + " ";
         }

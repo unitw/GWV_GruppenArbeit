@@ -75,7 +75,7 @@ public class HeimBasen {
     
     @Override
     public String toString() {
-        String ausgabe = "Home Bases: \n";
+        String ausgabe = "Home Bases:  ";
         for (int spielerIndex = 0; spielerIndex < _homeBases.length; ++spielerIndex) {
             ausgabe += "Spieler " + spielerIndex + ": " + _homeBases[spielerIndex] + " ";
         }
