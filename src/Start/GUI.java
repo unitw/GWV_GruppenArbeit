@@ -35,7 +35,7 @@ public class GUI extends JFrame {
     JPanel setting = new JPanel();
     WuerfelUI wui = new WuerfelUI(150 + xoffset, 5, 1);
     FeldUI aktuellerfigur = new FeldUI(390 + xoffset, 0, 1);
-
+    JTextField tx = new JTextField("Bemerkung:");
     int Spieleranz = 2;
 
     ScrollPane scroll = new ScrollPane();
@@ -74,7 +74,7 @@ public class GUI extends JFrame {
     public void initSpiel(int anz, int spieler) {
         Color bg = new Color(0xffff80);
 
-        sbrett = new SpielbrettUI(anz, spieler, wui, aktuellerfigur);
+        sbrett = new SpielbrettUI(anz, spieler, wui, aktuellerfigur,tx);
 
         spiel.add(sbrett);
         spiel.setBackground(bg);
@@ -111,28 +111,35 @@ public class GUI extends JFrame {
 
     public void initSettings() {
 
-        setting.add(wui);
+        JButton butwuerfel = new JButton("Naechster Zug");
 
         JButton butstart = new JButton("Spiel starten");
         butstart.setBounds(5 + xoffset, 0, 120, 25);
         butstart.addActionListener((ActionEvent e) -> {
             sbrett.spielStarten();
+            butwuerfel.setEnabled(true);
 
         });
-        setting.add(butstart);
 
-        JButton butwuerfel = new JButton("Naechster Zug");
+        tx.setBounds(980 + xoffset, 0, 250, 25);
+        tx.setPreferredSize(new Dimension(300, 25));
+        butwuerfel.setEnabled(false);
         butwuerfel.setBounds(250 + xoffset, 0, 120, 25);
         butwuerfel.addActionListener((ActionEvent e) -> {
+
             sbrett.spielFortsetzen();
 
         });
-        setting.add(aktuellerfigur);
+        aktuellerfigur.setBackground(Color.white);
 
+        setting.add(butstart);
         setting.add(butwuerfel);
+        setting.add(wui);
+        setting.add(aktuellerfigur);
+        setting.add(tx);
+
         setting.setBackground(Color.white);
-        setting.setLayout(new BorderLayout());
-        //this.add(setting, BorderLayout.SOUTH);
+
     }
 
 }

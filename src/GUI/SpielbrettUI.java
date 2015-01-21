@@ -8,15 +8,17 @@ package GUI;
 import Spiellogik.ArraySpielbrett;
 import Spiellogik.Mensch;
 import Spiellogik.Spiel;
-import Spiellogik.Spielbrett;
 import Spiellogik.Spieler;
 import Spiellogik.Zug;
 import java.awt.Color;
 import java.awt.Panel;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JTextField;
 
 /**
  *
@@ -38,16 +40,19 @@ public class SpielbrettUI extends Panel {
     public FeldUI[] feldarray;
     public WuerfelUI wuerf;
     ArraySpielbrett spielbrett;
+    JTextField tx;
     ImageIcon feldpic = new ImageIcon(getClass().getResource("/resources/Bilder/feldbr.png"));
     ImageIcon figurpicblausetstart = new ImageIcon(getClass().getResource("/resources/Bilder/blaueshuetchenset.png"));
     ImageIcon figurpicrotsetstart = new ImageIcon(getClass().getResource("/resources/Bilder/roteshuetchenset.png"));
     ImageIcon figurpicblauset = new ImageIcon(getClass().getResource("/resources/Bilder/blaueshuetchenfeld.png"));
     ImageIcon figurpicrotset = new ImageIcon(getClass().getResource("/resources/Bilder/roteshuetchenfeld.png"));
 
-    public SpielbrettUI(int anz, int sp, WuerfelUI wuerfel, FeldUI aktuellspieler) {
+    public SpielbrettUI(int anz, int sp, WuerfelUI wuerfel, FeldUI aktuellspieler, JTextField tx) {
         this.setSize(1000, 600);
         this.setLayout(null);
         setBackground(bg);
+
+        this.tx = tx;
         this.aktspieler = aktuellspieler;
         this.wuerf = wuerfel;
         rgb[0] = new Color(0x1289f8);
@@ -184,8 +189,8 @@ public class SpielbrettUI extends Panel {
         }
         for (int i = 0; i < _brett._spielfeld.length; i++) {
             int feldbelegung = _brett._spielfeld[i];
-                feldarray[i].setFigur(true, feldbelegung);
-                
+            feldarray[i].setFigur(true, feldbelegung);
+
         }
     }
 
@@ -199,26 +204,76 @@ public class SpielbrettUI extends Panel {
         if (!zuege.isEmpty()) {
             if (zuege.size() == 1) {
 
-                System.out.println("Nur ein Zug moeglich. Es wird automatisch gezogen.");
+                tx.setText("Nur ein Zug moeglich. Es wird automatisch gezogen.");
                 _spiel.ziehe(zuege.get(0 + spoffset));
 
             } else {
                 int i = 0;
                 for (Zug zug : zuege) {
-                    System.out.println("Zug " + i + zug.toString());
+                  tx.setText("Zug " + i + zug.toString());
                     ++i;
                 }
-                Scanner scanner = new Scanner(System.in);
-                System.out.print("Zum ziehen Zug-Index angeben: ");
-                String zugIndexString = scanner.nextLine();
+                
+                tx.setText("Mehere Zuege moeglich! Figur waehlen ");
+               
+                
+               
 
-                int zugIndex = Integer.valueOf(zugIndexString + spoffset);
+                int zugIndex =  zug(_spiel.getMoeglicheZuege());
 
                 _spiel.ziehe(zuege.get(zugIndex));
             }
         } else {
-            System.out.println("Kein Zug moeglich.");
+            tx.setText("Kein Zug moeglich.");
         }
     }
 
+    public int zug(List<Zug> zuge){
+  
+        zuge.stream().forEach((zug) -> {
+            zug.getAusgangsPos();
+        });
+        
+        tx.setText("Bitte Figur Auswaehlen");
+        Handler();
+     return 1;
+    }
+    
+    
+    
+    public int Handler(){
+        int zugindx=-1;
+        this.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getSource() instanceof FeldUI){
+                    FeldUI fuim= (FeldUI) e.getSource();
+                    if(fuim.getIcon()==figurpicblauset||fuim.getIcon()==figurpicrotset){
+                        tx.setText("0,1");
+                    }
+                    
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+        
+        return zugindx;
+    }
+    
 }
