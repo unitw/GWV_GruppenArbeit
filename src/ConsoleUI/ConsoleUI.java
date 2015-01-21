@@ -34,20 +34,20 @@ public class ConsoleUI implements Observer {
         _brett = new ArraySpielbrett(_spieler.length);
         _spiel = new Spiel(_spieler, _brett);
     }
-    
+
     private void setup1Mensch1KI() {
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
         KI ki = new RandomKI();
         _spieler[1] = ki;
         ki.setzeSpielerIndex(1);
-        
+
         _brett = new ArraySpielbrett(_spieler.length);
         _spiel = new Spiel(_spieler, _brett);
         ki.setzeSpielbrett(_brett);
-        
+
     }
-    
+
     private void setup2KI() {
         _spieler = new Spieler[2];
         KI ki0 = new RandomKI();
@@ -56,13 +56,13 @@ public class ConsoleUI implements Observer {
         KI ki1 = new RandomKI();
         _spieler[1] = ki1;
         ki1.setzeSpielerIndex(1);
-        
+
         _brett = new ArraySpielbrett(_spieler.length);
         _spiel = new Spiel(_spieler, _brett);
         ki0.setzeSpielbrett(_brett);
         ki1.setzeSpielbrett(_brett);
     }
-    
+
     private void spielStarten() {
         System.out.println("Spiel wird gestartet... \n");
         String ausgabe = "Spieler: ";
@@ -71,6 +71,7 @@ public class ConsoleUI implements Observer {
         }
         System.out.println(ausgabe);
         spielFortsetzen();
+        System.out.println("Spiel zu Ende!");
     }
 
     @Override
@@ -84,7 +85,9 @@ public class ConsoleUI implements Observer {
                 zeigeZwischenstand();
                 warteAufBestaetigung();
             }
-            spielFortsetzen();
+            if (!_spiel.spielZuEnde()) {
+                spielFortsetzen();
+            }
         }
     }
 
@@ -157,8 +160,8 @@ public class ConsoleUI implements Observer {
     }
 
     private void warteAufBestaetigung() {
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
+//        Scanner scanner = new Scanner(System.in);
+//        scanner.nextLine();
     }
 
     private void zeigeZwischenstand() {

@@ -29,6 +29,8 @@ public interface Spielbrett {
     public List<Zug> pruefe(int spieler, int augenzahl);
     
     public int[] getSpielfeld();
+    
+    public boolean alleImZiel(int spieler);
 
     public HeimBasen getHeimBasen();
 }

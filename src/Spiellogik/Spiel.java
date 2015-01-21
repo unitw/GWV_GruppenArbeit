@@ -38,6 +38,7 @@ public class Spiel extends Observable {
     private int _anDerReihe;
     private int _aktuelleAugenzahl;
     private int _wurfOptionen;
+    private boolean _spielZuEnde;
     private List<Zug> _moeglicheZuege;
 
     public Spiel(Spieler[] spieler, Spielbrett spielbrett) {
@@ -45,7 +46,7 @@ public class Spiel extends Observable {
         _spielbrett = spielbrett;
         _moeglicheZuege = new LinkedList<Zug>();
         _wurfOptionen = MAXIMALE_WUERFE_PRO_ZUG;
-        
+        _spielZuEnde = false;
     }
 
     /**
@@ -58,35 +59,49 @@ public class Spiel extends Observable {
     }
 
     private void naechsterZug(int wurfOptionen) {
-        if (wurfOptionen > 0) {
-            wuerfeln();
-            _moeglicheZuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
+        if (!spielZuEnde()) {
+            if (wurfOptionen > 0) {
+                wuerfeln();
+                _moeglicheZuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
             // TODO In Spielbrett auslagern
-            // TODO Aus 0 dynamische Startposition machen
-            if (_spielbrett.istSpielerFeld(_anDerReihe, 0) && _moeglicheZuege.size() > 1) {
-                for (int i = 0; i < _moeglicheZuege.size(); ++i) {
-                    if (_moeglicheZuege.get(i).getAusgangsPos() != 0) {
-                        _moeglicheZuege.remove(i);
-                        --i;
+                // TODO Aus 0 dynamische Startposition machen
+                if (_spielbrett.istSpielerFeld(_anDerReihe, 0) && _moeglicheZuege.size() > 1) {
+                    for (int i = 0; i < _moeglicheZuege.size(); ++i) {
+                        if (_moeglicheZuege.get(i).getAusgangsPos() != 0) {
+                            _moeglicheZuege.remove(i);
+                            --i;
+                        }
                     }
                 }
-            }
 
-            //TODO Spieler muss ziehen
-            if (_moeglicheZuege.isEmpty()) {
-                --_wurfOptionen;
-            } else if (_aktuelleAugenzahl == WUERFELGROESSE) {
-                _wurfOptionen = 1;
+                //TODO Spieler muss ziehen
+                if (_moeglicheZuege.isEmpty()) {
+                    --_wurfOptionen;
+                } else if (_aktuelleAugenzahl == WUERFELGROESSE) {
+                    _wurfOptionen = 1;
+                } else {
+                    _wurfOptionen = 0;
+                }
+                updateUIMitSpieler();
+
             } else {
-                _wurfOptionen = 0;
+                naechsterSpieler();
             }
-            updateUIMitSpieler();
-
         } else {
-            naechsterSpieler();
+            _spielZuEnde = true;
         }
     }
-
+    
+    public boolean spielZuEnde() {
+        int volleBasen = 0;
+        for (int i = 0; i < _spieler.length; ++i) {
+            if (_spielbrett.alleImZiel(i)) {
+                ++volleBasen;
+            }
+        }
+        return volleBasen == _spieler.length - 1;
+    }
+    
     /**
      * Zieht mit dem aktuellen Spieler den angegebenen Zug. Diese Methode sollte
      * nur augeführt werden, wenn ein Mensch an der Reihe ist. Dies wird dadurch
@@ -101,8 +116,7 @@ public class Spiel extends Observable {
     public void ziehe(Zug zug) throws IllegalStateException {
         if (getAktuellerSpieler() instanceof Mensch) {
             _spielbrett.setze(_anDerReihe, zug);
-            
-            
+
             if (_aktuelleAugenzahl != WUERFELGROESSE) {
                 naechsterSpieler();
             } else {
@@ -119,7 +133,7 @@ public class Spiel extends Observable {
             if (!_moeglicheZuege.isEmpty()) {
                 Zug zug = ki.entscheide(_moeglicheZuege);
                 _spielbrett.setze(_anDerReihe, zug);
-                
+
                 if (_aktuelleAugenzahl != WUERFELGROESSE) {
                     naechsterSpieler();
                 } else {
@@ -196,17 +210,19 @@ public class Spiel extends Observable {
 
     /**
      * Gibt an, ob das Feld ein Zielfeld fuer den aktuellen Spieler ist.
+     *
      * @param feldIndex Index eines Feldes im Spiel
-     * @return true, wenn es sich um ein Zielfeld fuer den aktuellen Spieler handelt.
+     * @return true, wenn es sich um ein Zielfeld fuer den aktuellen Spieler
+     * handelt.
      */
     private boolean istZielFeld(int feldIndex) {
         return istZielFeld(_anDerReihe, feldIndex);
     }
-    
+
     private boolean istZielFeld(int spielerIndex, int feldIndex) {
         return feldIndex == _spielbrett.spielfeldGroesse() - 1;
     }
-    
+
     private void naechsterSpieler() {
         // TODO Diese Kodierung klar machen. Zwischenschritt, keiner ist dran.
         _anDerReihe = getNaechsterSpielerIndex();
@@ -218,11 +234,11 @@ public class Spiel extends Observable {
         return _spielbrett.istSpielerFeld(_anDerReihe, zug.getAusgangsPos())
                 && !_spielbrett.istSpielerFeld(_anDerReihe, zug.getZielPos());
     }
-    
+
     private void wuerfeln() {
         Random wuerfel = new Random();
         int augenzahl = wuerfel.nextInt(WUERFELGROESSE) + 1;
-        
+
         _aktuelleAugenzahl = augenzahl;
     }
 
