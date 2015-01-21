@@ -77,18 +77,20 @@ public class ArraySpielbrett implements Spielbrett {
                 ++aktuellerIndex) {
             int zielIndex = aktuellerIndex + augenzahl;
             //TODO Temporärer Fix um nicht aus Array rauszulaufen
-            if (zielIndex > _spielfeld.length) {
-                ++probierteFiguren;
+            if (istSpielerFeld(spieler, aktuellerIndex)) {
+                if (zielIndex > _spielfeld.length) {
+                    ++probierteFiguren;
 //                if (zielIndex == _spielfeld.length) {
-                Zug zug = new Zug(aktuellerIndex, zielIndex);
-                zuege.add(zug);
+                    Zug zug = new Zug(aktuellerIndex, zielIndex);
+                    zuege.add(zug);
 //                }
-            }
-            if (istSpielerFeld(spieler, aktuellerIndex) && zielIndex < _spielfeld.length
-                    && !istSpielerFeld(spieler, aktuellerIndex + augenzahl)) {
-                Zug zug = new Zug(aktuellerIndex, zielIndex);
-                zuege.add(zug);
-                ++probierteFiguren;
+                }
+                if (zielIndex < _spielfeld.length
+                        && !istSpielerFeld(spieler, aktuellerIndex + augenzahl)) {
+                    Zug zug = new Zug(aktuellerIndex, zielIndex);
+                    zuege.add(zug);
+                    ++probierteFiguren;
+                }
             }
         }
 

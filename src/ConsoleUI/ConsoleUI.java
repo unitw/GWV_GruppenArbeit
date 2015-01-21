@@ -96,6 +96,7 @@ public class ConsoleUI implements Observer {
     private void zieheMitKI() {
         spielstandAnzeigen();
         List<Zug> zuege = _spiel.getMoeglicheZuege();
+        System.out.println(zuege.toString());
         _spiel.zieheKI();
     }
 
