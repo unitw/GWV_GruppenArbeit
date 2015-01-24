@@ -6,6 +6,7 @@
 package GUI;
 
 import Spiellogik.ArraySpielbrett;
+import Spiellogik.KI.DecisionNetworkKI;
 import Spiellogik.Mensch;
 import Spiellogik.Spiel;
 import Spiellogik.Spieler;
@@ -67,7 +68,7 @@ public class SpielbrettUI extends Panel {
         createSpielfeld(anz, sp);
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
-        _spieler[1] = new Mensch();
+        _spieler[1] = new DecisionNetworkKI();
         // !!!!!!------ WICHTIG -------!!!!!!!!
         // Konstruktor Spiel(Spieler[], Spielbrett, SpielbrettUI) entfernt, 
         // das Spielfeld braucht die UI nicht zu kennen. Falls das Probleme bereitet,
@@ -220,6 +221,7 @@ public class SpielbrettUI extends Panel {
     public void spielFortsetzen() {
         _spiel.spielFortfahren();
         zieheMitMensch();
+        _spiel.zieheKI();
 
         int spielercnt = _spiel.getAktuellerSpielerIndex();
         this.aktspieler.setFigur(true, spielercnt);

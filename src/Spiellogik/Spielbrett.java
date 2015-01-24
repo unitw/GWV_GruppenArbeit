@@ -33,4 +33,12 @@ public interface Spielbrett {
     public boolean alleImZiel(int spieler);
 
     public HeimBasen getHeimBasen();
+    
+    public int getAnzSpieler();
+    
+    public int[] getSpielerPositionen();
+    
+    public boolean schlaegt(Zug zug);
+    
+    public Spielbrett clone();
 }

@@ -8,6 +8,7 @@ package ConsoleUI;
 import Spiellogik.KI.RandomKI;
 import Spiellogik.KI.KI;
 import Spiellogik.*;
+import Spiellogik.KI.DecisionNetworkKI;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -24,7 +25,10 @@ public class ConsoleUI implements Observer {
     Spieler[] _spieler;
 
     public ConsoleUI() {
-        setup2KI();
+        //setup1Mensch1KI();
+       setup2KI();
+        
+        
         _spiel.addObserver(this);
         spielStarten();
     }
@@ -40,8 +44,8 @@ public class ConsoleUI implements Observer {
     private void setup1Mensch1KI() {
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
-        KI ki = new RandomKI();
-        _spieler[1] = ki;
+        KI ki = new DecisionNetworkKI();
+        _spieler[1] = new DecisionNetworkKI();
         ki.setzeSpielerIndex(1);
 
         _brett = new ArraySpielbrett(_spieler.length);
@@ -52,10 +56,10 @@ public class ConsoleUI implements Observer {
 
     private void setup2KI() {
         _spieler = new Spieler[2];
-        KI ki0 = new RandomKI();
+        KI ki0 = new DecisionNetworkKI();
         _spieler[0] = ki0;
         ki0.setzeSpielerIndex(0);
-        KI ki1 = new RandomKI();
+        KI ki1 = new DecisionNetworkKI();
         _spieler[1] = ki1;
         ki1.setzeSpielerIndex(1);
 
@@ -120,10 +124,12 @@ public class ConsoleUI implements Observer {
                     ++i;
                 }
                 Scanner scanner = new Scanner(System.in);
-                System.out.print("Zum ziehen Zug-Index angeben: ");
-                String zugIndexString = scanner.nextLine();
-                int zugIndex = Integer.valueOf(zugIndexString);
-
+                int zugIndex = -1;
+                do {
+                    System.out.print("Zum ziehen Zug-Index angeben: ");
+                    String zugIndexString = scanner.nextLine();
+                    zugIndex = Integer.valueOf(zugIndexString);
+                } while (zugIndex >= zuege.size() || zugIndex < 0);
                 _spiel.ziehe(zuege.get(zugIndex));
             }
         } else {

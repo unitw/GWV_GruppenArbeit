@@ -104,6 +104,7 @@ public class ArraySpielbrett implements Spielbrett {
      */
     @Override
     public void setze(int spieler, Zug zug) {
+
         if (zug.getAusgangsPos() == -1) {
             _basen.zieheAusBasis(spieler);
 
@@ -144,7 +145,8 @@ public class ArraySpielbrett implements Spielbrett {
     public HeimBasen getHeimBasen() {
         return _basen.clone();
     }
-     public ZielBasen getZielBasen() {
+
+    public ZielBasen getZielBasen() {
         return _ziele;
     }
 
@@ -185,12 +187,47 @@ public class ArraySpielbrett implements Spielbrett {
     }
 
     public String toString() {
-        return _basen.toString() + "\n" + _ziele.toString() +"\n" + spielfeldToString();
+        return _basen.toString() + "\n" + _ziele.toString() + "\n" + spielfeldToString();
     }
-    
+
     public boolean alleImZiel(int spieler) {
         return _ziele.basisVoll(spieler);
     }
+
+    public int[] getSpielerPositionen() {
+        int anzahlSpieler = getAnzSpieler();
+        int[] spielerPositionen = new int[anzahlSpieler];
+        int spielerBasenGesamt = 0;
+        for (int spieler = 0; spieler < anzahlSpieler; ++spieler) {
+            spielerBasenGesamt += _basen.basisBesetzung(spieler);
+            spielerPositionen[spieler] -= _basen.basisBesetzung(spieler);
+        }
+
+        for (int probierteFiguren = 0, aktuellerIndex = 0;
+                probierteFiguren < ((FIGUREN_PRO_SPIELER * anzahlSpieler) - spielerBasenGesamt) && aktuellerIndex < _spielfeldGroesse;
+                ++aktuellerIndex) {
+            if (_spielfeld[aktuellerIndex] != -1) {
+                spielerPositionen[_spielfeld[aktuellerIndex]] += aktuellerIndex;
+                ++probierteFiguren;
+            }
+        }
+        // TODO Überlegen ob Zielbasen mit in die Berechnung einfliessen sollen
+        return spielerPositionen;
+    }
+
+    public boolean schlaegt(Zug zug) {
+        if(zug.getZielPos()<_spielfeldGroesse){
+        return _spielfeld[zug.getZielPos()] != -1;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public int getAnzSpieler() {
+        return _basen.getAnzahlSpieler();
+    }
+
     
     private String spielfeldToString() {
         String ausgabe = "";

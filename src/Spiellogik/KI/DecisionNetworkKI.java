@@ -26,10 +26,21 @@ public class DecisionNetworkKI extends KI {
     @Override
     public Zug entscheide(List<Zug> zuege) {
         // TODO implementieren, momentan Dummy
-        for (Zug zug : zuege) {
-            return zug;
+        if (zuege.size() > 1) {
+            double besteUtility = Double.MIN_VALUE;
+            Zug besterZug = null;
+            ExpectedUtility utilityBerechner = new ExpectedUtility(_brett, _index);
+            for (Zug zug : zuege) {
+                double utility = utilityBerechner.berechneExpectedUtility(zug);
+                if (utility > besteUtility) {
+                    besteUtility = utility;
+                    besterZug = zug;
+                }
+            }
+            return besterZug;
+        } else {
+            return zuege.get(0);
         }
-        return null;
     }
 
 }

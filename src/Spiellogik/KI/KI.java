@@ -16,8 +16,8 @@ import java.util.List;
  */
 public abstract class KI implements Spieler {
 
-    private Spielbrett _brett;
-    private int _index;
+    protected Spielbrett _brett;
+    protected int _index;
 
     /**
      * Beim Aufruf dieses Konstruktors ist zu beachten, dass der erzeugten
