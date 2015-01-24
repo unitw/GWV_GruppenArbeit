@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Spiellogik;
+package Spiellogik.KI;
 
+import Spiellogik.Spielbrett;
+import Spiellogik.Zug;
 import java.util.List;
 
 /**

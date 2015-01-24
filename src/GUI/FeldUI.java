@@ -35,6 +35,8 @@ public class FeldUI extends JLabel implements Setzen {
     int idx;
     int gesetzt = -1;
     Color bg = new Color(0xffff80);
+  private boolean startfeld;
+   private  int spieler;
 
     public FeldUI(int x, int y, int index) {
         this.setLayout(null);
@@ -78,6 +80,20 @@ public class FeldUI extends JLabel implements Setzen {
 //       
     }
 
+    public void setStartFeld(Color col){
+          Color[] rgb1 = new Color[4];
+                rgb1[1] = new Color(0x1289f8);
+                rgb1[0] = new Color(0xff0000);
+       
+       if(col.equals(rgb1[1])){
+           this.spieler=0;
+         }
+       if(col.equals(rgb1[2])){
+           this.spieler=1;
+         }
+    }
+    
+    
     @Override
     public void setStartFigur(Boolean b, int Spieler) {
 

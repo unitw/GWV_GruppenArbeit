@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Panel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import javax.swing.BorderFactory;
@@ -35,7 +36,10 @@ public class SpielbrettUI extends Panel {
     Spiel _spiel;
     ArraySpielbrett _brett;
     Spieler[] _spieler;
-    public Homebase[] base;
+    public Homebase[] homebase;
+    public Zielbase[] zielbase;
+
+    ArrayList startFelder = new ArrayList();
     FeldUI aktspieler;
     public FeldUI[] feldarray;
     public WuerfelUI wuerf;
@@ -48,7 +52,7 @@ public class SpielbrettUI extends Panel {
     ImageIcon figurpicrotset = new ImageIcon(getClass().getResource("/resources/Bilder/roteshuetchenfeld.png"));
 
     public SpielbrettUI(int anz, int sp, WuerfelUI wuerfel, FeldUI aktuellspieler, JTextField tx) {
-        this.setSize(1000, 600);
+        this.setSize(1100, 600);
         this.setLayout(null);
         setBackground(bg);
 
@@ -80,8 +84,8 @@ public class SpielbrettUI extends Panel {
         double Winkel = (Math.PI * 2.0) / anzfelder;
         double RadiusX = 10 * anzfelder + 61;
         double RadiusY = 10 * anzfelder + 61;
-        double StartX = 450;
-        double StartY = 270;
+        double StartX = 520;
+        double StartY = 260;
         int a = 0;
         for (int i = 0; i < anzfelder; i++) {
 
@@ -92,6 +96,8 @@ public class SpielbrettUI extends Panel {
 
             if (feldarray[i].getidx() % nichtstartfelder == 0) {
 
+                startFelder.add(feldarray[i]);
+
                 Color[] rgb1 = new Color[4];
                 rgb1[1] = new Color(0x1289f8);
                 rgb1[0] = new Color(0xff0000);
@@ -99,6 +105,8 @@ public class SpielbrettUI extends Panel {
                 rgb1[3] = new Color(0x12ff00);
                 Color col = rgb1[a];
                 feldarray[i].setBackground(col);
+                feldarray[i].setStartFeld(col);
+
                 feldarray[i].setOpaque(true);
                 feldarray[i].setBorder(BorderFactory.createLineBorder(Color.black, 1));
                 a = a + 1;
@@ -110,6 +118,44 @@ public class SpielbrettUI extends Panel {
         }
 
         createHomerBase(spieler);
+        createZielbase(spieler);
+
+    }
+
+    public void createZielbase(int Anzahl) {
+        int[] spieler = new int[4];
+        spieler[0] = 0;
+        spieler[1] = 1;
+        spieler[2] = 2;
+        spieler[3] = 3;
+
+        zielbase = new Zielbase[Anzahl];
+        for (int i = Anzahl - 1; i >= 0; i--) {
+
+            FeldUI fstartui = (FeldUI) startFelder.get(i);
+
+            zielbase[i] = new Zielbase(spieler[i]);
+            zielbase[i].setIndex(i);
+            int spielera = zielbase[i].getSpieler();
+
+            if (spielera == 0) {
+                spielera = 1;
+            } else {
+                spielera = 0;
+            }
+            switch (spielera) {
+                case 0:
+                    zielbase[i].setBounds(fstartui.xpos + 583, fstartui.ypos, zielbase[i].getWidth(), zielbase[i].getHeight());
+                    zielbase[i].setBackground(rgb[1]);
+                    break;
+                case 1:
+                    zielbase[i].setBounds(fstartui.xpos - 768, fstartui.ypos, zielbase[i].getWidth(), zielbase[i].getHeight());
+                    zielbase[i].setBackground(rgb[0]);
+                    break;
+
+            }
+            this.add(zielbase[i]);
+        }
 
     }
 
@@ -119,36 +165,36 @@ public class SpielbrettUI extends Panel {
         spieler[1] = 1;
         spieler[2] = 2;
         spieler[3] = 3;
-        base = new Homebase[Anzahlbasen];
+        homebase = new Homebase[Anzahlbasen];
         for (int i = 0; i < Anzahlbasen; i++) {
 
-            base[i] = new Homebase(spieler[i]);
-            base[i].setIndex(i);
+            homebase[i] = new Homebase(spieler[i]);
+            homebase[i].setIndex(i);
 
-            switch (base[i].getSpieler()) {
+            switch (homebase[i].getSpieler()) {
                 case 0:
-                    base[i].setBounds(10, 5, base[i].getWidth(), base[i].getHeight());
-                    base[i].setBackground(rgb[0]);
+                    homebase[i].setBounds(10, 5, homebase[i].getWidth(), homebase[i].getHeight());
+                    homebase[i].setBackground(rgb[0]);
                     break;
                 case 1:
-                    base[i].setBounds(this.getWidth() - 135, 5, base[i].getWidth(), base[i].getHeight());
-                    base[i].setBackground(rgb[1]);
+                    homebase[i].setBounds(this.getWidth() - 135, 5, homebase[i].getWidth(), homebase[i].getHeight());
+                    homebase[i].setBackground(rgb[1]);
 
                     break;
                 case 2:
-                    base[i].setBounds(10, this.getHeight() - 135, base[i].getWidth(), base[i].getHeight());
-                    base[i].setBackground(rgb[2]);
+                    homebase[i].setBounds(10, this.getHeight() - 135, homebase[i].getWidth(), homebase[i].getHeight());
+                    homebase[i].setBackground(rgb[2]);
 
                     break;
                 case 3:
-                    base[i].setBounds(this.getWidth() - 135, this.getHeight() - 135, base[i].getWidth(), base[i].getHeight());
-                    base[i].setBackground(rgb[3]);
+                    homebase[i].setBounds(this.getWidth() - 135, this.getHeight() - 135, homebase[i].getWidth(), homebase[i].getHeight());
+                    homebase[i].setBackground(rgb[3]);
 
                     break;
 
             }
 
-            this.add(base[i]);
+            this.add(homebase[i]);
 
         }
 
@@ -159,7 +205,7 @@ public class SpielbrettUI extends Panel {
         createSpielfeld(20, 2);
         FigurUI[] figuren = new FigurUI[99];
 
-        for (Homebase hb : base) {
+        for (Homebase hb : homebase) {
             for (int k = 0; k < hb.getComponentCount(); k++) {
                 if (hb.getComponent(k) instanceof FeldUI) {
                     FeldUI fui = (FeldUI) hb.getComponent(k);
@@ -179,18 +225,28 @@ public class SpielbrettUI extends Panel {
         this.aktspieler.setFigur(true, spielercnt);
 
         wuerf.setWuerfel(_spiel.getAktuelleAugenzahl());
+
         int basecount = _brett._basen.basisBesetzung(_spiel.getAktuellerSpielerIndex());
         if (basecount < 4) {
-            for (Homebase base1 : base) {
+            for (Homebase base1 : homebase) {
                 if (base1.getSpieler() == spielercnt) {
                     base1.refreshbase(spielercnt, basecount);
                 }
             }
         }
+      
         for (int i = 0; i < _brett._spielfeld.length; i++) {
             int feldbelegung = _brett._spielfeld[i];
             feldarray[i].setFigur(true, feldbelegung);
 
+        }
+          int zielbasecnt = _brett.getZielBasen().basisBesetzung(_spiel.getAktuellerSpielerIndex());
+        if (zielbasecnt < 4) {
+            for (Zielbase zielbase1 : zielbase) {
+                if (zielbase1.getSpieler() == spielercnt) {
+                    zielbase1.refreshbase(spielercnt, zielbasecnt-1);
+                }
+            }
         }
     }
 
@@ -199,6 +255,7 @@ public class SpielbrettUI extends Panel {
         List<Zug> zuege = _spiel.getMoeglicheZuege();
         if (_spiel.getAktuellerSpielerIndex() == 0) {
             spoffset = 0;
+            
         }
 
         if (!zuege.isEmpty()) {
@@ -210,16 +267,13 @@ public class SpielbrettUI extends Panel {
             } else {
                 int i = 0;
                 for (Zug zug : zuege) {
-                  tx.setText("Zug " + i + zug.toString());
+                    tx.setText("Zug " + i + zug.toString());
                     ++i;
                 }
-                
-                tx.setText("Mehere Zuege moeglich! Figur waehlen ");
-               
-                
-               
 
-                int zugIndex =  zug(_spiel.getMoeglicheZuege());
+                tx.setText("Mehere Zuege moeglich! Figur waehlen ");
+
+                int zugIndex = zug(_spiel.getMoeglicheZuege());
 
                 _spiel.ziehe(zuege.get(zugIndex));
             }
@@ -228,31 +282,29 @@ public class SpielbrettUI extends Panel {
         }
     }
 
-    public int zug(List<Zug> zuge){
-  
+    public int zug(List<Zug> zuge) {
+
         zuge.stream().forEach((zug) -> {
             zug.getAusgangsPos();
         });
-        
+
         tx.setText("Bitte Figur Auswaehlen");
         Handler();
-     return 1;
+        return 1;
     }
-    
-    
-    
-    public int Handler(){
-        int zugindx=-1;
+
+    public int Handler() {
+        int zugindx = -1;
         this.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getSource() instanceof FeldUI){
-                    FeldUI fuim= (FeldUI) e.getSource();
-                    if(fuim.getIcon()==figurpicblauset||fuim.getIcon()==figurpicrotset){
+                if (e.getSource() instanceof FeldUI) {
+                    FeldUI fuim = (FeldUI) e.getSource();
+                    if (fuim.getIcon() == figurpicblauset || fuim.getIcon() == figurpicrotset) {
                         tx.setText("0,1");
                     }
-                    
+
                 }
             }
 
@@ -272,8 +324,8 @@ public class SpielbrettUI extends Panel {
             public void mouseExited(MouseEvent e) {
             }
         });
-        
+
         return zugindx;
     }
-    
+
 }

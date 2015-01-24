@@ -62,7 +62,7 @@ public class GUI extends JFrame {
         Dimension screen = toolkit.getScreenSize();
         int y = (int) screen.getHeight();
 
-        this.setSize(1000, y - 100);
+        this.setSize(1200, y - 100);
         this.setVisible(true);
         setLocationRelativeTo(null);
 

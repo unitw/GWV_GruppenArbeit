@@ -144,6 +144,9 @@ public class ArraySpielbrett implements Spielbrett {
     public HeimBasen getHeimBasen() {
         return _basen.clone();
     }
+     public ZielBasen getZielBasen() {
+        return _ziele;
+    }
 
     // TODO Anpassen an variable Startpositionen
     public int getStartPos(int spieler) {

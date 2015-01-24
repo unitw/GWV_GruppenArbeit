@@ -5,6 +5,8 @@
  */
 package ConsoleUI;
 
+import Spiellogik.KI.RandomKI;
+import Spiellogik.KI.KI;
 import Spiellogik.*;
 import java.util.List;
 import java.util.Observable;

@@ -5,7 +5,9 @@
  */
 package Spiellogik;
 
+import Spiellogik.KI.KI;
 import GUI.SpielbrettUI;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -35,6 +37,7 @@ public class Spiel extends Observable {
 
     private final Spielbrett _spielbrett;
     private final Spieler[] _spieler;
+    private List<Integer> _rangfolge;
     private int _anDerReihe;
     private int _aktuelleAugenzahl;
     private int _wurfOptionen;
@@ -47,6 +50,7 @@ public class Spiel extends Observable {
         _moeglicheZuege = new LinkedList<Zug>();
         _wurfOptionen = MAXIMALE_WUERFE_PRO_ZUG;
         _spielZuEnde = false;
+        _rangfolge = new ArrayList<>();
     }
 
     /**
@@ -59,6 +63,7 @@ public class Spiel extends Observable {
     }
 
     private void naechsterZug(int wurfOptionen) {
+        fuelleRangFolge();
         if (!spielZuEnde()) {
             if (wurfOptionen > 0) {
                 wuerfeln();
@@ -90,6 +95,10 @@ public class Spiel extends Observable {
         } else {
             _spielZuEnde = true;
         }
+    }
+    
+    private void fuelleRangFolge() {
+        
     }
     
     public boolean spielZuEnde() {
