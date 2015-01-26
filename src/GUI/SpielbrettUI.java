@@ -220,21 +220,26 @@ public class SpielbrettUI extends Panel {
     }
 
     public void spielFortsetzen() {
-        _spiel.spielFortfahren();
-        
-        if(_spiel.getAktuellerSpieler() instanceof Mensch){
-             zieheMitMensch();
-        }
-        if(_spiel.getAktuellerSpieler() instanceof KI){
-             _spiel.zieheKI();
-        }
-      
-
         int spielercnt = _spiel.getAktuellerSpielerIndex();
+
+        _spiel.spielFortfahren();
+
+        if (_spiel.getAktuellerSpieler() instanceof Mensch&&spielercnt==0) {
+            zieheMitMensch();
+        }
+        if (_spiel.getAktuellerSpieler() instanceof KI&&spielercnt==1) {
+            _spiel.zieheKI();
+        }
+
         this.aktspieler.setFigur(true, spielercnt);
 
         wuerf.setWuerfel(_spiel.getAktuelleAugenzahl());
 
+        for (int i = 0; i < _brett._spielfeld.length; i++) {
+            int feldbelegung = _brett._spielfeld[i];
+            feldarray[i].setFigur(true, feldbelegung);
+
+        }
         int basecount = _brett._basen.basisBesetzung(_spiel.getAktuellerSpielerIndex());
         if (basecount < 4) {
             for (Homebase base1 : homebase) {
@@ -243,35 +248,26 @@ public class SpielbrettUI extends Panel {
                 }
             }
         }
-      
-        for (int i = 0; i < _brett._spielfeld.length; i++) {
-            int feldbelegung = _brett._spielfeld[i];
-            feldarray[i].setFigur(true, feldbelegung);
-
-        }
-          int zielbasecnt = _brett.getZielBasen().basisBesetzung(_spiel.getAktuellerSpielerIndex());
+        int zielbasecnt = _brett.getZielBasen().basisBesetzung(_spiel.getAktuellerSpielerIndex());
         if (zielbasecnt < 4) {
             for (Zielbase zielbase1 : zielbase) {
                 if (zielbase1.getSpieler() == spielercnt) {
-                    zielbase1.refreshbase(spielercnt, zielbasecnt-1);
+                    zielbase1.refreshbase(spielercnt, zielbasecnt - 1);
                 }
             }
         }
     }
 
     private void zieheMitMensch() {
-        int spoffset = 0;
+        
         List<Zug> zuege = _spiel.getMoeglicheZuege();
-        if (_spiel.getAktuellerSpielerIndex() == 0) {
-            spoffset = 0;
-            
-        }
+       
 
         if (!zuege.isEmpty()) {
             if (zuege.size() == 1) {
 
                 tx.setText("Nur ein Zug moeglich. Es wird automatisch gezogen.");
-                _spiel.ziehe(zuege.get(0 + spoffset));
+                _spiel.ziehe(zuege.get(0 ));
 
             } else {
                 int i = 0;
