@@ -68,7 +68,7 @@ public class Spiel extends Observable {
             if (wurfOptionen > 0) {
                 wuerfeln();
                 _moeglicheZuege = _spielbrett.pruefe(_anDerReihe, _aktuelleAugenzahl);
-            // TODO In Spielbrett auslagern
+                // TODO In Spielbrett auslagern
                 // TODO Aus 0 dynamische Startposition machen
                 if (_spielbrett.istSpielerFeld(_anDerReihe, 0) && _moeglicheZuege.size() > 1) {
                     for (int i = 0; i < _moeglicheZuege.size(); ++i) {
@@ -96,11 +96,11 @@ public class Spiel extends Observable {
             _spielZuEnde = true;
         }
     }
-    
+
     private void fuelleRangFolge() {
-        
+
     }
-    
+
     public boolean spielZuEnde() {
         int volleBasen = 0;
         for (int i = 0; i < _spieler.length; ++i) {
@@ -110,7 +110,7 @@ public class Spiel extends Observable {
         }
         return volleBasen == _spieler.length - 1;
     }
-    
+
     /**
      * Zieht mit dem aktuellen Spieler den angegebenen Zug. Diese Methode sollte
      * nur augeführt werden, wenn ein Mensch an der Reihe ist. Dies wird dadurch
@@ -132,7 +132,7 @@ public class Spiel extends Observable {
                 updateUI();
             }
         } else {
-         //   throw new IllegalStateException("Momentan ist eine KI an der Reihe, zieheKI() muss aufgerufen werden");
+            //   throw new IllegalStateException("Momentan ist eine KI an der Reihe, zieheKI() muss aufgerufen werden");
         }
     }
 
@@ -140,9 +140,13 @@ public class Spiel extends Observable {
         if (getAktuellerSpieler() instanceof KI) {
             KI ki = (KI) getAktuellerSpieler();
             if (!_moeglicheZuege.isEmpty()) {
-                Zug zug = ki.entscheide(_moeglicheZuege);
-                _spielbrett.setze(_anDerReihe, zug);
-
+                if (_moeglicheZuege.size() == 1) {
+                    Zug zug = _moeglicheZuege.get(0);
+                    _spielbrett.setze(_anDerReihe, zug);
+                } else {
+                    Zug zug = ki.entscheide(_moeglicheZuege);
+                    _spielbrett.setze(_anDerReihe, zug);
+                }
                 if (_aktuelleAugenzahl != WUERFELGROESSE) {
                     naechsterSpieler();
                 } else {
@@ -150,7 +154,7 @@ public class Spiel extends Observable {
                 }
             }
         } else {
-         //   throw new IllegalStateException("Momentan ist ein Mensch an der Reihe, ziehe(Zug) muss aufgerufen werden");
+            //   throw new IllegalStateException("Momentan ist ein Mensch an der Reihe, ziehe(Zug) muss aufgerufen werden");
         }
     }
 

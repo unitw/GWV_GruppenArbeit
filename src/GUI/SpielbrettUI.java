@@ -68,13 +68,22 @@ public class SpielbrettUI extends Panel {
         _brett = new ArraySpielbrett(sp);
         createSpielfeld(anz, sp);
         _spieler = new Spieler[2];
+        
+        
+        
         _spieler[0] = new Mensch();
-        _spieler[1] = new DecisionNetworkKI();
+        //_spieler[1] = new Mensch();
+
+        KI ki = new DecisionNetworkKI();
+        _spieler[1] = ki;
+        ki.setzeSpielerIndex(1);
+        
         // !!!!!!------ WICHTIG -------!!!!!!!!
         // Konstruktor Spiel(Spieler[], Spielbrett, SpielbrettUI) entfernt, 
         // das Spielfeld braucht die UI nicht zu kennen. Falls das Probleme bereitet,
         // bitte mir Bescheid sagen (Christian)
         _spiel = new Spiel(_spieler, _brett);
+        ki.setzeSpielbrett(_brett);
 
     }
 
@@ -224,22 +233,16 @@ public class SpielbrettUI extends Panel {
 
         _spiel.spielFortfahren();
 
-        if (_spiel.getAktuellerSpieler() instanceof Mensch&&spielercnt==0) {
+        if (_spiel.getAktuellerSpieler() instanceof Mensch && spielercnt == 0) {
             zieheMitMensch();
         }
-        if (_spiel.getAktuellerSpieler() instanceof KI&&spielercnt==1) {
+        if (_spiel.getAktuellerSpieler() instanceof KI && spielercnt == 1) {
             _spiel.zieheKI();
         }
 
         this.aktspieler.setFigur(true, spielercnt);
 
         wuerf.setWuerfel(_spiel.getAktuelleAugenzahl());
-
-        for (int i = 0; i < _brett._spielfeld.length; i++) {
-            int feldbelegung = _brett._spielfeld[i];
-            feldarray[i].setFigur(true, feldbelegung);
-
-        }
         int basecount = _brett._basen.basisBesetzung(_spiel.getAktuellerSpielerIndex());
         if (basecount < 4) {
             for (Homebase base1 : homebase) {
@@ -248,6 +251,12 @@ public class SpielbrettUI extends Panel {
                 }
             }
         }
+        for (int i = 0; i < _brett._spielfeld.length; i++) {
+            int feldbelegung = _brett._spielfeld[i];
+            feldarray[i].setFigur(true, feldbelegung);
+
+        }
+
         int zielbasecnt = _brett.getZielBasen().basisBesetzung(_spiel.getAktuellerSpielerIndex());
         if (zielbasecnt < 4) {
             for (Zielbase zielbase1 : zielbase) {
@@ -259,15 +268,14 @@ public class SpielbrettUI extends Panel {
     }
 
     private void zieheMitMensch() {
-        
+
         List<Zug> zuege = _spiel.getMoeglicheZuege();
-       
 
         if (!zuege.isEmpty()) {
             if (zuege.size() == 1) {
 
                 tx.setText("Nur ein Zug moeglich. Es wird automatisch gezogen.");
-                _spiel.ziehe(zuege.get(0 ));
+                _spiel.ziehe(zuege.get(0));
 
             } else {
                 int i = 0;
