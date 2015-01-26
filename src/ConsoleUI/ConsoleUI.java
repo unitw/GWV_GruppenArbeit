@@ -25,7 +25,8 @@ public class ConsoleUI implements Observer {
     Spieler[] _spieler;
 
     public ConsoleUI() {
-        setup2KI();
+       setup1Mensch1KI();
+       // setup2KI();
      //  setup2KI();
         _spiel.addObserver(this);
         spielStarten();
