@@ -7,6 +7,7 @@ package GUI;
 
 import Spiellogik.ArraySpielbrett;
 import Spiellogik.KI.DecisionNetworkKI;
+import Spiellogik.KI.KI;
 import Spiellogik.Mensch;
 import Spiellogik.Spiel;
 import Spiellogik.Spieler;
@@ -220,8 +221,14 @@ public class SpielbrettUI extends Panel {
 
     public void spielFortsetzen() {
         _spiel.spielFortfahren();
-        zieheMitMensch();
-        _spiel.zieheKI();
+        
+        if(_spiel.getAktuellerSpieler() instanceof Mensch){
+             zieheMitMensch();
+        }
+        if(_spiel.getAktuellerSpieler() instanceof KI){
+             _spiel.zieheKI();
+        }
+      
 
         int spielercnt = _spiel.getAktuellerSpielerIndex();
         this.aktspieler.setFigur(true, spielercnt);

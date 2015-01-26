@@ -132,7 +132,7 @@ public class Spiel extends Observable {
                 updateUI();
             }
         } else {
-            throw new IllegalStateException("Momentan ist eine KI an der Reihe, zieheKI() muss aufgerufen werden");
+         //   throw new IllegalStateException("Momentan ist eine KI an der Reihe, zieheKI() muss aufgerufen werden");
         }
     }
 
@@ -150,7 +150,7 @@ public class Spiel extends Observable {
                 }
             }
         } else {
-            throw new IllegalStateException("Momentan ist ein Mensch an der Reihe, ziehe(Zug) muss aufgerufen werden");
+         //   throw new IllegalStateException("Momentan ist ein Mensch an der Reihe, ziehe(Zug) muss aufgerufen werden");
         }
     }
 
