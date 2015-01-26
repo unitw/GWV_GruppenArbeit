@@ -30,7 +30,6 @@ public class ExpectedUtility {
     }
 
     public double berechneExpectedUtility(Zug zug) {
-
         Spielbrett simulation = original.clone();
         simulation.setze(spielerIdx, zug); // TODO Überprüfen, ob hier gezogen werden soll.
         int spielerPos = zug.getZielPos(); // Position lediglich bezogen auf den Zug
@@ -40,6 +39,12 @@ public class ExpectedUtility {
     }
 
     private double berechneUtility(Spielbrett brett, int weitereSpieler, int aktuellerSpieler) {
+        
+        if(  spielerAnzahl>2){
+            System.out.println("");
+        }      
+
+        
         double utility = 0;
         if (weitereSpieler == 0) {
             int gegnerPos = 0;
