@@ -33,7 +33,7 @@ public class ExpectedUtility {
 
         Spielbrett simulation = original.clone();
         simulation.setze(spielerIdx, zug); // TODO Überprüfen, ob hier gezogen werden soll.
-        int spielerPos = zug.getAusgangsPos(); // Position lediglich bezogen auf den Zug
+        int spielerPos = zug.getZielPos(); // Position lediglich bezogen auf den Zug
         int naechsterSpieler = (spielerIdx + 1) % simulation.getAnzSpieler();
         int weitereSpieler = anzahlSimulationsRunden * simulation.getAnzSpieler() - 1;
         return spielerPos + berechneUtility(simulation, weitereSpieler, naechsterSpieler);

@@ -30,6 +30,12 @@ public class ZielBasen {
         return _zielBasen[spieler];
     }
     
+    public ZielBasen clone() {
+        ZielBasen clone = new ZielBasen(_zielBasen.length, _basisGroesse);
+        clone._zielBasen = this._zielBasen;
+        return clone;
+    }
+    
     @Override
     public String toString() {
         String ausgabe = "Ziel Basen:  ";

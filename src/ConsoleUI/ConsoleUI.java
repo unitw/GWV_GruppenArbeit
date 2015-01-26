@@ -25,12 +25,20 @@ public class ConsoleUI implements Observer {
     Spieler[] _spieler;
 
     public ConsoleUI() {
+//        setup2RandomKI();
         setup2KI();
-     //  setup2KI();
         _spiel.addObserver(this);
         spielStarten();
     }
 
+    private void setup2RandomKI() {
+        _spieler = new Spieler[2];
+        _spieler[0] = new RandomKI();
+        _spieler[1] = new RandomKI();
+        _brett = new ArraySpielbrett(_spieler.length);
+        _spiel = new Spiel(_spieler, _brett);
+    }
+    
     private void setup2Mensch() {
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();

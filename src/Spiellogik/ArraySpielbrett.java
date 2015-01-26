@@ -147,7 +147,7 @@ public class ArraySpielbrett implements Spielbrett {
     }
 
     public ZielBasen getZielBasen() {
-        return _ziele;
+        return _ziele.clone();
     }
 
     // TODO Anpassen an variable Startpositionen
@@ -183,6 +183,7 @@ public class ArraySpielbrett implements Spielbrett {
         ArraySpielbrett clone = new ArraySpielbrett(_basen.getAnzahlSpieler());
         clone._basen = getHeimBasen();
         clone._spielfeld = getSpielfeld();
+        clone._ziele = getZielBasen();
         return clone;
     }
 
