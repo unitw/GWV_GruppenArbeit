@@ -44,6 +44,13 @@ public class Spiel extends Observable {
     private boolean _spielZuEnde;
     private List<Zug> _moeglicheZuege;
 
+    /**
+     * Erstellt ein neues Spiel mit den übergebenen Spielern auf dem übergebenen
+     * Spielbrett.
+     *
+     * @param spieler
+     * @param spielbrett
+     */
     public Spiel(Spieler[] spieler, Spielbrett spielbrett) {
         _spieler = spieler;
         _spielbrett = spielbrett;
@@ -98,9 +105,9 @@ public class Spiel extends Observable {
     }
 
     private void fuelleRangFolge() {
-
+        
     }
-
+    
     public boolean spielZuEnde() {
         int volleBasen = 0;
         for (int i = 0; i < _spieler.length; ++i) {
@@ -115,12 +122,11 @@ public class Spiel extends Observable {
      * Zieht mit dem aktuellen Spieler den angegebenen Zug. Diese Methode sollte
      * nur augeführt werden, wenn ein Mensch an der Reihe ist. Dies wird dadurch
      * signalisiert, dass die Beobachter dieses Spiels benachrichtigt werden und
-     * als Argument der aktuelle Spieler uebergeben wird. Das Spieler-Objekt ist
-     * dann auf jeden Fall vom Typ Mensch, da das Spiel dafür sorgt, dass die
-     * KI-Spieler ziehen.
+     * als Argument der aktuelle Spieler uebergeben wird. 
      *
      * @param zug Ein gültiger Zug für den aktuellen Spieler (Dies wird nicht
      * überprüft)
+     * @throws IllegalStateException falls der aktuelle Spieler kein Mensch ist.
      */
     public void ziehe(Zug zug) throws IllegalStateException {
         if (getAktuellerSpieler() instanceof Mensch) {
@@ -136,6 +142,11 @@ public class Spiel extends Observable {
         }
     }
 
+    /**
+     * Zieht mit dem aktuellen Spieler den nächsten Zug, falls dieser eine KI ist.
+     * Der Entscheidungsprozess wird an die jeweilige KI weitergegeben und der Zug gezogen.
+     * @throws IllegalStateException falls der aktuelle Spieler keine KI ist
+     */
     public void zieheKI() throws IllegalStateException {
         if (getAktuellerSpieler() instanceof KI) {
             KI ki = (KI) getAktuellerSpieler();

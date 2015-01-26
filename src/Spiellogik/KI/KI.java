@@ -11,6 +11,9 @@ import Spiellogik.Zug;
 import java.util.List;
 
 /**
+ * Die Klasse KI beschreibt eine generische künstliche Intelligenz für das Spiel
+ * Mensch Ärgere Dich Nicht. Wird die Operation entscheide aufgerufen so kann
+ * eine KI mittels in Subklassen definierter Vorgehensweise einen Zug auswählen.
  *
  * @author Chris
  */
@@ -42,16 +45,17 @@ public abstract class KI implements Spieler {
     }
 
     /**
-     * 
-     * @param brett 
+     * Dies setzt das Spielbrett fest auf dem die KI spielt
+     * @param brett
      */
     public void setzeSpielbrett(Spielbrett brett) {
         _brett = brett;
     }
 
     /**
-     * 
-     * @param index 
+     * Diese Operation teilt der KI mit welcher Spieler sie auf dem Spielbrett ist.
+     * Dies ist wichtig für die Entscheidungsfindung der KI. 
+     * @param index
      */
     public void setzeSpielerIndex(int index) {
         _index = index;
@@ -59,7 +63,7 @@ public abstract class KI implements Spieler {
 
     /**
      * Nimmt eine Menge von Zuegen und entscheidet, welcher Zug gespielt werden
-     * soll.
+     * soll. 
      *
      * @param zuege die zur Auswahl stehenden Zuege
      * @return der Zug, der gezogen werden soll

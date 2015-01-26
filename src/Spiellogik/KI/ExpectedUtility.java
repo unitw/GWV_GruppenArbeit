@@ -11,6 +11,10 @@ import Spiellogik.Zug;
 import java.util.List;
 
 /**
+ * Diese Klasse beschreibt einen Algorithmus, der auf einem gegebenen Spielbrett
+ * für das Spiel Mensch Ärgere Dich Nicht für einen Spieler den erwarteten
+ * Nutzen eines bestimmten Zuges berechnen kann. Somit können verschiedene
+ * mögliche Züge verglichen werden und der bestmögliche ausgewählt werden.
  *
  * @author Chris
  */
@@ -22,6 +26,14 @@ public class ExpectedUtility {
     private int spielerIdx;
     private int spielerAnzahl;
 
+    /**
+     * Erstellt ein neues ExpectedUtility Objekt, das auf dem übergebenen
+     * Spielbrett arbeitet. Die expectded Utility wird jeweils für den
+     * übergebenen Spieler-Index berechnet.
+     *
+     * @param spbrett Das Brett auf dem simuliert wird
+     * @param spielerIdx Der Index des Spielers für den simuliert wird
+     */
     public ExpectedUtility(Spielbrett spbrett, int spielerIdx) {
 
         this.original = spbrett;
@@ -29,6 +41,18 @@ public class ExpectedUtility {
         this.spielerAnzahl = original.getAnzSpieler();
     }
 
+    /**
+     * Berechnet den Erwartungwert für den übergebenen Zug. Der Erwartungswert
+     * beschreibt die Aussicht des gegebenen Zuges den Spieler dem Sieg näher zu
+     * bringen. Zur Berechnung werden Züge simuliert. Am Ende dieser
+     * Simulationen, werden die Spielausgänge anhand von verschiedenen Kriterien
+     * bewertet und miteinander verrechnet. Die Kriterien sind: Die Position des
+     * Spielers und der Gegner, ob man Gegner schlägt oder geschlagen wird und
+     * die Position der im übergebenen Zug gezogenen Figur.
+     *
+     * @param zug Der Zug für den die Expected Utility berechnet werden soll
+     * @return Der Erwartungswert (Expected Utility) für den übergebenen Zug
+     */
     public double berechneExpectedUtility(Zug zug) {
         Spielbrett simulation = original.clone();
         simulation.setze(spielerIdx, zug); // TODO Überprüfen, ob hier gezogen werden soll.
@@ -39,12 +63,11 @@ public class ExpectedUtility {
     }
 
     private double berechneUtility(Spielbrett brett, int weitereSpieler, int aktuellerSpieler) {
-        
-        if(  spielerAnzahl>2){
-            System.out.println("");
-        }      
 
-        
+        if (spielerAnzahl > 2) {
+            System.out.println("");
+        }
+
         double utility = 0;
         if (weitereSpieler == 0) {
             int gegnerPos = 0;
@@ -67,9 +90,9 @@ public class ExpectedUtility {
                 for (Zug zug : zuege) {
                     if (brett.schlaegt(zug)) {
                         if (aktuellerSpieler == spielerIdx) {
-                            utility += 1.0/Spiel.WUERFELGROESSE *1.0 / zuege.size() * (zug.getZielPos()); // TDOD Parameter Tweaking
+                            utility += 1.0 / Spiel.WUERFELGROESSE * 1.0 / zuege.size() * (zug.getZielPos()); // TDOD Parameter Tweaking
                         } else if (brett.istSpielerFeld(spielerIdx, zug.getZielPos())) {
-                            utility -= 1.0/Spiel.WUERFELGROESSE * 1.0 / zuege.size() * (zug.getZielPos());
+                            utility -= 1.0 / Spiel.WUERFELGROESSE * 1.0 / zuege.size() * (zug.getZielPos());
                         }
                     }
 
