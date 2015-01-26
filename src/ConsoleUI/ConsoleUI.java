@@ -25,15 +25,8 @@ public class ConsoleUI implements Observer {
     Spieler[] _spieler;
 
     public ConsoleUI() {
-<<<<<<< HEAD
         setup2KI();
      //  setup2KI();
-        
-        
-=======
-
-        setup1Mensch1KI();
->>>>>>> FETCH_HEAD
         _spiel.addObserver(this);
         spielStarten();
     }
@@ -50,10 +43,6 @@ public class ConsoleUI implements Observer {
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
         KI ki = new DecisionNetworkKI();
-<<<<<<< HEAD
-=======
-
->>>>>>> FETCH_HEAD
         _spieler[1] = ki;
         ki.setzeSpielerIndex(1);
 
