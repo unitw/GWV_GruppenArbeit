@@ -5,6 +5,8 @@
  */
 package Spiellogik;
 
+import Spiellogik.KI.KI;
+import Spiellogik.KI.DecisionNetworkKI;
 import static Spiellogik.Spiel.WUERFELGROESSE;
 import java.util.HashMap;
 import java.util.List;

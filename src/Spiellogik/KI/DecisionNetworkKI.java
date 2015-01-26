@@ -27,8 +27,9 @@ public class DecisionNetworkKI extends KI {
     public Zug entscheide(List<Zug> zuege) {
         // TODO implementieren, momentan Dummy
         if (zuege.size() > 1) {
-            double besteUtility = Double.MIN_VALUE;
+            double besteUtility = Double.NEGATIVE_INFINITY;
             Zug besterZug = null;
+
             ExpectedUtility utilityBerechner = new ExpectedUtility(_brett, _index);
             for (Zug zug : zuege) {
                 double utility = utilityBerechner.berechneExpectedUtility(zug);
@@ -37,10 +38,17 @@ public class DecisionNetworkKI extends KI {
                     besterZug = zug;
                 }
             }
-            return besterZug;
+            if (besterZug != null) {
+                return besterZug;
+            } else {
+                return zuege.get(0);
+
+            }
+
         } else {
             return zuege.get(0);
         }
+
     }
 
 }

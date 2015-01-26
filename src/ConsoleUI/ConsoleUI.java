@@ -25,8 +25,8 @@ public class ConsoleUI implements Observer {
     Spieler[] _spieler;
 
     public ConsoleUI() {
-        //setup1Mensch1KI();
-       setup2KI();
+        setup2KI();
+     //  setup2KI();
         
         
         _spiel.addObserver(this);
@@ -45,7 +45,7 @@ public class ConsoleUI implements Observer {
         _spieler = new Spieler[2];
         _spieler[0] = new Mensch();
         KI ki = new DecisionNetworkKI();
-        _spieler[1] = new DecisionNetworkKI();
+        _spieler[1] = ki;
         ki.setzeSpielerIndex(1);
 
         _brett = new ArraySpielbrett(_spieler.length);
