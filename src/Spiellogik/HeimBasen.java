@@ -69,7 +69,7 @@ public class HeimBasen {
     public HeimBasen clone()
     {
         HeimBasen clone = new HeimBasen(_homeBases.length, _basisGroesse);
-        clone._homeBases = this._homeBases;
+        clone._homeBases = this._homeBases.clone();
         return clone;
     }
     

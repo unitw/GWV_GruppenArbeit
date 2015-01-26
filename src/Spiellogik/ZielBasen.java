@@ -32,7 +32,7 @@ public class ZielBasen {
     
     public ZielBasen clone() {
         ZielBasen clone = new ZielBasen(_zielBasen.length, _basisGroesse);
-        clone._zielBasen = this._zielBasen;
+        clone._zielBasen = this._zielBasen.clone();
         return clone;
     }
     
