@@ -101,6 +101,7 @@ public class Spiel extends Observable {
             }
         } else {
             _spielZuEnde = true;
+            
         }
     }
 

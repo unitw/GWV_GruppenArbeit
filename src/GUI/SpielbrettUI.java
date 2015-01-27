@@ -18,9 +18,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -52,6 +53,8 @@ public class SpielbrettUI extends Panel {
     ImageIcon figurpicrotsetstart = new ImageIcon(getClass().getResource("/resources/Bilder/roteshuetchenset.png"));
     ImageIcon figurpicblauset = new ImageIcon(getClass().getResource("/resources/Bilder/blaueshuetchenfeld.png"));
     ImageIcon figurpicrotset = new ImageIcon(getClass().getResource("/resources/Bilder/roteshuetchenfeld.png"));
+    int basecountanf;
+    int zielbasecntanf;
 
     public SpielbrettUI(int anz, int sp, WuerfelUI wuerfel, FeldUI aktuellspieler, JTextField tx) {
         this.setSize(1100, 600);
@@ -68,16 +71,14 @@ public class SpielbrettUI extends Panel {
         _brett = new ArraySpielbrett(sp);
         createSpielfeld(anz, sp);
         _spieler = new Spieler[2];
-        
-        
-        
+
         _spieler[0] = new Mensch();
         //_spieler[1] = new Mensch();
 
         KI ki = new DecisionNetworkKI();
         _spieler[1] = ki;
         ki.setzeSpielerIndex(1);
-        
+
         // !!!!!!------ WICHTIG -------!!!!!!!!
         // Konstruktor Spiel(Spieler[], Spielbrett, SpielbrettUI) entfernt, 
         // das Spielfeld braucht die UI nicht zu kennen. Falls das Probleme bereitet,
@@ -225,46 +226,76 @@ public class SpielbrettUI extends Panel {
                 }
             }
         }
+        basecountanf = _brett._basen.basisBesetzung(_spiel.getAktuellerSpielerIndex());
+        zielbasecntanf = _brett.getZielBasen().basisBesetzung(_spiel.getAktuellerSpielerIndex());
 
     }
 
     public void spielFortsetzen() {
-        int spielercnt = _spiel.getAktuellerSpielerIndex();
+        if (!_spiel.spielZuEnde()) {
+            int spielercnt = _spiel.getAktuellerSpielerIndex();
 
-        _spiel.spielFortfahren();
+            _spiel.spielFortfahren();
+            if (_spiel.getAktuelleAugenzahl() == 6) {
+                System.out.print("");
 
-        if (_spiel.getAktuellerSpieler() instanceof Mensch && spielercnt == 0) {
-            zieheMitMensch();
-        }
-        if (_spiel.getAktuellerSpieler() instanceof KI && spielercnt == 1) {
-            _spiel.zieheKI();
-        }
+            }
 
-        this.aktspieler.setFigur(true, spielercnt);
+            if (_spiel.getAktuellerSpielerIndex() == 0 && _spiel.getAktuellerSpieler() instanceof Mensch) {
+                zieheMitMensch();
+            }
+            if (_spiel.getAktuellerSpielerIndex() == 1 && _spiel.getAktuellerSpieler() instanceof KI) {
+                _spiel.zieheKI();
+            }
 
-        wuerf.setWuerfel(_spiel.getAktuelleAugenzahl());
-        int basecount = _brett._basen.basisBesetzung(_spiel.getAktuellerSpielerIndex());
-        if (basecount < 4) {
-            for (Homebase base1 : homebase) {
-                if (base1.getSpieler() == spielercnt) {
-                    base1.refreshbase(spielercnt, basecount);
+            this.aktspieler.setFigur(true, spielercnt);
+            wuerf.setWuerfel(_spiel.getAktuelleAugenzahl());
+
+            int basecount = _brett._basen.basisBesetzung(_spiel.getAktuellerSpielerIndex());
+
+            if (basecount < basecountanf) {
+                if (basecount < 4) {
+                    for (Homebase base1 : homebase) {
+                        if (base1.getSpieler() == spielercnt) {
+                            base1.refreshbase(spielercnt, basecount);
+                        }
+                    }
+                }
+                basecountanf = basecount;
+            }
+
+            for (int i = 0; i < _brett._spielfeld.length; i++) {
+                int feldbelegung = _brett._spielfeld[i];
+                feldarray[i].setFigur(true, feldbelegung);
+
+            }
+
+            int zielbasecnt = _brett.getZielBasen().basisBesetzung(_spiel.getAktuellerSpielerIndex());
+
+            if (zielbasecnt < zielbasecntanf) {
+                if (zielbasecnt < 4) {
+                    for (Zielbase zielbase1 : zielbase) {
+                        if (zielbase1.getSpieler() == spielercnt) {
+                            zielbase1.refreshbase(spielercnt, zielbasecnt - 1);
+                        }
+                    }
+                }
+                zielbasecntanf = zielbasecnt;
+            }
+        } else {
+
+            int Gewinner = -1;
+            for (int i = 0; i < _spieler.length; ++i) {
+                if (_brett.alleImZiel(i)) {
+                    Gewinner = i;
                 }
             }
-        }
-        for (int i = 0; i < _brett._spielfeld.length; i++) {
-            int feldbelegung = _brett._spielfeld[i];
-            feldarray[i].setFigur(true, feldbelegung);
+
+            JOptionPane.showMessageDialog(new JFrame(),
+                    "Spiel zu Ende:" + "Spieler" + " " + Gewinner + " " + "hat gewonnen");
 
         }
 
-        int zielbasecnt = _brett.getZielBasen().basisBesetzung(_spiel.getAktuellerSpielerIndex());
-        if (zielbasecnt < 4) {
-            for (Zielbase zielbase1 : zielbase) {
-                if (zielbase1.getSpieler() == spielercnt) {
-                    zielbase1.refreshbase(spielercnt, zielbasecnt - 1);
-                }
-            }
-        }
     }
 
     private void zieheMitMensch() {
